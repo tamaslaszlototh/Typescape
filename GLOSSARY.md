@@ -46,6 +46,14 @@ _Avoid_: Load status, project errors
 The view of what depends on what, navigable from project level down through namespace to type level.
 _Avoid_: Call graph, reference map
 
+**Overview**:
+The Dependency Graph's starting mode: the whole solution at project level, where the user expands projects and namespaces in place.
+_Avoid_: Solution view, map view
+
+**Focus**:
+The Dependency Graph's mode centred on one project, namespace or type, showing what uses it on one side and what it uses on the other.
+_Avoid_: Ego graph, neighbourhood view
+
 **Type Hierarchy**:
 The view of inheritance and interface implementation among all of the solution's own types (classes, interfaces, structs, records).
 _Avoid_: Class hierarchy, inheritance tree
