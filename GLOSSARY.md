@@ -61,3 +61,7 @@ _Avoid_: Class hierarchy, inheritance tree
 **Complexity Heatmap**:
 The treemap view of the solution where area shows code size and color shows a chosen complexity metric.
 _Avoid_: Hotspot map, complexity chart
+
+**Selection**:
+The one project, namespace, type, or Executable Member the user has picked, shared by all three views; each view reveals it, changing what it shows only when the Selection is not already visible.
+_Avoid_: Focus (that is a Dependency Graph mode), current item, active node
