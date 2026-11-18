@@ -20,6 +20,26 @@ _Avoid_: UI, frontend, dashboard
 A type referenced by the analyzed solution but defined outside it (framework or package); shown only as a collapsed stub.
 _Avoid_: Library type, foreign type
 
+**Executable Member**:
+A member of a type that has an executable body (method, constructor, destructor, operator, conversion, or a single property/indexer/event accessor) and is the unit metrics are measured on; lambdas and local functions belong to their containing Executable Member.
+_Avoid_: Method, function, routine, member body
+
+**Dependency**:
+A directed, typed link from one of the solution's own types to another type, own or External, that it uses; the Dependency Graph shows Dependencies aggregated by project or namespace.
+_Avoid_: Reference, edge, link
+
+**Dependency Kind**:
+The way one type uses another: inherits, implements, member-type, signature, new, call, attribute, generic-arg, member-access, or type-usage.
+_Avoid_: Edge type, relation type
+
+**Occurrence**:
+One place in the source (file and line, with the using Executable Member and the used member where there is one) where a Dependency appears.
+_Avoid_: Usage, reference site, hit
+
+**Load Health**:
+The Analyzer's own verdict on how completely one project was loaded (ok, degraded, or failed), with the evidence behind it.
+_Avoid_: Load status, project errors
+
 ## Views
 
 **Dependency Graph**:
