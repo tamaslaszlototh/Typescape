@@ -40,6 +40,10 @@ _Avoid_: Usage, reference site, hit
 The Analyzer's own verdict on how completely one project was loaded (ok, degraded, or failed), with the evidence behind it.
 _Avoid_: Load status, project errors
 
+**Provenance**:
+The part of a Snapshot that records how it was produced (tool, environment, source revision, run measurements) rather than facts about the code; the only part that may differ between two analyses of the same code.
+_Avoid_: Metadata, header, run info
+
 ## Views
 
 **Dependency Graph**:
@@ -57,6 +61,14 @@ _Avoid_: Ego graph, neighbourhood view
 **Type Hierarchy**:
 The view of inheritance and interface implementation among all of the solution's own types (classes, interfaces, structs, records).
 _Avoid_: Class hierarchy, inheritance tree
+
+**Lineage**:
+What the Type Hierarchy shows by default for a Selection: its ancestors (own types and External Type stubs) and, for a type, all of its descendants.
+_Avoid_: Family, inheritance chain
+
+**Sibling Block**:
+A box in the Type Hierarchy that holds every leaf type with exactly the same set of shown bases, laid out as a wrapped grid grouped by namespace and drawn with one edge per base.
+_Avoid_: Cluster, group node, bucket
 
 **Complexity Heatmap**:
 The treemap view of the solution where area shows code size and color shows a chosen complexity metric.
