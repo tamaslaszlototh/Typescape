@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Typescape.Analyzer/Typescape.Analyzer.csproj" />
+    <Project Path="src/Typescape.Snapshot/Typescape.Snapshot.csproj" />
+    <Project Path="src/Typescape/Typescape.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Typescape.Analyzer.Tests/Typescape.Analyzer.Tests.csproj" />
+    <Project Path="tests/Typescape.Snapshot.Tests/Typescape.Snapshot.Tests.csproj" />
+  </Folder>
+</Solution>

@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Typescape.Analyzer</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Typescape.Analyzer.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Typescape.Snapshot\Typescape.Snapshot.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" />
+    <PackageReference Include="NuGet.Packaging" />
+    <PackageReference Include="NuGet.Protocol" />
+  </ItemGroup>
+</Project>

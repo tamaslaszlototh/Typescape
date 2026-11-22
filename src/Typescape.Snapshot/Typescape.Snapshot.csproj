@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- This project has no PackageReference on purpose, and must never get one.
+       System.Text.Json (and System.IO.Compression for gzip) come from the net10.0 shared framework,
+       so they need no reference: a System.Text.Json PackageReference fails the build with NU1510.
+       `typescape view` loads this assembly and must never pull in Roslyn or MSBuild.
+       Guarded by Typescape.Snapshot.Tests/DependencyDirectionTests. -->
+  <PropertyGroup>
+    <RootNamespace>Typescape.Snapshot</RootNamespace>
+  </PropertyGroup>
+</Project>

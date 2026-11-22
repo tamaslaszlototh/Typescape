@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Typescape</RootNamespace>
+    <AssemblyName>Typescape</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Typescape.Analyzer\Typescape.Analyzer.csproj" />
+    <ProjectReference Include="..\Typescape.Snapshot\Typescape.Snapshot.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.CommandLine" />
+  </ItemGroup>
+</Project>

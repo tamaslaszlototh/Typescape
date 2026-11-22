@@ -1,0 +1,6 @@
+* text=auto
+
+# Fixture solutions and golden files must be byte-identical on macOS and Windows.
+tests/fixtures/** text eol=lf
+*.verified.txt text eol=lf
+*.verified.json text eol=lf

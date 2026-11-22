@@ -1,3 +1,13 @@
 /temp
 CLAUDE.md
 .claude/
+
+# .NET build output
+bin/
+obj/
+*.user
+.vs/
+TestResults/
+
+# Verify
+*.received.*

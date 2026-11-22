@@ -1,0 +1,23 @@
+<Project>
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit.v3" />
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <!-- Golden-file helper shared by all test projects. It finds .verified files through this metadata,
+       not [CallerFilePath], so it keeps working when CI builds map source paths. -->
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Shared/**/*.cs" Link="Shared/%(RecursiveDir)%(Filename)%(Extension)" />
+    <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+      <_Parameter1>Typescape.ProjectDirectory</_Parameter1>
+      <_Parameter2>$(MSBuildProjectDirectory)</_Parameter2>
+    </AssemblyAttribute>
+  </ItemGroup>
+</Project>
