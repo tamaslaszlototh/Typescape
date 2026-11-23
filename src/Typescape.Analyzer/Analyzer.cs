@@ -1,4 +1,5 @@
 using Typescape.Analyzer.Pipeline;
+using Typescape.Analyzer.Provenance;
 
 namespace Typescape.Analyzer;
 
@@ -15,5 +16,5 @@ public static class Analyzer
         AnalysisRequest request,
         IProgress<AnalysisProgress>? progress,
         CancellationToken cancellationToken) =>
-        AnalysisPipeline.RunAsync(request, new MSBuildStages(), progress, cancellationToken);
+        AnalysisPipeline.RunAsync(request, new MSBuildStages(), new SystemProvenanceSources(), progress, cancellationToken);
 }

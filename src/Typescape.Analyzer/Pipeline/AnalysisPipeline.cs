@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Typescape.Analyzer.Extraction;
+using Typescape.Analyzer.Provenance;
 
 namespace Typescape.Analyzer.Pipeline;
 
@@ -18,19 +19,27 @@ namespace Typescape.Analyzer.Pipeline;
 /// bounded by <see cref="AnalysisRequest.MaxParallelism"/>. The walk's unit is the document because a few giant
 /// projects would otherwise run alone at the end. Results keep their input order, though Assemble does not rely on it.
 /// </para>
+/// <para>
+/// Assemble's own duration and the peak memory exist only after Assemble, so the pipeline then replaces the Snapshot's
+/// Provenance.
+/// </para>
 /// </remarks>
 internal static class AnalysisPipeline
 {
     public static async Task<AnalysisResult> RunAsync(
         AnalysisRequest request,
         IAnalysisStages stages,
+        IProvenanceSources sources,
         IProgress<AnalysisProgress>? progress,
         CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
         ArgumentNullException.ThrowIfNull(stages);
+        ArgumentNullException.ThrowIfNull(sources);
         ArgumentException.ThrowIfNullOrWhiteSpace(request.SolutionPath);
         ArgumentOutOfRangeException.ThrowIfLessThan(request.MaxParallelism, 1);
+
+        var provenance = await ProvenanceRecorder.StartAsync(request, sources, cancellationToken);
 
         var parallel = new ParallelOptions
         {
@@ -40,40 +49,42 @@ internal static class AnalysisPipeline
 
         if (request.Restore)
         {
-            await RunPhaseAsync(AnalysisPhase.Restore, progress, cancellationToken, async () =>
+            await RunPhaseAsync(AnalysisPhase.Restore, progress, provenance, cancellationToken, async () =>
             {
                 await stages.RestoreAsync(request, cancellationToken);
                 return true;
             });
         }
 
-        using var solution = await RunPhaseAsync(AnalysisPhase.Load, progress, cancellationToken, () =>
+        using var solution = await RunPhaseAsync(AnalysisPhase.Load, progress, provenance, cancellationToken, () =>
             stages.LoadAsync(request, new PhaseCounter(AnalysisPhase.Load, progress), cancellationToken));
 
-        var compiled = await RunPhaseAsync(AnalysisPhase.Compile, progress, cancellationToken, () =>
+        var compiled = await RunPhaseAsync(AnalysisPhase.Compile, progress, provenance, cancellationToken, () =>
             ForEachAsync(
                 solution.Projects,
                 parallel,
                 new PhaseCounter(AnalysisPhase.Compile, progress),
                 (project, token) => new ValueTask<CompiledProject>(stages.CompileAsync(solution, project, token))));
 
-        var diagnostics = await RunPhaseAsync(AnalysisPhase.Diagnostics, progress, cancellationToken, () =>
+        var diagnostics = await RunPhaseAsync(AnalysisPhase.Diagnostics, progress, provenance, cancellationToken, () =>
             ForEachAsync(
                 compiled,
                 parallel,
                 new PhaseCounter(AnalysisPhase.Diagnostics, progress),
                 (project, token) => ValueTask.FromResult(stages.Diagnose(project, token))));
 
-        var facts = await RunPhaseAsync(AnalysisPhase.Walk, progress, cancellationToken, () =>
+        var facts = await RunPhaseAsync(AnalysisPhase.Walk, progress, provenance, cancellationToken, () =>
             WalkAsync(compiled, stages, parallel, new PhaseCounter(AnalysisPhase.Walk, progress)));
 
-        var snapshot = await RunPhaseAsync(AnalysisPhase.Assemble, progress, cancellationToken, () =>
+        var snapshot = await RunPhaseAsync(AnalysisPhase.Assemble, progress, provenance, cancellationToken, () =>
         {
             var results = compiled.Select((project, i) => new ProjectResult(project, diagnostics[i], facts[i])).ToArray();
-            return Task.FromResult(stages.Assemble(new AssembleInput(request, solution, results), cancellationToken));
+            var input = new AssembleInput(request, solution, results, provenance.Build());
+            return Task.FromResult(stages.Assemble(input, cancellationToken));
         });
 
         cancellationToken.ThrowIfCancellationRequested();
+        snapshot = snapshot with { Provenance = provenance.Build() };
 
         var loadHealth = LoadHealthSummary.From(snapshot.LoadHealth);
         progress?.Report(new AnalysisProgress.LoadHealthReported(loadHealth));
@@ -84,6 +95,7 @@ internal static class AnalysisPipeline
     private static async Task<T> RunPhaseAsync<T>(
         AnalysisPhase phase,
         IProgress<AnalysisProgress>? progress,
+        ProvenanceRecorder provenance,
         CancellationToken cancellationToken,
         Func<Task<T>> body)
     {
@@ -93,7 +105,9 @@ internal static class AnalysisPipeline
 
         var result = await body();
 
-        progress?.Report(new AnalysisProgress.PhaseFinished(phase, stopwatch.Elapsed));
+        var duration = stopwatch.Elapsed;
+        provenance.Record(phase, duration);
+        progress?.Report(new AnalysisProgress.PhaseFinished(phase, duration));
         return result;
     }
 

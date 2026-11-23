@@ -1,4 +1,5 @@
 using Typescape.Analyzer.Extraction;
+using Typescape.Snapshot.Records;
 
 namespace Typescape.Analyzer.Pipeline;
 
@@ -6,7 +7,12 @@ namespace Typescape.Analyzer.Pipeline;
 /// <param name="Request">The request the run was started with.</param>
 /// <param name="Solution">The output of Load.</param>
 /// <param name="Projects">One entry per project of <see cref="LoadedSolution.Projects"/>, in the same order.</param>
-internal sealed record AssembleInput(AnalysisRequest Request, LoadedSolution Solution, IReadOnlyList<ProjectResult> Projects);
+/// <param name="Provenance">The Provenance so far; the pipeline replaces it on the Snapshot after Assemble.</param>
+internal sealed record AssembleInput(
+    AnalysisRequest Request,
+    LoadedSolution Solution,
+    IReadOnlyList<ProjectResult> Projects,
+    ProvenanceRecord Provenance);
 
 /// <summary>The outputs of Compile, Diagnostics and Walk for one project.</summary>
 /// <param name="Project">The output of Compile.</param>

@@ -130,6 +130,7 @@ public class AnalysisProgressTests
         AnalysisPipeline.RunAsync(
             new AnalysisRequest { SolutionPath = "/repo/Fake.slnx", MaxParallelism = maxParallelism, Restore = restore },
             stages,
+            new FakeProvenanceSources(),
             progress,
             TestContext.Current.CancellationToken);
 }

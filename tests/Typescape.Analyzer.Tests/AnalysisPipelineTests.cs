@@ -129,7 +129,7 @@ public class AnalysisPipelineTests
 
         var result = await RunAsync(stages, maxParallelism: 1);
 
-        Assert.Same(snapshot, result.Snapshot);
+        Assert.Equal(snapshot with { Provenance = result.Snapshot.Provenance }, result.Snapshot);
         Assert.Equal(new LoadHealthSummary(Ok: 2, Degraded: 1, Failed: 1), result.LoadHealth);
         Assert.Equal(4, result.LoadHealth.Projects);
     }
@@ -152,6 +152,7 @@ public class AnalysisPipelineTests
         AnalysisPipeline.RunAsync(
             new AnalysisRequest { SolutionPath = "/repo/Fake.slnx", MaxParallelism = maxParallelism, Restore = restore },
             stages,
+            new FakeProvenanceSources(),
             progress: null,
             TestContext.Current.CancellationToken);
 }

@@ -6,10 +6,10 @@ namespace Typescape.Snapshot.Records;
 /// the clock, the machine or the run lives here and nowhere else.
 /// </summary>
 /// <param name="Tool">The Typescape build that wrote the Snapshot.</param>
-/// <param name="Timestamp">When the analysis started, in UTC.</param>
+/// <param name="Timestamp">When the analysis started, in UTC, to the whole second.</param>
 /// <param name="Solution">The analyzed solution file.</param>
-/// <param name="SdkVersion">The version of the .NET SDK whose MSBuild loaded the solution, e.g. <c>10.0.100</c>.</param>
-/// <param name="Os">The operating system, e.g. <c>Microsoft Windows 10.0.26100 X64</c>; never the machine name.</param>
+/// <param name="SdkVersion">The .NET SDK <c>dotnet --version</c> picks in the solution directory, e.g. <c>10.0.100</c>.</param>
+/// <param name="Os">The OS and architecture, e.g. <c>macOS 27.2.1 Arm64</c>; never the machine name.</param>
 /// <param name="Git">The analyzed solution's git state; <c>null</c> when the solution is not in a git repository.</param>
 /// <param name="Framework">The requested <c>--framework</c>; <c>null</c> when none was passed.</param>
 /// <param name="Configuration">The MSBuild configuration, <c>Debug</c> unless <c>-p:Configuration=…</c> says otherwise.</param>
@@ -17,9 +17,10 @@ namespace Typescape.Snapshot.Records;
 /// Every MSBuild global property passed with <c>-p</c>, by name (a repeated name keeps its last value), in ordinal name
 /// order. <paramref name="Configuration"/> holds the effective configuration whether or not it was passed.
 /// </param>
-/// <param name="PhaseSeconds">The wall-clock duration of each pipeline phase.</param>
+/// <param name="PhaseSeconds">The wall-clock duration of each pipeline phase, rounded to milliseconds.</param>
 /// <param name="PeakMemoryBytes">
-/// The tool process's peak working set (<c>Process.PeakWorkingSet64</c>), in bytes; the BuildHost is not measured.
+/// The tool process's peak working set (<c>Process.PeakWorkingSet64</c>, <c>getrusage</c> on macOS), in bytes; the
+/// BuildHost is not measured.
 /// </param>
 /// <remarks>
 /// The root's <see cref="SnapshotRecord.SchemaVersion"/> and <see cref="SnapshotRecord.RulesVersion"/> are Provenance
@@ -58,7 +59,7 @@ public enum SolutionFormat
 /// <summary>The git state of the analyzed solution's working tree.</summary>
 /// <param name="Commit">The full SHA of <c>HEAD</c>.</param>
 /// <param name="Branch">The checked-out branch; <c>null</c> on a detached <c>HEAD</c>.</param>
-/// <param name="Dirty">Whether the working tree has uncommitted changes.</param>
+/// <param name="Dirty">Whether the working tree has uncommitted changes, untracked files included.</param>
 public sealed record GitProvenanceRecord(string Commit, string? Branch, bool Dirty);
 
 /// <summary>

@@ -125,6 +125,7 @@ public class CancellationTests
         AnalysisPipeline.RunAsync(
             new AnalysisRequest { SolutionPath = "/repo/Fake.slnx", MaxParallelism = maxParallelism },
             stages,
+            new FakeProvenanceSources(),
             progress,
             cancellationToken);
 }
