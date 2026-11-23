@@ -6,7 +6,7 @@
 
 using System.Diagnostics;
 using System.Xml.Linq;
-using Typescape.Snapshot.Serialization;
+using Typescape.Snapshot.Json;
 
 var root = AppContext.GetData("EntryPointFileDirectoryPath") as string ?? Directory.GetCurrentDirectory();
 

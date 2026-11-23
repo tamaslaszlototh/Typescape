@@ -2,7 +2,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
 using Typescape.Snapshot.Records;
-using Typescape.Snapshot.Serialization;
+using Typescape.Snapshot.Json;
 
 namespace Typescape.Snapshot.Tests;
 

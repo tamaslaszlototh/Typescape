@@ -2,7 +2,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Typescape.Snapshot.Records;
 
-namespace Typescape.Snapshot.Serialization;
+namespace Typescape.Snapshot.Json;
 
 /// <summary>Reads and writes an <see cref="OccurrenceRecord"/> as its five-element tuple.</summary>
 internal sealed class OccurrenceJsonConverter : JsonConverter<OccurrenceRecord>

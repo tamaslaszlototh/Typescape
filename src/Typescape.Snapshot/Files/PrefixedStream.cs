@@ -1,4 +1,4 @@
-namespace Typescape.Snapshot.Serialization;
+namespace Typescape.Snapshot.Files;
 
 /// <summary>
 /// A read-only stream that returns <c>prefix</c> and then the rest of <c>rest</c>: it puts back the bytes a reader

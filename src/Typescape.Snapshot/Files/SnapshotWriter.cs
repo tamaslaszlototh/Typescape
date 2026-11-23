@@ -1,8 +1,8 @@
 using System.IO.Compression;
 using System.Text.Json;
-using Typescape.Snapshot.Serialization;
+using Typescape.Snapshot.Json;
 
-namespace Typescape.Snapshot;
+namespace Typescape.Snapshot.Files;
 
 /// <summary>
 /// Writes a <see cref="SnapshotRecord"/> as the Snapshot file: compact JSON in the <see cref="SnapshotJson"/> format,

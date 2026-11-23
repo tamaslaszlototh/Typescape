@@ -1,6 +1,7 @@
 using System.IO.Compression;
 using System.Text.Json;
-using Typescape.Snapshot.Serialization;
+using Typescape.Snapshot.Files;
+using Typescape.Snapshot.Json;
 
 namespace Typescape.Snapshot.Tests;
 

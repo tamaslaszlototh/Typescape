@@ -1,7 +1,7 @@
 namespace Typescape.Snapshot.Records;
 
 /// <summary>
-/// One place in the source where a Dependency appears. <see cref="Serialization.SnapshotJson"/> writes it as the tuple
+/// One place in the source where a Dependency appears. <see cref="Json.SnapshotJson"/> writes it as the tuple
 /// <c>[dependency, sourceMember, targetMember, document, line]</c>, because Occurrences outnumber every other row.
 /// </summary>
 /// <param name="Dependency">Index into <see cref="SnapshotRecord.Dependencies"/>.</param>

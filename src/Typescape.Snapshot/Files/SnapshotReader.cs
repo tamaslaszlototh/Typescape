@@ -1,9 +1,9 @@
 using System.Globalization;
 using System.IO.Compression;
 using System.Text.Json;
-using Typescape.Snapshot.Serialization;
+using Typescape.Snapshot.Json;
 
-namespace Typescape.Snapshot;
+namespace Typescape.Snapshot.Files;
 
 /// <summary>
 /// Reads the Snapshot file <see cref="SnapshotWriter"/> writes, and checks its <c>schemaVersion</c> before anything

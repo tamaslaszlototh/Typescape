@@ -3,7 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 
-namespace Typescape.Snapshot.Serialization;
+namespace Typescape.Snapshot.Json;
 
 /// <summary>
 /// The serializer options that turn the Snapshot records into the Snapshot JSON. Together with the records they define

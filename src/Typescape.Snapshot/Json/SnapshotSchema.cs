@@ -4,7 +4,7 @@ using System.Text.Json.Nodes;
 using System.Text.Json.Schema;
 using Typescape.Snapshot.Records;
 
-namespace Typescape.Snapshot.Serialization;
+namespace Typescape.Snapshot.Json;
 
 /// <summary>
 /// The JSON Schema of the Snapshot format, exported with <see cref="JsonSchemaExporter"/> from the records and

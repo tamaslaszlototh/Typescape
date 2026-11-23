@@ -1,4 +1,4 @@
-namespace Typescape.Snapshot.Serialization;
+namespace Typescape.Snapshot.Files;
 
 /// <summary>
 /// A write-only pass-through to <see cref="Inner"/> that sets the OS byte of the gzip header to 255 ("unknown").

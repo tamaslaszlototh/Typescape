@@ -1,4 +1,4 @@
-namespace Typescape.Snapshot;
+namespace Typescape.Snapshot.Files;
 
 /// <summary>Why <see cref="SnapshotReader"/> refused a file.</summary>
 public enum SnapshotReadFailure
