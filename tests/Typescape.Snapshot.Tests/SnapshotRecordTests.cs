@@ -33,7 +33,7 @@ public class SnapshotRecordTests
             [
                 "schemaVersion", "rulesVersion", "projects", "namespaces", "documents", "types",
                 "externalTypes", "executableMembers", "externalMembers", "nonExecutableMembers", "dependencies",
-                "occurrences",
+                "loadHealth", "provenance", "occurrences",
             ],
             names);
     }
@@ -88,7 +88,8 @@ public class SnapshotRecordTests
     /// App (a partial generic type with a nested record struct) references Core and uses Core and the BCL;
     /// App.Tests references App. The Occurrences reach all three kinds of target member: an External member (<c>List&lt;T&gt;.Add</c>),
     /// an own Executable Member (the <c>Service&lt;T&gt;</c> constructor) and an own field (<c>EntityBase.Id</c>).
-    /// Every table is sorted by stable key, as Assemble writes it.
+    /// App is degraded (compile errors, unresolved types, an analyzer error); Core is a legacy project that loaded under
+    /// .NET SDK MSBuild. Every table is sorted by stable key, as Assemble writes it.
     /// </summary>
     internal static SnapshotRecord Sample()
     {
@@ -162,6 +163,8 @@ public class SnapshotRecordTests
                 new DependencyRecord(0, 0, External: true, DependencyKind.Call, Count: 3, GeneratedCount: 1),
                 new DependencyRecord(1, 0, External: false, DependencyKind.New, Count: 1, GeneratedCount: 0),
             ],
+            LoadHealth: SampleLoadHealth(),
+            Provenance: SampleProvenance(),
             Occurrences:
             [
                 new OccurrenceRecord(0, SourceMember: null, TargetMember: null, Document: 1, Line: 3),
@@ -172,4 +175,49 @@ public class SnapshotRecordTests
                 new OccurrenceRecord(3, SourceMember: null, TargetMember: 0, Document: 1, Line: 37),
             ]);
     }
+
+    private static LoadHealthRecord SampleLoadHealth() =>
+        new(
+            Projects:
+            [
+                new ProjectHealthRecord(0, LoadStatus.Ok, ["net10.0"], MetadataReferences: 212, ObjectResolves: true,
+                    new CompileErrorsRecord(0, []), new UnresolvedTypesRecord(0, []), WorkspaceDiagnostics: [],
+                    SdkFallback: false, ProjectReferenceMismatch: false, AnalyzerErrors: []),
+                new ProjectHealthRecord(1, LoadStatus.Degraded, ["net10.0", "net8.0"], MetadataReferences: 198, ObjectResolves: true,
+                    new CompileErrorsRecord(5,
+                    [
+                        new CompileErrorCodeRecord("CS0246", 4, "The type or namespace name 'JsonConvert' could not be found (are you missing a using directive or an assembly reference?)"),
+                        new CompileErrorCodeRecord("CS0103", 1, "The name 'Formatting' does not exist in the current context"),
+                    ]),
+                    new UnresolvedTypesRecord(4, [new UnresolvedTypeRecord("JsonConvert", 4)]),
+                    [new WorkspaceDiagnosticRecord(WorkspaceDiagnosticKind.Warning, "Package 'Newtonsoft.Json' was not restored (src/App/App.csproj).")],
+                    SdkFallback: false, ProjectReferenceMismatch: true,
+                    [new AnalyzerErrorRecord(1, "System.InvalidCastException", "Typescape.Analyzer.Walk.DependencyWalker.VisitInvocation(InvocationExpressionSyntax)")]),
+                new ProjectHealthRecord(2, LoadStatus.Ok, ["net48"], MetadataReferences: 87, ObjectResolves: true,
+                    new CompileErrorsRecord(0, []), new UnresolvedTypesRecord(0, []),
+                    [new WorkspaceDiagnosticRecord(WorkspaceDiagnosticKind.Info, "Found project reference without a matching metadata reference: src/Analyzers/Analyzers.csproj")],
+                    SdkFallback: true, ProjectReferenceMismatch: false, AnalyzerErrors: []),
+            ],
+            SolutionDiagnostics:
+            [
+                new WorkspaceDiagnosticRecord(WorkspaceDiagnosticKind.Failure, "The project file could not be loaded: tools/Legacy.Setup/Legacy.Setup.vdproj"),
+            ]);
+
+    internal static ProvenanceRecord SampleProvenance() =>
+        new(
+            Tool: new ToolProvenanceRecord("0.1.0", "5618c6c5b443bd12bbe541b807c600af894d873b"),
+            Timestamp: new DateTimeOffset(2026, 11, 23, 13, 52, 46, TimeSpan.Zero),
+            Solution: new SolutionProvenanceRecord("Sample.slnx", SolutionFormat.Slnx),
+            SdkVersion: "10.0.100",
+            Os: "Darwin 25.1.0",
+            Git: new GitProvenanceRecord("43b7e9e19ea0d956e9a55d5c07b2b18dbff1c47c", "main", Dirty: true),
+            Framework: null,
+            Configuration: "Release",
+            Properties: new SortedDictionary<string, string>(StringComparer.Ordinal)
+            {
+                ["Configuration"] = "Release",
+                ["Platform"] = "x64",
+            },
+            PhaseSeconds: new PhaseSecondsRecord(Restore: null, Load: 9.12, Compile: 3.4, Diagnostics: 2.95, Walk: 6.5, Assemble: 0.31),
+            PeakMemoryBytes: 1_395_864_371);
 }

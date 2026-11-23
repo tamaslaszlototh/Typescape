@@ -28,6 +28,11 @@ namespace Typescape.Snapshot;
 /// <paramref name="Occurrences"/> is <c>null</c>.
 /// </param>
 /// <param name="Dependencies">Type-level Dependencies, one per (source type, target type, Dependency Kind).</param>
+/// <param name="LoadHealth">How completely each project was loaded, plus the workspace diagnostics of no project.</param>
+/// <param name="Provenance">
+/// How the Snapshot was produced. The only part that may differ between two analyses of the same code: compare two
+/// Snapshots without it.
+/// </param>
 /// <param name="Occurrences">
 /// The detachable Occurrence section, sorted by Dependency, document, line, source member, then target member.
 /// <c>null</c> when the Snapshot was written without Occurrences (<c>--no-occurrences</c>): every view and filter
@@ -45,6 +50,8 @@ public sealed record SnapshotRecord(
     IReadOnlyList<ExternalMemberRecord> ExternalMembers,
     IReadOnlyList<NonExecutableMemberRecord> NonExecutableMembers,
     IReadOnlyList<DependencyRecord> Dependencies,
+    LoadHealthRecord LoadHealth,
+    ProvenanceRecord Provenance,
     IReadOnlyList<OccurrenceRecord>? Occurrences)
 {
     /// <summary>

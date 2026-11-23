@@ -243,6 +243,145 @@
       "generatedCount": 0
     }
   ],
+  "loadHealth": {
+    "projects": [
+      {
+        "project": 0,
+        "status": "ok",
+        "availableTfms": [
+          "net10.0"
+        ],
+        "metadataReferences": 212,
+        "objectResolves": true,
+        "compileErrors": {
+          "count": 0,
+          "top": []
+        },
+        "unresolvedTypes": {
+          "count": 0,
+          "top": []
+        },
+        "workspaceDiagnostics": [],
+        "sdkFallback": false,
+        "projectReferenceMismatch": false,
+        "analyzerErrors": []
+      },
+      {
+        "project": 1,
+        "status": "degraded",
+        "availableTfms": [
+          "net10.0",
+          "net8.0"
+        ],
+        "metadataReferences": 198,
+        "objectResolves": true,
+        "compileErrors": {
+          "count": 5,
+          "top": [
+            {
+              "code": "CS0246",
+              "count": 4,
+              "sample": "The type or namespace name 'JsonConvert' could not be found (are you missing a using directive or an assembly reference?)"
+            },
+            {
+              "code": "CS0103",
+              "count": 1,
+              "sample": "The name 'Formatting' does not exist in the current context"
+            }
+          ]
+        },
+        "unresolvedTypes": {
+          "count": 4,
+          "top": [
+            {
+              "name": "JsonConvert",
+              "count": 4
+            }
+          ]
+        },
+        "workspaceDiagnostics": [
+          {
+            "kind": "warning",
+            "message": "Package 'Newtonsoft.Json' was not restored (src/App/App.csproj)."
+          }
+        ],
+        "sdkFallback": false,
+        "projectReferenceMismatch": true,
+        "analyzerErrors": [
+          {
+            "document": 1,
+            "exceptionType": "System.InvalidCastException",
+            "frame": "Typescape.Analyzer.Walk.DependencyWalker.VisitInvocation(InvocationExpressionSyntax)"
+          }
+        ]
+      },
+      {
+        "project": 2,
+        "status": "ok",
+        "availableTfms": [
+          "net48"
+        ],
+        "metadataReferences": 87,
+        "objectResolves": true,
+        "compileErrors": {
+          "count": 0,
+          "top": []
+        },
+        "unresolvedTypes": {
+          "count": 0,
+          "top": []
+        },
+        "workspaceDiagnostics": [
+          {
+            "kind": "info",
+            "message": "Found project reference without a matching metadata reference: src/Analyzers/Analyzers.csproj"
+          }
+        ],
+        "sdkFallback": true,
+        "projectReferenceMismatch": false,
+        "analyzerErrors": []
+      }
+    ],
+    "solutionDiagnostics": [
+      {
+        "kind": "failure",
+        "message": "The project file could not be loaded: tools/Legacy.Setup/Legacy.Setup.vdproj"
+      }
+    ]
+  },
+  "provenance": {
+    "tool": {
+      "version": "0.1.0",
+      "commit": "5618c6c5b443bd12bbe541b807c600af894d873b"
+    },
+    "timestamp": "2026-11-23T13:52:46+00:00",
+    "solution": {
+      "fileName": "Sample.slnx",
+      "format": "slnx"
+    },
+    "sdkVersion": "10.0.100",
+    "os": "Darwin 25.1.0",
+    "git": {
+      "commit": "43b7e9e19ea0d956e9a55d5c07b2b18dbff1c47c",
+      "branch": "main",
+      "dirty": true
+    },
+    "framework": null,
+    "configuration": "Release",
+    "properties": {
+      "Configuration": "Release",
+      "Platform": "x64"
+    },
+    "phaseSeconds": {
+      "restore": null,
+      "load": 9.12,
+      "compile": 3.4,
+      "diagnostics": 2.95,
+      "walk": 6.5,
+      "assemble": 0.31
+    },
+    "peakMemoryBytes": 1395864371
+  },
   "occurrences": [
     [
       0,
