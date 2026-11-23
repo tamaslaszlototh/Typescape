@@ -5,9 +5,6 @@ namespace Typescape.Analyzer.Provenance;
 
 internal sealed class ProvenanceRecorder
 {
-    private const string ConfigurationProperty = "Configuration";
-    private const string DefaultConfiguration = "Debug";
-
     private readonly ProvenanceRecord _start;
     private readonly IProvenanceSources _sources;
     private readonly Dictionary<AnalysisPhase, double> _seconds = [];
@@ -48,7 +45,7 @@ internal sealed class ProvenanceRecorder
             sources.Os,
             await git,
             request.Framework,
-            properties.FirstOrDefault(property => IsConfiguration(property.Key)).Value ?? DefaultConfiguration,
+            properties.FirstOrDefault(property => IsConfiguration(property.Key)).Value ?? GlobalProperties.DefaultConfiguration,
             properties,
             new PhaseSecondsRecord(null, 0, 0, 0, 0, 0),
             PeakMemoryBytes: 0);
@@ -117,5 +114,5 @@ internal sealed class ProvenanceRecorder
     }
 
     private static bool IsConfiguration(string name) =>
-        string.Equals(name, ConfigurationProperty, StringComparison.OrdinalIgnoreCase);
+        string.Equals(name, GlobalProperties.Configuration, StringComparison.OrdinalIgnoreCase);
 }

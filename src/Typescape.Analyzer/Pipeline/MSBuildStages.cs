@@ -1,5 +1,6 @@
 using Microsoft.CodeAnalysis;
 using Typescape.Analyzer.Extraction;
+using Typescape.Analyzer.Loading;
 using Typescape.Analyzer.Restore;
 using Typescape.Snapshot;
 
@@ -19,7 +20,7 @@ internal sealed class MSBuildStages : IAnalysisStages
     }
 
     public Task<LoadedSolution> LoadAsync(AnalysisRequest request, PhaseCounter projects, CancellationToken cancellationToken) =>
-        throw new NotImplementedException("Load is not implemented yet.");
+        SolutionLoader.LoadAsync(request, projects, cancellationToken);
 
     public async Task<CompiledProject> CompileAsync(
         LoadedSolution solution,

@@ -1,5 +1,4 @@
 using System.Collections.Concurrent;
-using Microsoft.VisualStudio.SolutionPersistence.Serializer;
 using NuGet.Common;
 using NuGet.Configuration;
 using NuGet.Packaging;
@@ -88,14 +87,9 @@ internal static class PackagesConfigRestore
     /// <summary>Each project's packages.config, plus the solution-level <c>.nuget/packages.config</c>.</summary>
     private static async Task<IReadOnlyList<string>> PackagesConfigFilesAsync(string solution, CancellationToken cancellationToken)
     {
-        var serializer = SolutionSerializers.GetSerializerByMoniker(solution)
-            ?? throw new InvalidOperationException($"'{Path.GetFileName(solution)}' is not a .sln or .slnx file.");
-        var model = await serializer.OpenAsync(solution, cancellationToken);
         var solutionDirectory = Path.GetDirectoryName(solution)!;
 
-        var projectConfigs = model.SolutionProjects
-            .Select(project => Path.GetFullPath(project.FilePath.Replace('\\', Path.DirectorySeparatorChar), solutionDirectory))
-            .Select(ProjectPackagesConfig);
+        var projectConfigs = (await SolutionFile.ProjectPathsAsync(solution, cancellationToken)).Select(ProjectPackagesConfig);
         string[] solutionConfig = [Path.Combine(solutionDirectory, ".nuget", NuGetConstants.PackageReferenceFile)];
 
         return [.. projectConfigs.Concat(solutionConfig).Where(File.Exists).Distinct(StringComparer.Ordinal)];

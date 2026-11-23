@@ -72,9 +72,9 @@ internal sealed class FakeStages(params int[] documentsPerProject) : IAnalysisSt
             var solution = workspace.CurrentSolution;
             var projects = solution.Projects
                 .OrderBy(project => project.Name, StringComparer.Ordinal)
-                .Select(project => new LoadedProject($"{project.Name}/{project.Name}.csproj", project))
+                .Select(project => new LoadedProject($"{project.Name}/{project.Name}.csproj", project, "net10.0", ["net10.0"]))
                 .ToArray();
-            return Task.FromResult(new LoadedSolution(workspace, solution, "/repo", projects));
+            return Task.FromResult(new LoadedSolution(workspace, solution, "/repo", projects, [], []));
         });
 
     public async Task<CompiledProject> CompileAsync(LoadedSolution solution, LoadedProject project, CancellationToken cancellationToken)
