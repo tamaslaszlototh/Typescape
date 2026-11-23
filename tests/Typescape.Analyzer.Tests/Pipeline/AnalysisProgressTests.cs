@@ -65,6 +65,23 @@ public class AnalysisProgressTests
     }
 
     [Fact]
+    public async Task Reference_assembly_failures_are_reported_as_warnings_inside_the_load_phase()
+    {
+        var progress = new RecordingProgress();
+        var failure = new ReferenceAssemblyFailure("v4.7.2", "not found in any reachable source", ["P0/P0.csproj"]);
+
+        await RunAsync(new FakeStages(1) { ReferenceAssemblyFailures = [failure] }, progress, maxParallelism: 1, restore: false);
+
+        Assert.Equal<AnalysisProgress>(
+            [
+                Started(AnalysisPhase.Load), Counted(AnalysisPhase.Load, 0, 1), Counted(AnalysisPhase.Load, 1, 1),
+                new Warning(AnalysisPhase.Load, failure.Message),
+            ],
+            progress.Events.Take(4));
+        Assert.IsType<PhaseFinished>(progress.Events[4]);
+    }
+
+    [Fact]
     public async Task Finished_phases_carry_their_measured_duration()
     {
         var progress = new RecordingProgress();
@@ -137,6 +154,23 @@ public class AnalysisProgressTests
         counter.Increment();
         Assert.Throws<InvalidOperationException>(counter.Increment);
         Assert.Throws<InvalidOperationException>(() => counter.Start(1));
+    }
+
+    [Fact]
+    public void A_restarted_counter_counts_from_zero_towards_the_same_total()
+    {
+        var progress = new RecordingProgress();
+        var counter = new PhaseCounter(AnalysisPhase.Load, progress);
+
+        Assert.Throws<InvalidOperationException>(counter.Restart);
+        counter.Start(1);
+        counter.Increment();
+        counter.Restart();
+        counter.Increment();
+
+        Assert.Equal<AnalysisProgress>(
+            [Counted(AnalysisPhase.Load, 0, 1), Counted(AnalysisPhase.Load, 1, 1), Counted(AnalysisPhase.Load, 0, 1), Counted(AnalysisPhase.Load, 1, 1)],
+            progress.Events);
     }
 
     private static PhaseStarted Started(AnalysisPhase phase) => new(phase);

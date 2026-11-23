@@ -129,6 +129,65 @@ public sealed class SolutionLoaderTests : IDisposable
     }
 
     [Fact]
+    public async Task A_missing_NET_Framework_version_is_fetched_and_the_solution_is_opened_again_against_it()
+    {
+        var cache = new ReferenceAssemblies(Path.Combine(_directory, "cache"));
+        FakeReferenceAssemblies.NuGetConfig(_directory);
+        FakeReferenceAssemblies.Publish(_directory, "v4.8");
+        LegacyProject("Legacy", "v4.8");
+        var progress = new RecordingProgress();
+
+        using var solution = await LoadAsync(Solution("Legacy"), cache, progress);
+
+        var legacy = Assert.Single(solution.Projects);
+        Assert.Contains(Path.Combine(cache.Root, ".NETFramework", "v4.8", "mscorlib.dll"), ReferencePaths(legacy));
+        Assert.Empty(solution.ReferenceAssemblyFailures);
+        Assert.Equal([Counted(0, 1), Counted(1, 1), Counted(0, 1), Counted(1, 1)], progress.Events);
+    }
+
+    [Fact]
+    public async Task A_cached_NET_Framework_version_is_used_without_a_source_and_the_solution_is_opened_once()
+    {
+        var cache = new ReferenceAssemblies(Path.Combine(_directory, "cache"));
+        FakeReferenceAssemblies.NuGetConfig(_directory);
+        FakeReferenceAssemblies.Publish(_directory, "v4.8");
+        Assert.Empty(await cache.FetchAsync(["v4.8"], _directory, maxParallelism: 1, TestContext.Current.CancellationToken));
+        File.Delete(Directory.GetFiles(Path.Combine(_directory, "feed")).Single());
+        LegacyProject("Legacy", "v4.8");
+        var progress = new RecordingProgress();
+
+        using var solution = await LoadAsync(Solution("Legacy"), cache, progress);
+
+        Assert.Contains(Path.Combine(cache.Root, ".NETFramework", "v4.8", "mscorlib.dll"), ReferencePaths(Assert.Single(solution.Projects)));
+        Assert.Empty(solution.ReferenceAssemblyFailures);
+        Assert.Equal([Counted(0, 1), Counted(1, 1)], progress.Events);
+    }
+
+    [Fact]
+    public async Task Offline_the_projects_of_a_missing_version_load_without_framework_references_and_say_why()
+    {
+        var cache = new ReferenceAssemblies(Path.Combine(_directory, "cache"));
+        FakeReferenceAssemblies.NuGetConfig(_directory, "http://127.0.0.1:9/v3/index.json");
+        LegacyProject("Legacy", "v4.7.2");
+        Project("Modern", "<TargetFramework>net10.0</TargetFramework>");
+        var progress = new RecordingProgress();
+
+        using var solution = await LoadAsync(Solution("Legacy", "Modern"), cache, progress);
+
+        Assert.Equal(["Legacy/Legacy.csproj", "Modern/Modern.csproj"], solution.Projects.Select(project => project.Key));
+        Assert.Empty(ReferencePaths(solution.Projects[0]));
+        var failure = Assert.Single(solution.ReferenceAssemblyFailures);
+        Assert.Equal("v4.7.2", failure.Version);
+        Assert.Equal(["Legacy/Legacy.csproj"], failure.ProjectKeys);
+        Assert.StartsWith("not found in any reachable source; test: ", failure.Reason);
+        Assert.StartsWith(
+            "The reference assemblies for .NET Framework v4.7.2 could not be fetched from the NuGet sources; "
+            + "Legacy/Legacy.csproj load without framework references. not found in any reachable source",
+            failure.Message);
+        Assert.Equal([Counted(0, 2), Counted(1, 2), Counted(2, 2)], progress.Events);
+    }
+
+    [Fact]
     public async Task A_file_that_is_not_a_solution_fails_the_load()
     {
         var path = Path.Combine(_directory, "App.csproj");
@@ -148,7 +207,17 @@ public sealed class SolutionLoaderTests : IDisposable
             new CancellationToken(canceled: true)));
     }
 
-    private static AnalysisProgress Counted(int done) => new PhaseProgressed(AnalysisPhase.Load, done, 3);
+    private static AnalysisProgress Counted(int done, int total = 3) => new PhaseProgressed(AnalysisPhase.Load, done, total);
+
+    private static string?[] ReferencePaths(LoadedProject project) =>
+        [.. project.Project.MetadataReferences.OfType<PortableExecutableReference>().Select(reference => reference.FilePath)];
+
+    private static Task<LoadedSolution> LoadAsync(string solution, ReferenceAssemblies cache, RecordingProgress progress) =>
+        SolutionLoader.LoadAsync(
+            new AnalysisRequest { SolutionPath = solution },
+            cache,
+            new PhaseCounter(AnalysisPhase.Load, progress),
+            TestContext.Current.CancellationToken);
 
     private static Dictionary<string, string> Properties(params (string Name, string Value)[] properties) =>
         properties.ToDictionary(property => property.Name, property => property.Value);
@@ -170,6 +239,27 @@ public sealed class SolutionLoaderTests : IDisposable
             </Project>
             """);
         File.WriteAllText(Path.Combine(directory, $"{name}.cs"), $"namespace {name}; public class {name}Type {{ }}");
+    }
+
+    /// <summary>A classic project, as Visual Studio writes it, with one source file.</summary>
+    private void LegacyProject(string name, string frameworkVersion)
+    {
+        var directory = Path.Combine(_directory, name);
+        Directory.CreateDirectory(directory);
+        File.WriteAllText(Path.Combine(directory, $"{name}.csproj"), $"""
+            <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+              <PropertyGroup>
+                <OutputType>Library</OutputType>
+                <AssemblyName>{name}</AssemblyName>
+                <TargetFrameworkVersion>{frameworkVersion}</TargetFrameworkVersion>
+              </PropertyGroup>
+              <ItemGroup>
+                <Compile Include="{name}.cs" />
+              </ItemGroup>
+              <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+            </Project>
+            """);
+        File.WriteAllText(Path.Combine(directory, $"{name}.cs"), $"namespace {name} {{ public class {name}Type {{ }} }}");
     }
 
     private string Solution(params string[] projects) =>

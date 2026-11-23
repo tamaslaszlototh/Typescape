@@ -1,3 +1,5 @@
+using Typescape.Analyzer.Loading;
+
 namespace Typescape.Analyzer.Tests;
 
 public class GlobalPropertiesTests
@@ -16,6 +18,7 @@ public class GlobalPropertiesTests
             {
                 ["Configuration"] = "Release",
                 ["CustomAfterMicrosoftCommonTargets"] = GlobalProperties.TargetsPath,
+                ["TargetFrameworkRootPath"] = ReferenceAssemblies.Default.Root,
             },
             GlobalProperties.For(request));
     }
@@ -36,6 +39,22 @@ public class GlobalPropertiesTests
     }
 
     [Fact]
+    public void The_reference_assembly_root_cannot_be_replaced_in_any_casing()
+    {
+        var request = new AnalysisRequest
+        {
+            SolutionPath = "/repo/Fake.slnx",
+            Properties = new Dictionary<string, string> { ["targetframeworkrootpath"] = "/developer-pack/" },
+        };
+        var cache = new ReferenceAssemblies("/caches/typescape");
+
+        var properties = GlobalProperties.For(request, cache);
+
+        Assert.Equal(cache.Root, properties["TargetFrameworkRootPath"]);
+        Assert.DoesNotContain("/developer-pack/", properties.Values);
+    }
+
+    [Fact]
     public void The_configuration_defaults_to_Debug()
     {
         var request = new AnalysisRequest
@@ -50,6 +69,7 @@ public class GlobalPropertiesTests
                 ["Flavor"] = "Blue",
                 ["Configuration"] = "Debug",
                 ["CustomAfterMicrosoftCommonTargets"] = GlobalProperties.TargetsPath,
+                ["TargetFrameworkRootPath"] = ReferenceAssemblies.Default.Root,
             },
             GlobalProperties.For(request));
     }
@@ -64,7 +84,7 @@ public class GlobalPropertiesTests
         };
 
         Assert.Equal("Release", GlobalProperties.For(request)["Configuration"]);
-        Assert.Equal(2, GlobalProperties.For(request).Count);
+        Assert.Equal(3, GlobalProperties.For(request).Count);
     }
 
     [Fact]

@@ -47,6 +47,8 @@ internal sealed class FakeStages(params int[] documentsPerProject) : IAnalysisSt
 
     public IReadOnlyList<string> RestoreWarnings { get; init; } = [];
 
+    public IReadOnlyList<ReferenceAssemblyFailure> ReferenceAssemblyFailures { get; init; } = [];
+
     public bool ObservesCancellation { get; init; }
 
     public string? FailingPhase { get; init; }
@@ -74,7 +76,7 @@ internal sealed class FakeStages(params int[] documentsPerProject) : IAnalysisSt
                 .OrderBy(project => project.Name, StringComparer.Ordinal)
                 .Select(project => new LoadedProject($"{project.Name}/{project.Name}.csproj", project, "net10.0", ["net10.0"]))
                 .ToArray();
-            return Task.FromResult(new LoadedSolution(workspace, solution, "/repo", projects, [], []));
+            return Task.FromResult(new LoadedSolution(workspace, solution, "/repo", projects, [], [], ReferenceAssemblyFailures));
         });
 
     public async Task<CompiledProject> CompileAsync(LoadedSolution solution, LoadedProject project, CancellationToken cancellationToken)

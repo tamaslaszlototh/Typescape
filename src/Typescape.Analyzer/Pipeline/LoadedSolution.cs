@@ -9,13 +9,15 @@ namespace Typescape.Analyzer.Pipeline;
 /// <param name="projects">The projects to analyze, each once, sorted by key.</param>
 /// <param name="unopenedProjects">The keys of the solution's projects that MSBuildWorkspace opened no project for, sorted.</param>
 /// <param name="diagnostics">Every diagnostic MSBuildWorkspace reported while opening the solution.</param>
+/// <param name="referenceAssemblyFailures">The .NET Framework versions whose reference assemblies could not be fetched.</param>
 internal sealed class LoadedSolution(
     Workspace workspace,
     Solution solution,
     string directory,
     IReadOnlyList<LoadedProject> projects,
     IReadOnlyList<string> unopenedProjects,
-    IReadOnlyList<WorkspaceDiagnostic> diagnostics) : IDisposable
+    IReadOnlyList<WorkspaceDiagnostic> diagnostics,
+    IReadOnlyList<ReferenceAssemblyFailure> referenceAssemblyFailures) : IDisposable
 {
     public Solution Solution { get; } = solution;
 
@@ -31,6 +33,9 @@ internal sealed class LoadedSolution(
 
     public IReadOnlyList<WorkspaceDiagnostic> Diagnostics { get; } = diagnostics;
 
+    /// <summary>Sorted by version. Their projects loaded without framework references.</summary>
+    public IReadOnlyList<ReferenceAssemblyFailure> ReferenceAssemblyFailures { get; } = referenceAssemblyFailures;
+
     public void Dispose() => workspace.Dispose();
 }
 
@@ -40,3 +45,15 @@ internal sealed class LoadedSolution(
 /// <param name="Tfm">The target framework the project is analyzed for, or <c>null</c> when MSBuild reported none.</param>
 /// <param name="AvailableTfms">Every target framework MSBuild reported for the project file, sorted ordinally.</param>
 internal sealed record LoadedProject(string Key, Project Project, string? Tfm, IReadOnlyList<string> AvailableTfms);
+
+/// <summary>The reference assemblies of one .NET Framework version could not be fetched, e.g. offline.</summary>
+/// <param name="Version">The framework version, e.g. <c>v4.7.2</c>.</param>
+/// <param name="Reason">Why, e.g. the unreachable NuGet sources.</param>
+/// <param name="ProjectKeys">The keys of the projects that target it, sorted.</param>
+internal sealed record ReferenceAssemblyFailure(string Version, string Reason, IReadOnlyList<string> ProjectKeys)
+{
+    public string Message =>
+        $"The reference assemblies for .NET Framework {Version} could not be fetched from the NuGet sources; "
+        + $"{(ProjectKeys.Count == 0 ? "the projects that target it" : string.Join(", ", ProjectKeys))} load without framework references. "
+        + Reason;
+}

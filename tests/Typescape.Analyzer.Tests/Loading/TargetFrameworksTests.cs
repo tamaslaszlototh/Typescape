@@ -50,4 +50,16 @@ public class TargetFrameworksTests
         Assert.Equal("foo", TargetFrameworks.Choose(["foo", "bar-"], requested: null));
         Assert.Equal("bar-", TargetFrameworks.Choose(["foo", "bar-"], requested: "BAR-"));
     }
+
+    [Theory]
+    [InlineData("net472", "v4.7.2", true)]
+    [InlineData("net48", "v4.8", true)]
+    [InlineData("net4.8", "v4.8", true)]
+    [InlineData("net48", "v4.7.2", false)]
+    [InlineData("net8.0", "v4.8", false)]
+    [InlineData("foo", "v4.8", false)]
+    public void A_target_framework_is_matched_to_its_NET_Framework_version(string tfm, string version, bool expected)
+    {
+        Assert.Equal(expected, TargetFrameworks.IsNetFramework(tfm, version));
+    }
 }

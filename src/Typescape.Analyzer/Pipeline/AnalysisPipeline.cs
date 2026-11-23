@@ -60,8 +60,24 @@ internal static class AnalysisPipeline
             });
         }
 
-        using var solution = await RunPhaseAsync(AnalysisPhase.Load, progress, provenance, cancellationToken, () =>
-            stages.LoadAsync(request, new PhaseCounter(AnalysisPhase.Load, progress), cancellationToken));
+        using var solution = await RunPhaseAsync(AnalysisPhase.Load, progress, provenance, cancellationToken, async () =>
+        {
+            var loaded = await stages.LoadAsync(request, new PhaseCounter(AnalysisPhase.Load, progress), cancellationToken);
+            try
+            {
+                foreach (var failure in loaded.ReferenceAssemblyFailures)
+                {
+                    progress?.Report(new AnalysisProgress.Warning(AnalysisPhase.Load, failure.Message));
+                }
+            }
+            catch
+            {
+                loaded.Dispose();
+                throw;
+            }
+
+            return loaded;
+        });
 
         var compiled = await RunPhaseAsync(AnalysisPhase.Compile, progress, provenance, cancellationToken, () =>
             ForEachAsync(

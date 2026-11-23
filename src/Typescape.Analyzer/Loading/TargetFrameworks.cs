@@ -34,6 +34,11 @@ internal static class TargetFrameworks
         return available.Count == 0 ? null : available.Max(ByHeight);
     }
 
+    /// <summary>Whether <paramref name="tfm"/>, e.g. <c>net472</c>, is .NET Framework <paramref name="version"/>, e.g. <c>v4.7.2</c>.</summary>
+    public static bool IsNetFramework(string tfm, string version) =>
+        Version.TryParse(version.TrimStart('v'), out var parsed)
+        && Parse(tfm).Equals(new NuGetFramework(FrameworkConstants.FrameworkIdentifiers.Net, parsed));
+
     private static bool Same(string tfm, string requested)
     {
         var (a, b) = (Parse(tfm), Parse(requested));

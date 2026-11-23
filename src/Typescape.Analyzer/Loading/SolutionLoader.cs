@@ -8,19 +8,31 @@ namespace Typescape.Analyzer.Loading;
 /// Opens the solution with MSBuildWorkspace (out-of-proc BuildHost) under <see cref="GlobalProperties"/>, and keeps one
 /// Roslyn project per C# project file: the one for the chosen target framework.
 /// </summary>
+/// <remarks>
+/// The first open shows which .NET Framework reference assemblies <see cref="ReferenceAssemblies"/> lacks. When some of
+/// them can be fetched, the solution is opened again and the counter starts over; this happens only while the cache
+/// is missing a version. MSBuild finds the versions itself, so imports, conditions and Directory.Build.props all count.
+/// </remarks>
 internal static class SolutionLoader
 {
     // Two project paths that differ only in case are one file on Windows and macOS.
     private static readonly StringComparer PathComparer = StringComparer.OrdinalIgnoreCase;
 
+    /// <inheritdoc cref="LoadAsync(AnalysisRequest, ReferenceAssemblies, PhaseCounter, CancellationToken)"/>
+    public static Task<LoadedSolution> LoadAsync(AnalysisRequest request, PhaseCounter counter, CancellationToken cancellationToken) =>
+        LoadAsync(request, ReferenceAssemblies.Default, counter, cancellationToken);
+
+    /// <param name="referenceAssemblies">The .NET Framework reference-assembly root the projects get, and fetch into.</param>
     /// <param name="counter">Counts the C# projects of the solution file as MSBuildWorkspace finishes each one.</param>
     /// <exception cref="InvalidOperationException">Not a <c>.sln</c> or <c>.slnx</c> file.</exception>
     public static async Task<LoadedSolution> LoadAsync(
         AnalysisRequest request,
+        ReferenceAssemblies referenceAssemblies,
         PhaseCounter counter,
         CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
+        ArgumentNullException.ThrowIfNull(referenceAssemblies);
         ArgumentNullException.ThrowIfNull(counter);
 
         var solutionPath = Path.GetFullPath(request.SolutionPath);
@@ -29,13 +41,27 @@ internal static class SolutionLoader
             .Where(path => path.EndsWith(".csproj", StringComparison.OrdinalIgnoreCase))
             .Distinct(PathComparer)
             .ToArray();
+        var properties = GlobalProperties.For(request, referenceAssemblies);
 
-        var workspace = MSBuildWorkspace.Create(new Dictionary<string, string>(GlobalProperties.For(request)));
+        counter.Start(listed.Length);
+        MSBuildWorkspace? workspace = null;
         try
         {
-            var progress = new LoadProgress(listed, counter);
-            var solution = await workspace.OpenSolutionAsync(solutionPath, progress, cancellationToken);
-            progress.Finish();
+            (workspace, var solution, var progress) = await OpenAsync(solutionPath, properties, listed, counter, cancellationToken);
+
+            IReadOnlyDictionary<string, string> failed = new Dictionary<string, string>();
+            var missing = referenceAssemblies.Missing(workspace.Diagnostics);
+            if (missing.Count > 0)
+            {
+                failed = await referenceAssemblies.FetchAsync(missing, directory, request.MaxParallelism, cancellationToken);
+                if (failed.Count < missing.Count)
+                {
+                    workspace.Dispose();
+                    workspace = null;
+                    counter.Restart();
+                    (workspace, solution, progress) = await OpenAsync(solutionPath, properties, listed, counter, cancellationToken);
+                }
+            }
 
             // Projects outside the solution file that a listed one references are loaded too, and analyzed with it.
             var projects = solution.Projects
@@ -52,13 +78,55 @@ internal static class SolutionLoader
                 .Order(StringComparer.Ordinal)
                 .ToArray();
 
-            return new LoadedSolution(workspace, solution, directory, projects, unopened, [.. workspace.Diagnostics]);
+            var diagnostics = workspace.Diagnostics.ToArray();
+            var failures = failed
+                .OrderBy(failure => failure.Key, StringComparer.Ordinal)
+                .Select(failure => new ReferenceAssemblyFailure(failure.Key, failure.Value, Targeting(failure.Key, projects, diagnostics)))
+                .ToArray();
+
+            return new LoadedSolution(workspace, solution, directory, projects, unopened, diagnostics, failures);
+        }
+        catch
+        {
+            workspace?.Dispose();
+            throw;
+        }
+    }
+
+    private static async Task<(MSBuildWorkspace Workspace, Solution Solution, LoadProgress Progress)> OpenAsync(
+        string solutionPath,
+        IReadOnlyDictionary<string, string> properties,
+        IReadOnlyList<string> listed,
+        PhaseCounter counter,
+        CancellationToken cancellationToken)
+    {
+        var workspace = MSBuildWorkspace.Create(new Dictionary<string, string>(properties));
+        try
+        {
+            var progress = new LoadProgress(listed, counter);
+            var solution = await workspace.OpenSolutionAsync(solutionPath, progress, cancellationToken);
+            progress.Finish();
+            return (workspace, solution, progress);
         }
         catch
         {
             workspace.Dispose();
             throw;
         }
+    }
+
+    // The projects MSBuild could not find the version for, by the file path in the diagnostic. A project analyzed for
+    // another target framework of its file is not affected.
+    private static string[] Targeting(string version, IReadOnlyList<LoadedProject> projects, IReadOnlyList<WorkspaceDiagnostic> diagnostics)
+    {
+        var reports = diagnostics.Where(diagnostic => ReferenceAssemblies.Reports(diagnostic, version)).ToArray();
+        return
+        [
+            .. projects
+                .Where(project => project.Tfm is null || TargetFrameworks.IsNetFramework(project.Tfm, version))
+                .Where(project => reports.Any(report => report.Message.Contains(project.Project.FilePath!, StringComparison.OrdinalIgnoreCase)))
+                .Select(project => project.Key),
+        ];
     }
 
     private static LoadedProject Choose(
@@ -100,7 +168,6 @@ internal static class SolutionLoader
         {
             _pending = new HashSet<string>(listed, PathComparer);
             _counter = counter;
-            _counter.Start(_pending.Count);
         }
 
         public void Report(ProjectLoadProgress value)
