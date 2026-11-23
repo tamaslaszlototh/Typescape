@@ -1,0 +1,930 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "Typescape Snapshot, schemaVersion 1.0. Generated from the Typescape.Snapshot records by `dotnet run build.cs -- schema`: do not edit by hand.",
+  "title": "Snapshot",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "pattern": "^1\\.(0|[1-9][0-9]*)$"
+    },
+    "rulesVersion": {
+      "type": "integer"
+    },
+    "projects": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Project"
+      }
+    },
+    "namespaces": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Namespace"
+      }
+    },
+    "documents": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Document"
+      }
+    },
+    "types": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Type"
+      }
+    },
+    "externalTypes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ExternalType"
+      }
+    },
+    "executableMembers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ExecutableMember"
+      }
+    },
+    "externalMembers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ExternalMember"
+      }
+    },
+    "nonExecutableMembers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/NonExecutableMember"
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Dependency"
+      }
+    },
+    "loadHealth": {
+      "$ref": "#/$defs/LoadHealth"
+    },
+    "provenance": {
+      "$ref": "#/$defs/Provenance"
+    },
+    "occurrences": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/$defs/Occurrence"
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "rulesVersion",
+    "projects",
+    "namespaces",
+    "documents",
+    "types",
+    "externalTypes",
+    "executableMembers",
+    "externalMembers",
+    "nonExecutableMembers",
+    "dependencies",
+    "loadHealth",
+    "provenance",
+    "occurrences"
+  ],
+  "$defs": {
+    "AnalyzerError": {
+      "title": "AnalyzerError",
+      "type": "object",
+      "properties": {
+        "document": {
+          "type": "integer"
+        },
+        "exceptionType": {
+          "type": "string"
+        },
+        "frame": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "document",
+        "exceptionType",
+        "frame"
+      ]
+    },
+    "CompileErrorCode": {
+      "title": "CompileErrorCode",
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "count": {
+          "type": "integer"
+        },
+        "sample": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "count",
+        "sample"
+      ]
+    },
+    "CompileErrors": {
+      "title": "CompileErrors",
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "top": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CompileErrorCode"
+          }
+        }
+      },
+      "required": [
+        "count",
+        "top"
+      ]
+    },
+    "DeclaredAccessibility": {
+      "title": "DeclaredAccessibility",
+      "enum": [
+        "public",
+        "internal",
+        "protected",
+        "protected-internal",
+        "private-protected",
+        "private"
+      ]
+    },
+    "DeclaredTypeKind": {
+      "title": "DeclaredTypeKind",
+      "enum": [
+        "class",
+        "interface",
+        "struct",
+        "record",
+        "record-struct",
+        "enum",
+        "delegate"
+      ]
+    },
+    "Dependency": {
+      "title": "Dependency",
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "integer"
+        },
+        "target": {
+          "type": "integer"
+        },
+        "external": {
+          "type": "boolean"
+        },
+        "kind": {
+          "$ref": "#/$defs/DependencyKind"
+        },
+        "count": {
+          "type": "integer"
+        },
+        "generatedCount": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "source",
+        "target",
+        "external",
+        "kind",
+        "count",
+        "generatedCount"
+      ]
+    },
+    "DependencyKind": {
+      "title": "DependencyKind",
+      "enum": [
+        "inherits",
+        "implements",
+        "member-type",
+        "signature",
+        "new",
+        "call",
+        "attribute",
+        "generic-arg",
+        "member-access",
+        "type-usage"
+      ]
+    },
+    "Document": {
+      "title": "Document",
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "project": {
+          "type": "integer"
+        },
+        "generated": {
+          "type": "boolean"
+        },
+        "generatedReason": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/GeneratedReason"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "path",
+        "project",
+        "generated",
+        "generatedReason"
+      ]
+    },
+    "ExecutableMember": {
+      "title": "ExecutableMember",
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "type": {
+          "type": "integer"
+        },
+        "declaration": {
+          "type": "integer"
+        },
+        "signature": {
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/ExecutableMemberKind"
+        },
+        "accessibility": {
+          "$ref": "#/$defs/DeclaredAccessibility"
+        },
+        "document": {
+          "type": "integer"
+        },
+        "lines": {
+          "$ref": "#/$defs/LineSpan"
+        },
+        "loc": {
+          "type": "integer"
+        },
+        "cyclomatic": {
+          "type": "integer"
+        },
+        "cognitive": {
+          "type": "integer"
+        },
+        "generated": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "key",
+        "type",
+        "declaration",
+        "signature",
+        "kind",
+        "accessibility",
+        "document",
+        "lines",
+        "loc",
+        "cyclomatic",
+        "cognitive",
+        "generated"
+      ]
+    },
+    "ExecutableMemberKind": {
+      "title": "ExecutableMemberKind",
+      "enum": [
+        "method",
+        "constructor",
+        "destructor",
+        "operator",
+        "conversion",
+        "accessor",
+        "entry-point"
+      ]
+    },
+    "ExternalMember": {
+      "title": "ExternalMember",
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "type": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "key",
+        "type",
+        "name"
+      ]
+    },
+    "ExternalType": {
+      "title": "ExternalType",
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "assembly": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/DeclaredTypeKind"
+        }
+      },
+      "required": [
+        "key",
+        "name",
+        "assembly",
+        "namespace",
+        "kind"
+      ]
+    },
+    "GeneratedReason": {
+      "title": "GeneratedReason",
+      "enum": [
+        "generator",
+        "convention"
+      ]
+    },
+    "GitProvenance": {
+      "title": "GitProvenance",
+      "type": "object",
+      "properties": {
+        "commit": {
+          "type": "string"
+        },
+        "branch": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "dirty": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "commit",
+        "branch",
+        "dirty"
+      ]
+    },
+    "LineSpan": {
+      "title": "LineSpan",
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "integer"
+        },
+        "end": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "start",
+        "end"
+      ]
+    },
+    "LoadHealth": {
+      "title": "LoadHealth",
+      "type": "object",
+      "properties": {
+        "projects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ProjectHealth"
+          }
+        },
+        "solutionDiagnostics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/WorkspaceDiagnostic"
+          }
+        }
+      },
+      "required": [
+        "projects",
+        "solutionDiagnostics"
+      ]
+    },
+    "LoadStatus": {
+      "title": "LoadStatus",
+      "enum": [
+        "ok",
+        "degraded",
+        "failed"
+      ]
+    },
+    "Namespace": {
+      "title": "Namespace",
+      "type": "object",
+      "properties": {
+        "project": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "project",
+        "name"
+      ]
+    },
+    "NonExecutableMember": {
+      "title": "NonExecutableMember",
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "type": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "key",
+        "type",
+        "name"
+      ]
+    },
+    "Occurrence": {
+      "title": "Occurrence",
+      "type": "array",
+      "prefixItems": [
+        {
+          "description": "dependency: index into dependencies",
+          "type": "integer"
+        },
+        {
+          "description": "sourceMember: index into executableMembers, or null",
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        {
+          "description": "targetMember: index into externalMembers when the Dependency is external, else into executableMembers when >= 0, else into nonExecutableMembers at ~value; or null",
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        {
+          "description": "document: index into documents",
+          "type": "integer"
+        },
+        {
+          "description": "line: the 1-based physical line",
+          "type": "integer"
+        }
+      ],
+      "items": false,
+      "minItems": 5,
+      "maxItems": 5
+    },
+    "PhaseSeconds": {
+      "title": "PhaseSeconds",
+      "type": "object",
+      "properties": {
+        "restore": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "load": {
+          "type": "number"
+        },
+        "compile": {
+          "type": "number"
+        },
+        "diagnostics": {
+          "type": "number"
+        },
+        "walk": {
+          "type": "number"
+        },
+        "assemble": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "restore",
+        "load",
+        "compile",
+        "diagnostics",
+        "walk",
+        "assemble"
+      ]
+    },
+    "Project": {
+      "title": "Project",
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "assembly": {
+          "type": "string"
+        },
+        "style": {
+          "$ref": "#/$defs/ProjectStyle"
+        },
+        "tfm": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "test": {
+          "type": "boolean"
+        },
+        "testReason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "references": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        }
+      },
+      "required": [
+        "key",
+        "name",
+        "assembly",
+        "style",
+        "tfm",
+        "test",
+        "testReason",
+        "references"
+      ]
+    },
+    "ProjectHealth": {
+      "title": "ProjectHealth",
+      "type": "object",
+      "properties": {
+        "project": {
+          "type": "integer"
+        },
+        "status": {
+          "$ref": "#/$defs/LoadStatus"
+        },
+        "availableTfms": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "metadataReferences": {
+          "type": "integer"
+        },
+        "objectResolves": {
+          "type": "boolean"
+        },
+        "compileErrors": {
+          "$ref": "#/$defs/CompileErrors"
+        },
+        "unresolvedTypes": {
+          "$ref": "#/$defs/UnresolvedTypes"
+        },
+        "workspaceDiagnostics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/WorkspaceDiagnostic"
+          }
+        },
+        "sdkFallback": {
+          "type": "boolean"
+        },
+        "projectReferenceMismatch": {
+          "type": "boolean"
+        },
+        "analyzerErrors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AnalyzerError"
+          }
+        }
+      },
+      "required": [
+        "project",
+        "status",
+        "availableTfms",
+        "metadataReferences",
+        "objectResolves",
+        "compileErrors",
+        "unresolvedTypes",
+        "workspaceDiagnostics",
+        "sdkFallback",
+        "projectReferenceMismatch",
+        "analyzerErrors"
+      ]
+    },
+    "ProjectStyle": {
+      "title": "ProjectStyle",
+      "enum": [
+        "sdk",
+        "legacy"
+      ]
+    },
+    "Provenance": {
+      "title": "Provenance",
+      "type": "object",
+      "properties": {
+        "tool": {
+          "$ref": "#/$defs/ToolProvenance"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "solution": {
+          "$ref": "#/$defs/SolutionProvenance"
+        },
+        "sdkVersion": {
+          "type": "string"
+        },
+        "os": {
+          "type": "string"
+        },
+        "git": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/GitProvenance"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "framework": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "configuration": {
+          "type": "string"
+        },
+        "properties": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "phaseSeconds": {
+          "$ref": "#/$defs/PhaseSeconds"
+        },
+        "peakMemoryBytes": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "tool",
+        "timestamp",
+        "solution",
+        "sdkVersion",
+        "os",
+        "git",
+        "framework",
+        "configuration",
+        "properties",
+        "phaseSeconds",
+        "peakMemoryBytes"
+      ]
+    },
+    "SolutionFormat": {
+      "title": "SolutionFormat",
+      "enum": [
+        "sln",
+        "slnx"
+      ]
+    },
+    "SolutionProvenance": {
+      "title": "SolutionProvenance",
+      "type": "object",
+      "properties": {
+        "fileName": {
+          "type": "string"
+        },
+        "format": {
+          "$ref": "#/$defs/SolutionFormat"
+        }
+      },
+      "required": [
+        "fileName",
+        "format"
+      ]
+    },
+    "ToolProvenance": {
+      "title": "ToolProvenance",
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string"
+        },
+        "commit": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "version",
+        "commit"
+      ]
+    },
+    "Type": {
+      "title": "Type",
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/DeclaredTypeKind"
+        },
+        "accessibility": {
+          "$ref": "#/$defs/DeclaredAccessibility"
+        },
+        "abstract": {
+          "type": "boolean"
+        },
+        "sealed": {
+          "type": "boolean"
+        },
+        "static": {
+          "type": "boolean"
+        },
+        "arity": {
+          "type": "integer"
+        },
+        "namespace": {
+          "type": "integer"
+        },
+        "containingType": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "declarations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/TypeDeclaration"
+          }
+        },
+        "loc": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "key",
+        "name",
+        "kind",
+        "accessibility",
+        "abstract",
+        "sealed",
+        "static",
+        "arity",
+        "namespace",
+        "containingType",
+        "declarations",
+        "loc"
+      ]
+    },
+    "TypeDeclaration": {
+      "title": "TypeDeclaration",
+      "type": "object",
+      "properties": {
+        "document": {
+          "type": "integer"
+        },
+        "lines": {
+          "$ref": "#/$defs/LineSpan"
+        },
+        "loc": {
+          "type": "integer"
+        },
+        "generated": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "document",
+        "lines",
+        "loc",
+        "generated"
+      ]
+    },
+    "UnresolvedType": {
+      "title": "UnresolvedType",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "count": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "name",
+        "count"
+      ]
+    },
+    "UnresolvedTypes": {
+      "title": "UnresolvedTypes",
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "top": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/UnresolvedType"
+          }
+        }
+      },
+      "required": [
+        "count",
+        "top"
+      ]
+    },
+    "WorkspaceDiagnostic": {
+      "title": "WorkspaceDiagnostic",
+      "type": "object",
+      "properties": {
+        "kind": {
+          "$ref": "#/$defs/WorkspaceDiagnosticKind"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "message"
+      ]
+    },
+    "WorkspaceDiagnosticKind": {
+      "title": "WorkspaceDiagnosticKind",
+      "enum": [
+        "info",
+        "warning",
+        "failure"
+      ]
+    }
+  }
+}

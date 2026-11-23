@@ -4,3 +4,6 @@
 tests/fixtures/** text eol=lf
 *.verified.txt text eol=lf
 *.verified.json text eol=lf
+
+# Generated from the Snapshot records (dotnet run build.cs -- schema); LF everywhere, so regenerating it changes nothing.
+schema/snapshot.schema.json text eol=lf

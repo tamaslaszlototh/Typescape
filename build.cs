@@ -1,8 +1,12 @@
 // Local runner: dotnet run build.cs -- <target> [--coverage]
 // A .NET 10 file-based app; it inherits Directory.Build.props (net10.0, nullable, warnings as errors).
+// It references Typescape.Snapshot to export the Snapshot JSON Schema from the records in process (ADR 0003).
+
+#:project src/Typescape.Snapshot/Typescape.Snapshot.csproj
 
 using System.Diagnostics;
 using System.Xml.Linq;
+using Typescape.Snapshot.Serialization;
 
 var root = AppContext.GetData("EntryPointFileDirectoryPath") as string ?? Directory.GetCurrentDirectory();
 
@@ -19,11 +23,14 @@ switch (args)
 {
     case ["install-hooks"]:
         return Hooks.Install(root);
+    case ["schema"]:
+        return Schema.Write(root);
     case [var name, .. var options] when targets.TryGetValue(name, out var steps) && options is [] or ["--coverage"]:
         return RunTarget(name, steps, root, coverage: options is ["--coverage"]);
     default:
         Console.Error.WriteLine("Usage: dotnet run build.cs -- <target> [--coverage]");
-        Console.Error.WriteLine($"Targets: {string.Join(", ", targets.Keys)}, install-hooks");
+        Console.Error.WriteLine($"Targets: {string.Join(", ", targets.Keys)}, schema, install-hooks");
+        Console.Error.WriteLine($"schema: export the Snapshot JSON Schema from the records to {Schema.RelativePath}.");
         Console.Error.WriteLine("--coverage: collect line coverage from the dotnet test steps and print it (report only, never fails).");
         return 2;
 }
@@ -137,6 +144,27 @@ static class Hooks
         }
 
         Console.WriteLine($"Installed {path}");
+        return 0;
+    }
+}
+
+static class Schema
+{
+    public const string RelativePath = "schema/snapshot.schema.json";
+
+    public static int Write(string root)
+    {
+        var path = Path.Combine(root, RelativePath);
+        var schema = SnapshotSchema.Export();
+        if (File.Exists(path) && File.ReadAllText(path) == schema)
+        {
+            Console.WriteLine($"{RelativePath} is up to date.");
+            return 0;
+        }
+
+        Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+        File.WriteAllText(path, schema);
+        Console.WriteLine($"Wrote {RelativePath}.");
         return 0;
     }
 }
