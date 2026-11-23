@@ -11,7 +11,8 @@ namespace Typescape.Analyzer.Pipeline;
 internal interface IAnalysisStages
 {
     /// <summary>Restore: <c>dotnet restore</c> and the packages.config restore. A failure warns and continues.</summary>
-    Task RestoreAsync(AnalysisRequest request, CancellationToken cancellationToken);
+    /// <returns>The warnings, one per failure; empty when everything restored.</returns>
+    Task<IReadOnlyList<string>> RestoreAsync(AnalysisRequest request, CancellationToken cancellationToken);
 
     /// <summary>
     /// Load: opens the solution with its per-project load evidence. When it throws, it first disposes the workspace it

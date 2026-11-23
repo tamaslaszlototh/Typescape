@@ -14,7 +14,7 @@ public class PublicSurfaceTests
             {
                 typeof(Analyzer), typeof(AnalysisRequest), typeof(AnalysisResult), typeof(LoadHealthSummary),
                 typeof(AnalysisPhase), typeof(AnalysisProgress), typeof(AnalysisProgress.PhaseStarted),
-                typeof(AnalysisProgress.PhaseProgressed), typeof(AnalysisProgress.PhaseFinished),
+                typeof(AnalysisProgress.PhaseProgressed), typeof(AnalysisProgress.PhaseFinished), typeof(AnalysisProgress.Warning),
                 typeof(AnalysisProgress.LoadHealthReported),
             }.Select(type => type.FullName).Order(StringComparer.Ordinal),
             exported.Select(type => type.FullName).Order(StringComparer.Ordinal));

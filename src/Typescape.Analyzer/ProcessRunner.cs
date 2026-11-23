@@ -1,11 +1,19 @@
 using System.Diagnostics;
 
-namespace Typescape.Analyzer.Provenance;
+namespace Typescape.Analyzer;
 
 internal sealed record ProcessResult(int ExitCode, string Output, string Error);
 
 internal static class ProcessRunner
 {
+    // No first-run banner or telemetry from dotnet, no index lock from git.
+    public static readonly IReadOnlyDictionary<string, string> QuietEnvironment = new Dictionary<string, string>
+    {
+        ["DOTNET_NOLOGO"] = "1",
+        ["DOTNET_CLI_TELEMETRY_OPTOUT"] = "1",
+        ["GIT_OPTIONAL_LOCKS"] = "0",
+    };
+
     /// <summary>Cancellation kills the process tree.</summary>
     /// <exception cref="System.ComponentModel.Win32Exception">The executable could not be started.</exception>
     public static async Task<ProcessResult> RunAsync(

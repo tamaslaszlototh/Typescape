@@ -1,5 +1,6 @@
 using Microsoft.CodeAnalysis;
 using Typescape.Analyzer.Extraction;
+using Typescape.Analyzer.Restore;
 using Typescape.Snapshot;
 
 namespace Typescape.Analyzer.Pipeline;
@@ -7,8 +8,8 @@ namespace Typescape.Analyzer.Pipeline;
 /// <summary>The production stages: MSBuildWorkspace, Roslyn compilations and Typescape's own walkers.</summary>
 internal sealed class MSBuildStages : IAnalysisStages
 {
-    public Task RestoreAsync(AnalysisRequest request, CancellationToken cancellationToken) =>
-        throw new NotImplementedException("Restore is not implemented yet.");
+    public async Task<IReadOnlyList<string>> RestoreAsync(AnalysisRequest request, CancellationToken cancellationToken) =>
+        await DotnetRestore.RunAsync(request, cancellationToken) is { } warning ? [warning] : [];
 
     public Task<LoadedSolution> LoadAsync(AnalysisRequest request, PhaseCounter projects, CancellationToken cancellationToken) =>
         throw new NotImplementedException("Load is not implemented yet.");

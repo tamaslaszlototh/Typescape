@@ -51,7 +51,11 @@ internal static class AnalysisPipeline
         {
             await RunPhaseAsync(AnalysisPhase.Restore, progress, provenance, cancellationToken, async () =>
             {
-                await stages.RestoreAsync(request, cancellationToken);
+                foreach (var warning in await stages.RestoreAsync(request, cancellationToken))
+                {
+                    progress?.Report(new AnalysisProgress.Warning(AnalysisPhase.Restore, warning));
+                }
+
                 return true;
             });
         }

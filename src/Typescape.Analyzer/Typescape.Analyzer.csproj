@@ -8,6 +8,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Typescape.targets" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Typescape.Snapshot\Typescape.Snapshot.csproj" />
   </ItemGroup>
 

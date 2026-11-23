@@ -46,6 +46,24 @@ public class AnalysisProgressTests
     }
 
     [Fact]
+    public async Task Restore_warnings_are_reported_inside_the_restore_phase_and_the_run_continues()
+    {
+        var progress = new RecordingProgress();
+        var stages = new FakeStages(1) { RestoreWarnings = ["dotnet restore failed", "packages.config restore failed"] };
+
+        await RunAsync(stages, progress, maxParallelism: 1);
+
+        Assert.Equal<AnalysisProgress>(
+            [
+                Started(AnalysisPhase.Restore),
+                new Warning(AnalysisPhase.Restore, "dotnet restore failed"),
+                new Warning(AnalysisPhase.Restore, "packages.config restore failed"),
+            ],
+            progress.Events.Take(3));
+        Assert.Contains(progress.Events, e => e is PhaseFinished { Phase: AnalysisPhase.Assemble });
+    }
+
+    [Fact]
     public async Task Finished_phases_carry_their_measured_duration()
     {
         var progress = new RecordingProgress();

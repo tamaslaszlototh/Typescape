@@ -1,0 +1,10 @@
+<Project>
+  <!-- Imported into every project through CustomAfterMicrosoftCommonTargets, for restore and for load.
+
+       net*-windows projects fail off Windows with NETSDK1100 without EnableWindowsTargeting. It is set per project,
+       not as a global property: globally, the SDK makes every project download Microsoft.WindowsDesktop.App.Ref, so
+       a restore offline or from a private feed would fail for plain net* projects too. -->
+  <PropertyGroup Condition="'$(TargetPlatformIdentifier)' == 'windows'">
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+  </PropertyGroup>
+</Project>

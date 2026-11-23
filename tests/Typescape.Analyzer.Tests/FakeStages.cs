@@ -45,6 +45,8 @@ internal sealed class FakeStages(params int[] documentsPerProject) : IAnalysisSt
 
     public Action<string>? OnStart { get; init; }
 
+    public IReadOnlyList<string> RestoreWarnings { get; init; } = [];
+
     public bool ObservesCancellation { get; init; }
 
     public string? FailingPhase { get; init; }
@@ -53,8 +55,8 @@ internal sealed class FakeStages(params int[] documentsPerProject) : IAnalysisSt
 
     public int MaxInFlight(string phase) => _inFlight.TryGetValue(phase, out var inFlight) ? inFlight.Max : 0;
 
-    public Task RestoreAsync(AnalysisRequest request, CancellationToken cancellationToken) =>
-        Track("restore", cancellationToken, () => Task.CompletedTask);
+    public Task<IReadOnlyList<string>> RestoreAsync(AnalysisRequest request, CancellationToken cancellationToken) =>
+        Track("restore", cancellationToken, () => Task.FromResult(RestoreWarnings));
 
     public Task<LoadedSolution> LoadAsync(AnalysisRequest request, PhaseCounter loaded, CancellationToken cancellationToken) =>
         Track("load", cancellationToken, () =>

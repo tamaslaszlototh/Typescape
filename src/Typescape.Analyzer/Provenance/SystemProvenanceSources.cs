@@ -8,14 +8,6 @@ namespace Typescape.Analyzer.Provenance;
 
 internal sealed class SystemProvenanceSources : IProvenanceSources
 {
-    // No first-run banner or telemetry from dotnet, no index lock from git.
-    private static readonly Dictionary<string, string> QuietEnvironment = new()
-    {
-        ["DOTNET_NOLOGO"] = "1",
-        ["DOTNET_CLI_TELEMETRY_OPTOUT"] = "1",
-        ["GIT_OPTIONAL_LOCKS"] = "0",
-    };
-
     public DateTimeOffset UtcNow => DateTimeOffset.UtcNow;
 
     public ToolProvenanceRecord Tool { get; } = ParseTool(
@@ -30,7 +22,7 @@ internal sealed class SystemProvenanceSources : IProvenanceSources
         ProcessResult result;
         try
         {
-            result = await ProcessRunner.RunAsync("dotnet", ["--version"], solutionDirectory, QuietEnvironment, cancellationToken);
+            result = await ProcessRunner.RunAsync("dotnet", ["--version"], solutionDirectory, ProcessRunner.QuietEnvironment, cancellationToken);
         }
         catch (Win32Exception e)
         {
@@ -56,7 +48,7 @@ internal sealed class SystemProvenanceSources : IProvenanceSources
                 "git",
                 ["status", "--porcelain=v2", "--branch", "--untracked-files=normal"],
                 solutionDirectory,
-                QuietEnvironment,
+                ProcessRunner.QuietEnvironment,
                 cancellationToken);
         }
         catch (Win32Exception)
