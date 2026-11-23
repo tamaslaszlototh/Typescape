@@ -9,6 +9,8 @@
   <ItemGroup>
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="5.12.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="5.12.0" />
+    <!-- The version Workspaces.MSBuild depends on: the packages.config restore reads the solution with it too. -->
+    <PackageVersion Include="Microsoft.VisualStudio.SolutionPersistence" Version="1.0.52" />
   </ItemGroup>
 
   <!-- NuGet client libraries (packages.config restore). -->

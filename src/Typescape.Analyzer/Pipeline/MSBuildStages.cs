@@ -8,8 +8,15 @@ namespace Typescape.Analyzer.Pipeline;
 /// <summary>The production stages: MSBuildWorkspace, Roslyn compilations and Typescape's own walkers.</summary>
 internal sealed class MSBuildStages : IAnalysisStages
 {
-    public async Task<IReadOnlyList<string>> RestoreAsync(AnalysisRequest request, CancellationToken cancellationToken) =>
-        await DotnetRestore.RunAsync(request, cancellationToken) is { } warning ? [warning] : [];
+    public async Task<IReadOnlyList<string>> RestoreAsync(AnalysisRequest request, CancellationToken cancellationToken)
+    {
+        string?[] warnings =
+        [
+            await DotnetRestore.RunAsync(request, cancellationToken),
+            await PackagesConfigRestore.RunAsync(request, cancellationToken),
+        ];
+        return [.. warnings.OfType<string>()];
+    }
 
     public Task<LoadedSolution> LoadAsync(AnalysisRequest request, PhaseCounter projects, CancellationToken cancellationToken) =>
         throw new NotImplementedException("Load is not implemented yet.");
