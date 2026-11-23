@@ -4,7 +4,7 @@ namespace Typescape.Snapshot;
 /// A member with an executable body: the unit metrics are measured on. Each property, indexer and event accessor is its
 /// own row. Lambdas, anonymous methods and local functions fold into their containing Executable Member.
 /// </summary>
-/// <param name="Key">Stable key: type key + documentation comment ID (<see cref="StableKeys.ExecutableMember"/>).</param>
+/// <param name="Key">Stable key: type key + documentation comment ID (<see cref="StableKeys.Member"/>).</param>
 /// <param name="Type">Index into <see cref="SnapshotRecord.Types"/> of the containing type.</param>
 /// <param name="Declaration">Index into the containing type's <see cref="TypeRecord.Declarations"/> that holds the member.</param>
 /// <param name="Signature">The display signature.</param>

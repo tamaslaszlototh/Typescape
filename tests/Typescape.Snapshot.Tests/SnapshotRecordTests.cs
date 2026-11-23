@@ -30,7 +30,8 @@ public class SnapshotRecordTests
         Assert.Equal(
             [
                 "schemaVersion", "rulesVersion", "projects", "namespaces", "documents", "types",
-                "externalTypes", "executableMembers", "externalMembers", "dependencies",
+                "externalTypes", "executableMembers", "externalMembers", "nonExecutableMembers", "dependencies",
+                "occurrences",
             ],
             names);
     }
@@ -83,7 +84,9 @@ public class SnapshotRecordTests
 
     /// <summary>
     /// App (a partial generic type with a nested record struct) references Core and uses Core and the BCL;
-    /// App.Tests references App. Every table is sorted by stable key, as Assemble writes it.
+    /// App.Tests references App. The Occurrences reach all three kinds of target member: an External member (<c>List&lt;T&gt;.Add</c>),
+    /// an own Executable Member (the <c>Service&lt;T&gt;</c> constructor) and an own field (<c>EntityBase.Id</c>).
+    /// Every table is sorted by stable key, as Assemble writes it.
     /// </summary>
     internal static SnapshotRecord Sample()
     {
@@ -135,10 +138,10 @@ public class SnapshotRecordTests
             ],
             ExecutableMembers:
             [
-                new ExecutableMemberRecord(StableKeys.ExecutableMember(appService, "M:App.Service`1.#ctor"), 0, 1,
+                new ExecutableMemberRecord(StableKeys.Member(appService, "M:App.Service`1.#ctor"), 0, 1,
                     "Service<T>.Service()", ExecutableMemberKind.Constructor, DeclaredAccessibility.Public,
                     1, new LineSpan(8, 11), 4, 1, 0, false),
-                new ExecutableMemberRecord(StableKeys.ExecutableMember(appService, "M:App.Service`1.Run(System.Int32)"), 0, 1,
+                new ExecutableMemberRecord(StableKeys.Member(appService, "M:App.Service`1.Run(System.Int32)"), 0, 1,
                     "Service<T>.Run(int)", ExecutableMemberKind.Method, DeclaredAccessibility.Public,
                     1, new LineSpan(13, 30), 16, 4, 6, false),
             ],
@@ -146,10 +149,25 @@ public class SnapshotRecordTests
             [
                 new ExternalMemberRecord("M:System.Collections.Generic.List`1.Add(`0)", 0, "List<T>.Add(T)"),
             ],
+            NonExecutableMembers:
+            [
+                new NonExecutableMemberRecord(StableKeys.Member(coreBase, "F:Core.EntityBase.Id"), 2, "EntityBase.Id"),
+            ],
             Dependencies:
             [
-                new DependencyRecord(0, 0, External: true, DependencyKind.Call, Count: 3, GeneratedCount: 1),
                 new DependencyRecord(0, 2, External: false, DependencyKind.Inherits, Count: 1, GeneratedCount: 0),
+                new DependencyRecord(0, 2, External: false, DependencyKind.MemberAccess, Count: 1, GeneratedCount: 0),
+                new DependencyRecord(0, 0, External: true, DependencyKind.Call, Count: 3, GeneratedCount: 1),
+                new DependencyRecord(1, 0, External: false, DependencyKind.New, Count: 1, GeneratedCount: 0),
+            ],
+            Occurrences:
+            [
+                new OccurrenceRecord(0, SourceMember: null, TargetMember: null, Document: 1, Line: 3),
+                new OccurrenceRecord(1, SourceMember: 1, OccurrenceRecord.NonExecutableTarget(0), Document: 1, Line: 20),
+                new OccurrenceRecord(2, SourceMember: null, TargetMember: 0, Document: 0, Line: 8),
+                new OccurrenceRecord(2, SourceMember: 1, TargetMember: 0, Document: 1, Line: 15),
+                new OccurrenceRecord(2, SourceMember: 1, TargetMember: 0, Document: 1, Line: 15),
+                new OccurrenceRecord(3, SourceMember: null, TargetMember: 0, Document: 1, Line: 37),
             ]);
     }
 }

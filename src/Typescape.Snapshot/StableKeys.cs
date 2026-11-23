@@ -17,11 +17,31 @@ public static class StableKeys
     public static string Type(string assembly, string documentationCommentId) =>
         Join(assembly, documentationCommentId);
 
-    /// <summary>The key of an Executable Member: <c>&lt;type key&gt;|&lt;doc ID&gt;</c>.</summary>
+    /// <summary>
+    /// The key of an own member, an Executable Member or a non-executable one: <c>&lt;type key&gt;|&lt;doc ID&gt;</c>.
+    /// </summary>
     /// <param name="typeKey">The containing type's key.</param>
     /// <param name="documentationCommentId">Roslyn's documentation comment ID of the member, e.g. <c>M:N.C.Run(System.Int32)</c>.</param>
-    public static string ExecutableMember(string typeKey, string documentationCommentId) =>
+    public static string Member(string typeKey, string documentationCommentId) =>
         Join(typeKey, documentationCommentId);
+
+    /// <summary>The documentation comment ID inside a key built by <see cref="Member"/>.</summary>
+    /// <param name="memberKey">The member's key.</param>
+    /// <param name="typeKey">The containing type's key, which <paramref name="memberKey"/> starts with.</param>
+    public static string MemberDocumentationCommentId(string memberKey, string typeKey)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(memberKey);
+        ArgumentException.ThrowIfNullOrEmpty(typeKey);
+
+        if (memberKey.Length <= typeKey.Length + 1
+            || !memberKey.StartsWith(typeKey, StringComparison.Ordinal)
+            || memberKey[typeKey.Length] != Separator)
+        {
+            throw new ArgumentException($"'{memberKey}' is not a member key of type '{typeKey}'.", nameof(memberKey));
+        }
+
+        return memberKey[(typeKey.Length + 1)..];
+    }
 
     private static string Join(string prefix, string documentationCommentId)
     {
