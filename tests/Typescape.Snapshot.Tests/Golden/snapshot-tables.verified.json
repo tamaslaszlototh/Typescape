@@ -1,0 +1,223 @@
+{
+  "schemaVersion": "1.0",
+  "rulesVersion": 1,
+  "projects": [
+    {
+      "key": "src/App.Tests/App.Tests.csproj",
+      "name": "App.Tests",
+      "assembly": "App.Tests",
+      "style": "sdk",
+      "tfm": "net10.0",
+      "test": true,
+      "testReason": "framework:xunit",
+      "references": [
+        1
+      ]
+    },
+    {
+      "key": "src/App/App.csproj",
+      "name": "App",
+      "assembly": "App",
+      "style": "sdk",
+      "tfm": "net10.0",
+      "test": false,
+      "testReason": null,
+      "references": [
+        2
+      ]
+    },
+    {
+      "key": "src/Core/Core.csproj",
+      "name": "Core",
+      "assembly": "Core",
+      "style": "legacy",
+      "tfm": "net48",
+      "test": false,
+      "testReason": null,
+      "references": []
+    }
+  ],
+  "namespaces": [
+    {
+      "project": 1,
+      "name": "App"
+    },
+    {
+      "project": 2,
+      "name": "Core"
+    }
+  ],
+  "documents": [
+    {
+      "path": "src/App/Service.Generated.g.cs",
+      "project": 1,
+      "generated": true,
+      "generatedReason": "convention"
+    },
+    {
+      "path": "src/App/Service.cs",
+      "project": 1,
+      "generated": false,
+      "generatedReason": null
+    },
+    {
+      "path": "src/Core/EntityBase.cs",
+      "project": 2,
+      "generated": false,
+      "generatedReason": null
+    }
+  ],
+  "types": [
+    {
+      "key": "App|T:App.Service`1",
+      "name": "Service",
+      "kind": "class",
+      "accessibility": "public",
+      "abstract": false,
+      "sealed": true,
+      "static": false,
+      "arity": 1,
+      "namespace": 0,
+      "containingType": null,
+      "declarations": [
+        {
+          "document": 0,
+          "lines": {
+            "start": 5,
+            "end": 12
+          },
+          "loc": 6,
+          "generated": true
+        },
+        {
+          "document": 1,
+          "lines": {
+            "start": 3,
+            "end": 40
+          },
+          "loc": 30,
+          "generated": false
+        }
+      ],
+      "loc": 36
+    },
+    {
+      "key": "App|T:App.Service`1.Options",
+      "name": "Options",
+      "kind": "record-struct",
+      "accessibility": "public",
+      "abstract": false,
+      "sealed": true,
+      "static": false,
+      "arity": 0,
+      "namespace": 0,
+      "containingType": 0,
+      "declarations": [
+        {
+          "document": 1,
+          "lines": {
+            "start": 36,
+            "end": 39
+          },
+          "loc": 1,
+          "generated": false
+        }
+      ],
+      "loc": 1
+    },
+    {
+      "key": "Core|T:Core.EntityBase",
+      "name": "EntityBase",
+      "kind": "class",
+      "accessibility": "public",
+      "abstract": true,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": 1,
+      "containingType": null,
+      "declarations": [
+        {
+          "document": 2,
+          "lines": {
+            "start": 1,
+            "end": 9
+          },
+          "loc": 7,
+          "generated": false
+        }
+      ],
+      "loc": 7
+    }
+  ],
+  "externalTypes": [
+    {
+      "key": "System.Runtime|T:System.Collections.Generic.List`1",
+      "name": "List<T>",
+      "assembly": "System.Runtime",
+      "namespace": "System.Collections.Generic",
+      "kind": "class"
+    }
+  ],
+  "executableMembers": [
+    {
+      "key": "App|T:App.Service`1|M:App.Service`1.#ctor",
+      "type": 0,
+      "declaration": 1,
+      "signature": "Service<T>.Service()",
+      "kind": "constructor",
+      "accessibility": "public",
+      "document": 1,
+      "lines": {
+        "start": 8,
+        "end": 11
+      },
+      "loc": 4,
+      "cyclomatic": 1,
+      "cognitive": 0,
+      "generated": false
+    },
+    {
+      "key": "App|T:App.Service`1|M:App.Service`1.Run(System.Int32)",
+      "type": 0,
+      "declaration": 1,
+      "signature": "Service<T>.Run(int)",
+      "kind": "method",
+      "accessibility": "public",
+      "document": 1,
+      "lines": {
+        "start": 13,
+        "end": 30
+      },
+      "loc": 16,
+      "cyclomatic": 4,
+      "cognitive": 6,
+      "generated": false
+    }
+  ],
+  "externalMembers": [
+    {
+      "key": "M:System.Collections.Generic.List`1.Add(`0)",
+      "type": 0,
+      "name": "List<T>.Add(T)"
+    }
+  ],
+  "dependencies": [
+    {
+      "source": 0,
+      "target": 0,
+      "external": true,
+      "kind": "call",
+      "count": 3,
+      "generatedCount": 1
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "external": false,
+      "kind": "inherits",
+      "count": 1,
+      "generatedCount": 0
+    }
+  ]
+}
