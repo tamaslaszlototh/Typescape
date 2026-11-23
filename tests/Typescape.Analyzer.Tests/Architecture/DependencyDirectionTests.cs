@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace Typescape.Analyzer.Tests;
+namespace Typescape.Analyzer.Tests.Architecture;
 
 public class DependencyDirectionTests
 {

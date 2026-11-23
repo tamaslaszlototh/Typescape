@@ -1,6 +1,6 @@
 using Typescape.Analyzer.Restore;
 
-namespace Typescape.Analyzer.Tests;
+namespace Typescape.Analyzer.Tests.Restore;
 
 /// <summary>
 /// Runs the real <c>dotnet restore</c> against a throwaway solution whose only package source is an empty local folder,

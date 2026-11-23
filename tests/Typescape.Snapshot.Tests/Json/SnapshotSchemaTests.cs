@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using Typescape.Snapshot.Records;
 using Typescape.Snapshot.Json;
 
-namespace Typescape.Snapshot.Tests;
+namespace Typescape.Snapshot.Tests.Json;
 
 public class SnapshotSchemaTests
 {

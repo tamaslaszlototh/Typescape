@@ -5,7 +5,7 @@ using System.Text.Json.Nodes;
 using Typescape.Snapshot.Files;
 using Typescape.Snapshot.Json;
 
-namespace Typescape.Snapshot.Tests;
+namespace Typescape.Snapshot.Tests.Files;
 
 public class SnapshotReaderTests
 {

@@ -3,7 +3,7 @@ using System.Text.Json;
 using Typescape.Snapshot.Records;
 using Typescape.Snapshot.Json;
 
-namespace Typescape.Snapshot.Tests;
+namespace Typescape.Snapshot.Tests.Records;
 
 public class LoadHealthAndProvenanceTests
 {

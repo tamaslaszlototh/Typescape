@@ -1,7 +1,7 @@
 using System.Reflection;
 using System.Text.Json;
 
-namespace Typescape.Snapshot.Tests;
+namespace Typescape.Snapshot.Tests.Architecture;
 
 /// <summary>
 /// Typescape.Snapshot may use only the .NET shared framework (System.Text.Json, System.IO.Compression, ...):

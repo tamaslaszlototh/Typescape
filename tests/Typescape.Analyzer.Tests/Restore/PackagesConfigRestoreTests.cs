@@ -2,7 +2,7 @@ using NuGet.Packaging;
 using NuGet.Versioning;
 using Typescape.Analyzer.Restore;
 
-namespace Typescape.Analyzer.Tests;
+namespace Typescape.Analyzer.Tests.Restore;
 
 /// <summary>
 /// Restores throwaway solutions whose only package source is a local folder and whose global packages folder is their

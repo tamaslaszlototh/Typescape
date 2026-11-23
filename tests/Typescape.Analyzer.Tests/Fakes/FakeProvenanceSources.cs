@@ -2,7 +2,7 @@ using System.Collections.Concurrent;
 using Typescape.Analyzer.Provenance;
 using Typescape.Snapshot.Records;
 
-namespace Typescape.Analyzer.Tests;
+namespace Typescape.Analyzer.Tests.Fakes;
 
 internal sealed class FakeProvenanceSources : IProvenanceSources
 {

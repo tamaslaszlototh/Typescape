@@ -1,7 +1,8 @@
 using Typescape.Analyzer.Pipeline;
+using Typescape.Analyzer.Tests.Fakes;
 using static Typescape.Analyzer.AnalysisProgress;
 
-namespace Typescape.Analyzer.Tests;
+namespace Typescape.Analyzer.Tests.Pipeline;
 
 public class CancellationTests
 {

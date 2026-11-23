@@ -8,7 +8,7 @@ using Typescape.Analyzer.Pipeline;
 using Typescape.Snapshot;
 using Typescape.Snapshot.Records;
 
-namespace Typescape.Analyzer.Tests;
+namespace Typescape.Analyzer.Tests.Fakes;
 
 /// <summary>
 /// Stages over real Roslyn objects that do no real work: they log every call and measure how many calls of a phase run

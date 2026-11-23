@@ -2,10 +2,11 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using Typescape.Analyzer.Pipeline;
 using Typescape.Analyzer.Provenance;
+using Typescape.Analyzer.Tests.Fakes;
 using Typescape.Snapshot.Json;
 using Typescape.Snapshot.Records;
 
-namespace Typescape.Analyzer.Tests;
+namespace Typescape.Analyzer.Tests.Provenance;
 
 public sealed partial class SystemProvenanceSourcesTests : IDisposable
 {
