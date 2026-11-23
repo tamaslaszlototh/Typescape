@@ -86,9 +86,8 @@ public class SnapshotWriterTests
     {
         var original = SnapshotRecordTests.Sample();
 
-        var read = JsonSerializer.Deserialize<SnapshotRecord>(Decompress(Write(original)), SnapshotJson.Options);
+        var read = SnapshotReader.Read(new MemoryStream(Write(original)));
 
-        Assert.NotNull(read);
         Assert.Equal(
             JsonSerializer.Serialize(original, SnapshotJson.Options),
             JsonSerializer.Serialize(read, SnapshotJson.Options));
