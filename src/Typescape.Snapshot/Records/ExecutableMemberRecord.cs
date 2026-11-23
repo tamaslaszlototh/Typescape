@@ -1,4 +1,4 @@
-namespace Typescape.Snapshot;
+namespace Typescape.Snapshot.Records;
 
 /// <summary>
 /// A member with an executable body: the unit metrics are measured on. Each property, indexer and event accessor is its

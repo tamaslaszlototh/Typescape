@@ -1,4 +1,4 @@
-namespace Typescape.Snapshot;
+namespace Typescape.Snapshot.Records;
 
 /// <summary>A project of the analyzed solution. Listed even when it failed to load (then it has no types).</summary>
 /// <param name="Key">Stable key: the project file path relative to the solution directory, forward slashes.</param>

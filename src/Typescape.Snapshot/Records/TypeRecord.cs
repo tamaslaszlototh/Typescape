@@ -1,4 +1,4 @@
-namespace Typescape.Snapshot;
+namespace Typescape.Snapshot.Records;
 
 /// <summary>
 /// One of the solution's own types. A partial type is one row with several declarations; a nested type is its own row.

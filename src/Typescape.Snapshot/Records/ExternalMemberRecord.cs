@@ -1,4 +1,4 @@
-namespace Typescape.Snapshot;
+namespace Typescape.Snapshot.Records;
 
 /// <summary>A member of an External Type that is the target of at least one Occurrence.</summary>
 /// <param name="Key">Stable key: the documentation comment ID.</param>

@@ -1,4 +1,4 @@
-namespace Typescape.Snapshot;
+namespace Typescape.Snapshot.Records;
 
 /// <summary>A source document of one project.</summary>
 /// <param name="Path">Stable key: the path relative to the solution directory, forward slashes.</param>

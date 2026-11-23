@@ -1,4 +1,4 @@
-namespace Typescape.Snapshot;
+namespace Typescape.Snapshot.Records;
 
 /// <summary>
 /// A type-level Dependency: a directed, typed link from one of the solution's own types to another type, own or External.

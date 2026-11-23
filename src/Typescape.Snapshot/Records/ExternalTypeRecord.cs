@@ -1,4 +1,4 @@
-namespace Typescape.Snapshot;
+namespace Typescape.Snapshot.Records;
 
 /// <summary>
 /// A type referenced by the solution but defined outside it (framework or package), stored as its open definition.

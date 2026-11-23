@@ -1,4 +1,6 @@
 using System.Text.Json;
+using Typescape.Snapshot.Records;
+using Typescape.Snapshot.Serialization;
 
 namespace Typescape.Snapshot.Tests;
 

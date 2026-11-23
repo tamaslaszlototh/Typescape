@@ -1,4 +1,4 @@
-namespace Typescape.Snapshot;
+namespace Typescape.Snapshot.Records;
 
 /// <summary>
 /// A namespace within one project. A namespace split across projects is one row per project.

@@ -3,7 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 
-namespace Typescape.Snapshot;
+namespace Typescape.Snapshot.Serialization;
 
 /// <summary>
 /// The serializer options that turn the Snapshot records into the Snapshot JSON. Together with the records they define
@@ -23,6 +23,7 @@ public static class SnapshotJson
             RespectRequiredConstructorParameters = true,
             TypeInfoResolver = new DefaultJsonTypeInfoResolver(),
         };
+        options.Converters.Add(new OccurrenceJsonConverter());
         options.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.KebabCaseLower, allowIntegerValues: false));
         options.MakeReadOnly();
         return options;

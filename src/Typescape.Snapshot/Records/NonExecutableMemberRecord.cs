@@ -1,4 +1,4 @@
-namespace Typescape.Snapshot;
+namespace Typescape.Snapshot.Records;
 
 /// <summary>
 /// A member of an own type without an executable body (field, constant, enum value, field-like event, or a property
