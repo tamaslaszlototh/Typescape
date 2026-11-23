@@ -10,7 +10,7 @@ internal sealed class MSBuildStages : IAnalysisStages
     public Task RestoreAsync(AnalysisRequest request, CancellationToken cancellationToken) =>
         throw new NotImplementedException("Restore is not implemented yet.");
 
-    public Task<LoadedSolution> LoadAsync(AnalysisRequest request, CancellationToken cancellationToken) =>
+    public Task<LoadedSolution> LoadAsync(AnalysisRequest request, PhaseCounter projects, CancellationToken cancellationToken) =>
         throw new NotImplementedException("Load is not implemented yet.");
 
     public async Task<CompiledProject> CompileAsync(

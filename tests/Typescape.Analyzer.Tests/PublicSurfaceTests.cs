@@ -7,11 +7,17 @@ public class PublicSurfaceTests
     [Fact]
     public void Only_the_entry_point_and_the_types_of_its_signature_are_public()
     {
-        var exported = typeof(Analyzer).Assembly.GetExportedTypes().Select(type => type.Name).Order(StringComparer.Ordinal);
+        var exported = typeof(Analyzer).Assembly.GetExportedTypes();
 
         Assert.Equal(
-            [nameof(AnalysisProgress), nameof(AnalysisRequest), nameof(AnalysisResult), nameof(Analyzer), nameof(LoadHealthSummary)],
-            exported);
+            new[]
+            {
+                typeof(Analyzer), typeof(AnalysisRequest), typeof(AnalysisResult), typeof(LoadHealthSummary),
+                typeof(AnalysisPhase), typeof(AnalysisProgress), typeof(AnalysisProgress.PhaseStarted),
+                typeof(AnalysisProgress.PhaseProgressed), typeof(AnalysisProgress.PhaseFinished),
+                typeof(AnalysisProgress.LoadHealthReported),
+            }.Select(type => type.FullName).Order(StringComparer.Ordinal),
+            exported.Select(type => type.FullName).Order(StringComparer.Ordinal));
     }
 
     [Fact]

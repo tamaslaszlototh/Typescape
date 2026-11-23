@@ -2,6 +2,7 @@ using System.Collections.Concurrent;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Host.Mef;
 using Typescape.Analyzer.Extraction;
 using Typescape.Analyzer.Pipeline;
 using Typescape.Snapshot;
@@ -42,18 +43,28 @@ internal sealed class FakeStages(params int[] documentsPerProject) : IAnalysisSt
 
     public SnapshotRecord Snapshot { get; init; } = Snapshots.WithStatuses();
 
+    public Action<string>? OnStart { get; init; }
+
+    public bool ObservesCancellation { get; init; }
+
+    public string? FailingPhase { get; init; }
+
+    public TrackingWorkspace? Workspace { get; private set; }
+
     public int MaxInFlight(string phase) => _inFlight.TryGetValue(phase, out var inFlight) ? inFlight.Max : 0;
 
     public Task RestoreAsync(AnalysisRequest request, CancellationToken cancellationToken) =>
-        Track("restore", () => Task.CompletedTask);
+        Track("restore", cancellationToken, () => Task.CompletedTask);
 
-    public Task<LoadedSolution> LoadAsync(AnalysisRequest request, CancellationToken cancellationToken) =>
-        Track("load", () =>
+    public Task<LoadedSolution> LoadAsync(AnalysisRequest request, PhaseCounter loaded, CancellationToken cancellationToken) =>
+        Track("load", cancellationToken, () =>
         {
-            var workspace = new AdhocWorkspace();
+            var workspace = Workspace = new TrackingWorkspace();
+            loaded.Start(documentsPerProject.Length);
             for (var i = 0; i < documentsPerProject.Length; i++)
             {
                 workspace.AddProject($"P{i}", LanguageNames.CSharp);
+                loaded.Increment();
             }
 
             var solution = workspace.CurrentSolution;
@@ -66,10 +77,11 @@ internal sealed class FakeStages(params int[] documentsPerProject) : IAnalysisSt
 
     public async Task<CompiledProject> CompileAsync(LoadedSolution solution, LoadedProject project, CancellationToken cancellationToken)
     {
-        Log.Enqueue("compile start");
+        Begin("compile", cancellationToken);
         using var _ = Enter("compile");
         await WaitAtGateAsync("compile");
         await Task.Yield();
+        Thread.Sleep(2);
 
         var count = documentsPerProject[int.Parse(project.Project.Name[1..])];
         var trees = Enumerable.Range(0, count)
@@ -82,27 +94,27 @@ internal sealed class FakeStages(params int[] documentsPerProject) : IAnalysisSt
     }
 
     public ProjectDiagnostics Diagnose(CompiledProject project, CancellationToken cancellationToken) =>
-        Track("diagnostics", () =>
+        Track("diagnostics", cancellationToken, () =>
         {
             Received.Add(("diagnostics", project.Project.Key, project.Compilation));
             return new ProjectDiagnostics(ImmutableArray<Diagnostic>.Empty);
         });
 
     public ProjectFacts WalkDeclarations(CompiledProject project, CancellationToken cancellationToken) =>
-        Walk(project, document: null);
+        Walk(project, document: null, cancellationToken);
 
     public ProjectFacts WalkDocument(CompiledProject project, SyntaxTree document, CancellationToken cancellationToken) =>
-        Walk(project, document);
+        Walk(project, document, cancellationToken);
 
     public SnapshotRecord Assemble(AssembleInput input, CancellationToken cancellationToken) =>
-        Track("assemble", () =>
+        Track("assemble", cancellationToken, () =>
         {
             OnAssemble?.Invoke(input);
             return Snapshot;
         });
 
-    private ProjectFacts Walk(CompiledProject project, SyntaxTree? document) =>
-        Track("walk", () =>
+    private ProjectFacts Walk(CompiledProject project, SyntaxTree? document, CancellationToken cancellationToken) =>
+        Track("walk", cancellationToken, () =>
         {
             Received.Add(("walk", project.Project.Key, project.Compilation));
             var facts = new ProjectFacts();
@@ -110,9 +122,9 @@ internal sealed class FakeStages(params int[] documentsPerProject) : IAnalysisSt
             return facts;
         });
 
-    private T Track<T>(string phase, Func<T> body)
+    private T Track<T>(string phase, CancellationToken cancellationToken, Func<T> body)
     {
-        Log.Enqueue($"{phase} start");
+        Begin(phase, cancellationToken);
         T result;
         using (Enter(phase))
         {
@@ -123,6 +135,21 @@ internal sealed class FakeStages(params int[] documentsPerProject) : IAnalysisSt
 
         Log.Enqueue($"{phase} end");
         return result;
+    }
+
+    private void Begin(string phase, CancellationToken cancellationToken)
+    {
+        Log.Enqueue($"{phase} start");
+        OnStart?.Invoke(phase);
+        if (ObservesCancellation)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+        }
+
+        if (phase == FailingPhase)
+        {
+            throw new InvalidOperationException($"The {phase} stage failed.");
+        }
     }
 
     private InFlight.Scope Enter(string phase) => _inFlight.GetOrAdd(phase, _ => new InFlight()).Enter();
@@ -185,6 +212,30 @@ internal sealed class FakeStages(params int[] documentsPerProject) : IAnalysisSt
             public void Dispose() => Interlocked.Decrement(ref owner._current);
         }
     }
+}
+
+// AdhocWorkspace is sealed, so disposal is tracked on a Workspace of our own.
+internal sealed class TrackingWorkspace() : Workspace(MefHostServices.DefaultHost, "Tracking")
+{
+    public bool Disposed { get; private set; }
+
+    public void AddProject(string name, string language) =>
+        OnProjectAdded(ProjectInfo.Create(ProjectId.CreateNewId(), VersionStamp.Create(), name, name, language));
+
+    protected override void Dispose(bool finalize)
+    {
+        Disposed = true;
+        base.Dispose(finalize);
+    }
+}
+
+internal sealed class RecordingProgress : IProgress<AnalysisProgress>
+{
+    private readonly ConcurrentQueue<AnalysisProgress> _events = new();
+
+    public IReadOnlyList<AnalysisProgress> Events => [.. _events];
+
+    public void Report(AnalysisProgress value) => _events.Enqueue(value);
 }
 
 internal static class Snapshots

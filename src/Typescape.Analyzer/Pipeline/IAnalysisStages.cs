@@ -13,8 +13,11 @@ internal interface IAnalysisStages
     /// <summary>Restore: <c>dotnet restore</c> and the packages.config restore. A failure warns and continues.</summary>
     Task RestoreAsync(AnalysisRequest request, CancellationToken cancellationToken);
 
-    /// <summary>Load: opens the solution with its per-project load evidence.</summary>
-    Task<LoadedSolution> LoadAsync(AnalysisRequest request, CancellationToken cancellationToken);
+    /// <summary>
+    /// Load: opens the solution with its per-project load evidence. When it throws, it first disposes the workspace it
+    /// opened, which stops the BuildHost.
+    /// </summary>
+    Task<LoadedSolution> LoadAsync(AnalysisRequest request, PhaseCounter projects, CancellationToken cancellationToken);
 
     /// <summary>Compile, for one project.</summary>
     Task<CompiledProject> CompileAsync(LoadedSolution solution, LoadedProject project, CancellationToken cancellationToken);
