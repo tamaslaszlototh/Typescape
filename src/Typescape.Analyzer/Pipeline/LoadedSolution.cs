@@ -50,7 +50,20 @@ internal sealed class LoadedSolution(
 /// Every target framework MSBuild reported for the project file, sorted ordinally; for a classic project, the one its
 /// <c>TargetFrameworkVersion</c> stands for.
 /// </param>
-internal sealed record LoadedProject(string Key, Project Project, string? Tfm, IReadOnlyList<string> AvailableTfms);
+internal sealed record LoadedProject(string Key, Project Project, string? Tfm, IReadOnlyList<string> AvailableTfms)
+{
+    /// <summary>
+    /// The keys of the loaded projects this one references directly, read from its project file and its imports, sorted
+    /// ordinally. <see cref="Project.ProjectReferences"/> holds the transitive closure instead.
+    /// </summary>
+    public IReadOnlyList<string> References { get; init; } = [];
+
+    /// <summary>
+    /// Whether <see cref="References"/> and MSBuildWorkspace's project references disagree, as
+    /// <see cref="Loading.DirectReferences.Resolve"/> decides it.
+    /// </summary>
+    public bool ProjectReferenceMismatch { get; init; }
+}
 
 /// <summary>The reference assemblies of one .NET Framework version could not be fetched, e.g. offline.</summary>
 /// <param name="Version">The framework version, e.g. <c>v4.7.2</c>.</param>

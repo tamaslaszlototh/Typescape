@@ -102,6 +102,22 @@ public class GlobalPropertiesTests
     }
 
     [Fact]
+    public void The_solution_properties_are_added_unless_the_request_sets_them()
+    {
+        var solutionPath = Path.Combine(Path.GetTempPath(), "repo", "Fake.slnx");
+        var properties = new Dictionary<string, string> { ["Configuration"] = "Debug", ["solutionname"] = "Mine" };
+
+        var withSolution = GlobalProperties.WithSolution(properties, solutionPath);
+
+        Assert.Equal(Path.Combine(Path.GetTempPath(), "repo") + Path.DirectorySeparatorChar, withSolution["SolutionDir"]);
+        Assert.Equal(solutionPath, withSolution["SolutionPath"]);
+        Assert.Equal("Mine", withSolution["SolutionName"]);
+        Assert.Equal("Fake.slnx", withSolution["SolutionFileName"]);
+        Assert.Equal(".slnx", withSolution["SolutionExt"]);
+        Assert.Equal("Debug", withSolution["Configuration"]);
+    }
+
+    [Fact]
     public void The_targets_ship_next_to_the_Analyzer()
     {
         Assert.True(File.Exists(GlobalProperties.TargetsPath), GlobalProperties.TargetsPath);

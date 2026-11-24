@@ -63,4 +63,27 @@ public class TargetFrameworksTests
     {
         Assert.Equal(expected, TargetFrameworks.IsNetFramework(tfm, version));
     }
+
+    [Theory]
+    [InlineData("net472", ".NETFramework", "4.7.2", null)]
+    [InlineData("net10.0-windows", ".NETCoreApp", "10.0", "windows")]
+    [InlineData("netstandard2.0", ".NETStandard", "2.0", null)]
+    [InlineData("foo", null, null, null)]
+    public void A_target_framework_gives_MSBuild_s_identifier_version_and_platform(string tfm, string? identifier, string? version, string? platform)
+    {
+        Assert.Equal(identifier, TargetFrameworks.FrameworkIdentifier(tfm));
+        Assert.Equal(version, TargetFrameworks.FrameworkVersion(tfm));
+        Assert.Equal(platform, TargetFrameworks.PlatformIdentifier(tfm));
+    }
+
+    [Theory]
+    [InlineData("net10.0", "net10.0", "net8.0", "net10.0")]
+    [InlineData("net9.0", "net8.0", "net10.0", "net8.0")]
+    [InlineData("net48", "netstandard2.0", "net10.0", "netstandard2.0")]
+    [InlineData("net10.0", "net48", null, null)]
+    [InlineData("foo", "net10.0", null, null)]
+    public void A_reference_gets_the_target_framework_NuGet_picks_as_nearest(string target, string first, string? second, string? expected)
+    {
+        Assert.Equal(expected, TargetFrameworks.Nearest(second is null ? [first] : [first, second], target));
+    }
 }

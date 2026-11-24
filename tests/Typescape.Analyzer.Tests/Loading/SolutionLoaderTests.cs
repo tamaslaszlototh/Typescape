@@ -1,6 +1,7 @@
 using Microsoft.CodeAnalysis;
 using Typescape.Analyzer.Loading;
 using Typescape.Analyzer.Pipeline;
+using Typescape.Analyzer.Restore;
 using Typescape.Analyzer.Tests.Fakes;
 using static Typescape.Analyzer.AnalysisProgress;
 
@@ -261,6 +262,116 @@ public sealed class SolutionLoaderTests : IDisposable
     }
 
     [Fact]
+    public async Task Each_project_gets_its_direct_references_and_they_agree_with_the_workspace()
+    {
+        Project("Core", "<TargetFramework>net10.0</TargetFramework>");
+        Project("Domain", "<TargetFramework>net10.0</TargetFramework>", "<ProjectReference Include=\"..\\Core\\Core.csproj\" />");
+        Project("App", "<TargetFramework>net10.0</TargetFramework>", "<ProjectReference Include=\"$(SolutionDir)Domain/Domain.csproj\" />");
+
+        using var solution = await LoadAsync(Solution("App", "Core", "Domain"));
+
+        Assert.Equal(
+            [("App/App.csproj", ["Domain/Domain.csproj"]), ("Core/Core.csproj", []), ("Domain/Domain.csproj", ["Core/Core.csproj"])],
+            solution.Projects.Select(project => (project.Key, project.References.ToArray())));
+        Assert.All(solution.Projects, project => Assert.False(project.ProjectReferenceMismatch));
+    }
+
+    [Fact]
+    public async Task After_a_restore_the_workspace_reports_the_closure_and_that_is_no_mismatch()
+    {
+        FakeReferenceAssemblies.NuGetConfig(_directory);
+        Project("Deep", "<TargetFramework>net10.0</TargetFramework>");
+        Project("Lib", "<TargetFramework>net10.0</TargetFramework>", "<ProjectReference Include=\"../Deep/Deep.csproj\" Condition=\"'$(TargetFramework)' == 'net10.0'\" />");
+        Project("GeneratorDependency", "<TargetFramework>net10.0</TargetFramework>");
+        Project("Generator", "<TargetFramework>net10.0</TargetFramework>", "<ProjectReference Include=\"../GeneratorDependency/GeneratorDependency.csproj\" />");
+        Project("ToolDependency", "<TargetFramework>net10.0</TargetFramework>");
+        Project("Tool", "<TargetFramework>net10.0</TargetFramework>", "<ProjectReference Include=\"../ToolDependency/ToolDependency.csproj\" />");
+        Project("App", "<TargetFramework>net10.0</TargetFramework>", """
+            <ProjectReference Include="../Lib/Lib.csproj" />
+            <ProjectReference Include="../Generator/Generator.csproj" OutputItemType="Analyzer" />
+            <ProjectReference Include="../Tool/Tool.csproj" ReferenceOutputAssembly="false" />
+            """);
+        var request = new AnalysisRequest { SolutionPath = Solution("App", "Deep", "Generator", "GeneratorDependency", "Lib", "Tool", "ToolDependency") };
+        var warning = await DotnetRestore.RunAsync(request, TestContext.Current.CancellationToken);
+        Assert.True(warning is null, warning);
+
+        using var solution = await LoadAsync(request.SolutionPath);
+
+        // The analyzer and its references stay in the workspace; the reference that only builds first goes, with its own.
+        var app = solution.Projects[0];
+        Assert.Equal(["Deep", "Generator", "GeneratorDependency", "Lib"], WorkspaceReferences(solution, app));
+        Assert.Equal(["Lib/Lib.csproj"], app.References);
+        Assert.All(solution.Projects, project => Assert.False(project.ProjectReferenceMismatch));
+    }
+
+    [Fact]
+    public async Task A_classic_project_s_direct_references_are_all_the_workspace_reports_and_that_is_no_mismatch()
+    {
+        var cache = new ReferenceAssemblies(Path.Combine(_directory, "cache"));
+        FakeReferenceAssemblies.NuGetConfig(_directory);
+        FakeReferenceAssemblies.Publish(_directory, "v4.8");
+        LegacyProject("Core", "v4.8");
+        LegacyProject("Domain", "v4.8", items: """<ProjectReference Include="..\Core\Core.csproj"><Name>Core</Name></ProjectReference>""");
+        LegacyProject("App", "v4.8", items: """<ProjectReference Include="..\Domain\Domain.csproj"><Name>Domain</Name></ProjectReference>""");
+
+        using var solution = await LoadAsync(Solution("App", "Core", "Domain"), cache, new RecordingProgress());
+
+        var app = solution.Projects[0];
+        Assert.Equal(["Domain"], WorkspaceReferences(solution, app));
+        Assert.Equal(["Domain/Domain.csproj"], app.References);
+        Assert.All(solution.Projects, project => Assert.False(project.ProjectReferenceMismatch));
+    }
+
+    [Fact]
+    public async Task A_project_whose_reference_the_files_do_not_show_is_flagged()
+    {
+        Project("Hidden", "<TargetFramework>net10.0</TargetFramework>");
+        Project("App", "<TargetFramework>net10.0</TargetFramework>");
+        var path = Path.Combine(_directory, "App", "App.csproj");
+        File.WriteAllText(path, File.ReadAllText(path).Replace("</Project>", """
+              <Target Name="AddHidden" BeforeTargets="AssignProjectConfiguration">
+                <ItemGroup><ProjectReference Include="../Hidden/Hidden.csproj" /></ItemGroup>
+              </Target>
+            </Project>
+            """, StringComparison.Ordinal));
+
+        using var solution = await LoadAsync(Solution("App", "Hidden"));
+
+        var (app, hidden) = (solution.Projects[0], solution.Projects[1]);
+        Assert.Equal(["Hidden"], WorkspaceReferences(solution, app));
+        Assert.Empty(app.References);
+        Assert.True(app.ProjectReferenceMismatch);
+        Assert.False(hidden.ProjectReferenceMismatch);
+    }
+
+    /// <summary>
+    /// The scale check against the restored Jellyfin checkout of the benchmark research; skipped where that checkout,
+    /// which is not part of the repository, is missing.
+    /// </summary>
+    [Fact]
+    [Trait("Category", "Scale")]
+    public async Task Jellyfin_has_92_direct_references_where_the_workspace_reports_386()
+    {
+        var root = AppContext.BaseDirectory;
+        while (root is not null && !File.Exists(Path.Combine(root, "Typescape.slnx")))
+        {
+            root = Path.GetDirectoryName(root);
+        }
+
+        var jellyfin = Path.Combine(root ?? "", "temp", "research", "jellyfin-benchmark", "jellyfin", "Jellyfin.slnx");
+        Assert.SkipUnless(File.Exists(jellyfin), $"No Jellyfin checkout at {jellyfin}.");
+
+        using var solution = await LoadAsync(jellyfin);
+
+        Assert.Equal(41, solution.Projects.Count);
+        Assert.Equal(92, solution.Projects.Sum(project => project.References.Count));
+        Assert.Equal(386, solution.Projects.Sum(project => project.Project.ProjectReferences.Count()));
+        Assert.DoesNotContain(solution.Projects, project => project.ProjectReferenceMismatch);
+        var server = solution.Projects.Single(project => project.Key == "Jellyfin.Server/Jellyfin.Server.csproj");
+        Assert.Equal((7, 23), (server.References.Count, server.Project.ProjectReferences.Count()));
+    }
+
+    [Fact]
     public async Task A_file_that_is_not_a_solution_fails_the_load()
     {
         var path = Path.Combine(_directory, "App.csproj");
@@ -281,6 +392,11 @@ public sealed class SolutionLoaderTests : IDisposable
     }
 
     private static AnalysisProgress Counted(int done, int total = 3) => new PhaseProgressed(AnalysisPhase.Load, done, total);
+
+    private static string[] WorkspaceReferences(LoadedSolution solution, LoadedProject project) =>
+        [.. project.Project.ProjectReferences
+            .Select(reference => Path.GetFileNameWithoutExtension(solution.Solution.GetProject(reference.ProjectId)!.FilePath!))
+            .Order(StringComparer.Ordinal)];
 
     private static string?[] ReferencePaths(LoadedProject project) =>
         [.. project.Project.MetadataReferences.OfType<PortableExecutableReference>().Select(reference => reference.FilePath)];
@@ -315,7 +431,7 @@ public sealed class SolutionLoaderTests : IDisposable
     }
 
     /// <summary>A classic project, as Visual Studio writes it, with one source file.</summary>
-    private void LegacyProject(string name, string frameworkVersion, string? compile = null, string targets = "")
+    private void LegacyProject(string name, string frameworkVersion, string? compile = null, string targets = "", string items = "")
     {
         var directory = Path.Combine(_directory, name);
         Directory.CreateDirectory(directory);
@@ -328,6 +444,7 @@ public sealed class SolutionLoaderTests : IDisposable
               </PropertyGroup>
               <ItemGroup>
                 <Compile Include="{compile ?? $"{name}.cs"}" />
+                {items}
               </ItemGroup>
               <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
               {targets}

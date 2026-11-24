@@ -15,9 +15,6 @@ namespace Typescape.Analyzer.Loading;
 /// </remarks>
 internal static class SolutionLoader
 {
-    // Two project paths that differ only in case are one file on Windows and macOS.
-    private static readonly StringComparer PathComparer = StringComparer.OrdinalIgnoreCase;
-
     /// <inheritdoc cref="LoadAsync(AnalysisRequest, ReferenceAssemblies, PhaseCounter, CancellationToken)"/>
     public static Task<LoadedSolution> LoadAsync(AnalysisRequest request, PhaseCounter counter, CancellationToken cancellationToken) =>
         LoadAsync(request, ReferenceAssemblies.Default, counter, cancellationToken);
@@ -39,7 +36,7 @@ internal static class SolutionLoader
         var directory = Path.GetDirectoryName(solutionPath)!;
         var listed = (await SolutionFile.ProjectPathsAsync(solutionPath, cancellationToken))
             .Where(path => path.EndsWith(".csproj", StringComparison.OrdinalIgnoreCase))
-            .Distinct(PathComparer)
+            .Distinct(MSBuildPaths.Comparer)
             .ToArray();
         var properties = GlobalProperties.For(request, referenceAssemblies);
 
@@ -69,7 +66,9 @@ internal static class SolutionLoader
                 }
             }
 
-            var opened = solution.Projects.Select(project => project.FilePath).OfType<string>().ToHashSet(PathComparer);
+            projects = DirectReferences.Resolve(projects, solution, GlobalProperties.WithSolution(properties, solutionPath), cancellationToken);
+
+            var opened = solution.Projects.Select(project => project.FilePath).OfType<string>().ToHashSet(MSBuildPaths.Comparer);
             var unopened = listed
                 .Where(path => !opened.Contains(path))
                 .Select(path => Key(directory, path))
@@ -95,7 +94,7 @@ internal static class SolutionLoader
     [
         .. solution.Projects
             .Where(project => project.Language == LanguageNames.CSharp && project.FilePath is not null)
-            .GroupBy(project => project.FilePath!, PathComparer)
+            .GroupBy(project => project.FilePath!, MSBuildPaths.Comparer)
             .Select(file => Choose(file.Key, [.. file], Available(file.Key, [.. file], progress), requested, directory))
             .OrderBy(project => project.Key, StringComparer.Ordinal),
     ];
@@ -171,12 +170,12 @@ internal static class SolutionLoader
     {
         private readonly Lock _lock = new();
         private readonly HashSet<string> _pending;
-        private readonly Dictionary<string, SortedSet<string>> _tfms = new(PathComparer);
+        private readonly Dictionary<string, SortedSet<string>> _tfms = new(MSBuildPaths.Comparer);
         private readonly PhaseCounter _counter;
 
         public LoadProgress(IReadOnlyList<string> listed, PhaseCounter counter)
         {
-            _pending = new HashSet<string>(listed, PathComparer);
+            _pending = new HashSet<string>(listed, MSBuildPaths.Comparer);
             _counter = counter;
         }
 

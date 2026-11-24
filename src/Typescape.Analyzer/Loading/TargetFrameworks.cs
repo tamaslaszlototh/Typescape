@@ -46,6 +46,43 @@ internal static partial class TargetFrameworks
         && framework.Framework == FrameworkConstants.FrameworkIdentifiers.Net
         && framework.Version == new NuGetFramework(FrameworkConstants.FrameworkIdentifiers.Net, parsed).Version;
 
+    /// <summary>MSBuild's <c>TargetFrameworkIdentifier</c>, e.g. <c>.NETFramework</c>; <c>null</c> for an unknown TFM.</summary>
+    public static string? FrameworkIdentifier(string tfm) => Known(tfm)?.Framework;
+
+    /// <summary>
+    /// The version as MSBuild's <c>GetTargetFrameworkVersion</c> gives it: at least two parts, e.g. <c>4.7.2</c> or
+    /// <c>8.0</c>; <c>null</c> for an unknown TFM.
+    /// </summary>
+    public static string? FrameworkVersion(string tfm) => Known(tfm)?.Version is { } version
+        ? version.Revision > 0 ? version.ToString(4) : version.Build > 0 ? version.ToString(3) : version.ToString(2)
+        : null;
+
+    /// <summary>MSBuild's <c>TargetPlatformIdentifier</c>, e.g. <c>windows</c>; <c>null</c> when the TFM names none.</summary>
+    public static string? PlatformIdentifier(string tfm) => Known(tfm) is { HasPlatform: true } framework ? framework.Platform : null;
+
+    /// <summary>Whether a project targeting <paramref name="target"/> can reference one targeting <paramref name="candidate"/>.</summary>
+    /// <returns><c>null</c> when either TFM is unknown.</returns>
+    public static bool? IsCompatible(string target, string candidate) =>
+        Known(target) is { } a && Known(candidate) is { } b ? DefaultCompatibilityProvider.Instance.IsCompatible(a, b) : null;
+
+    /// <summary>
+    /// The target framework of <paramref name="available"/> that NuGet picks for a reference from a project targeting
+    /// <paramref name="target"/>, as the project spells it; <c>null</c> when none is compatible or a TFM is unknown.
+    /// </summary>
+    public static string? Nearest(IReadOnlyCollection<string> available, string target)
+    {
+        ArgumentNullException.ThrowIfNull(available);
+
+        if (Known(target) is not { } framework)
+        {
+            return null;
+        }
+
+        var candidates = available.Select(tfm => (Tfm: tfm, Framework: Known(tfm))).Where(candidate => candidate.Framework is not null).ToArray();
+        var nearest = new FrameworkReducer().GetNearest(framework, candidates.Select(candidate => candidate.Framework!));
+        return nearest is null ? null : candidates.First(candidate => candidate.Framework!.Equals(nearest)).Tfm;
+    }
+
     /// <summary>
     /// The target framework of each classic project, which declares only <c>TargetFrameworkVersion</c> and so reports no
     /// TFM: read from the attributes file MSBuild generates for it, e.g. <c>.NETFramework,Version=v4.8.AssemblyAttributes.cs</c>
@@ -123,6 +160,8 @@ internal static partial class TargetFrameworks
         FrameworkConstants.FrameworkIdentifiers.Net => 1,
         _ => 0,
     };
+
+    private static NuGetFramework? Known(string tfm) => Parse(tfm) is { IsUnsupported: false } framework ? framework : null;
 
     private static NuGetFramework Parse(string tfm)
     {

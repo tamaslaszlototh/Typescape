@@ -33,8 +33,8 @@ public sealed record LoadHealthRecord(
 /// <param name="WorkspaceDiagnostics">The project's workspace diagnostics, sorted by kind, then message.</param>
 /// <param name="SdkFallback">Whether Roslyn fell back from VS or Mono MSBuild to .NET SDK MSBuild for this project.</param>
 /// <param name="ProjectReferenceMismatch">
-/// Whether the transitive closure of the direct project references (<see cref="ProjectRecord.References"/>) differs from
-/// the project references MSBuildWorkspace reports.
+/// Whether the direct project references (<see cref="ProjectRecord.References"/>) disagree with the project references
+/// MSBuildWorkspace reports, beyond its reporting the transitive closure.
 /// </param>
 /// <param name="AnalyzerErrors">Exceptions in Typescape's own walker, sorted by document, then exception type, then frame.</param>
 public sealed record ProjectHealthRecord(

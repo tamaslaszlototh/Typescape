@@ -44,4 +44,21 @@ internal static class GlobalProperties
         properties.TryAdd(Configuration, DefaultConfiguration);
         return properties;
     }
+
+    /// <summary>
+    /// <paramref name="properties"/> plus the <c>Solution*</c> properties MSBuild sets when it builds a solution, which
+    /// MSBuildWorkspace sets too; a property already in <paramref name="properties"/> wins.
+    /// </summary>
+    public static IReadOnlyDictionary<string, string> WithSolution(IReadOnlyDictionary<string, string> properties, string solutionPath)
+    {
+        ArgumentNullException.ThrowIfNull(properties);
+
+        var withSolution = new Dictionary<string, string>(properties, StringComparer.OrdinalIgnoreCase);
+        withSolution.TryAdd("SolutionDir", Path.GetDirectoryName(solutionPath)! + Path.DirectorySeparatorChar);
+        withSolution.TryAdd("SolutionPath", solutionPath);
+        withSolution.TryAdd("SolutionName", Path.GetFileNameWithoutExtension(solutionPath));
+        withSolution.TryAdd("SolutionFileName", Path.GetFileName(solutionPath));
+        withSolution.TryAdd("SolutionExt", Path.GetExtension(solutionPath));
+        return withSolution;
+    }
 }
