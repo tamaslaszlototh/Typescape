@@ -21,7 +21,7 @@ internal static class ProjectExtractor
     public static ProjectFacts ExtractDeclarations(Compilation compilation, ProjectContext context, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
-        return ProjectFacts.Empty;
+        return new ProjectFacts([], [.. OwnTypes.Extract(compilation, context, cancellationToken)]);
     }
 
     /// <summary>The part of <see cref="Extract"/> that runs once per document of the compilation.</summary>
@@ -32,6 +32,6 @@ internal static class ProjectExtractor
         CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
-        return new ProjectFacts([new DocumentFact(SolutionPaths.Key(document.FilePath, context.SolutionDirectory))]);
+        return new ProjectFacts([new DocumentFact(SolutionPaths.Key(document.FilePath, context.SolutionDirectory))], []);
     }
 }

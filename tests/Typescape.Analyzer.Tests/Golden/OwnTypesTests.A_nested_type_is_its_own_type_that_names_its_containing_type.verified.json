@@ -1,0 +1,89 @@
+{
+  "documents": [],
+  "types": [
+    {
+      "key": "App|T:Shop.Order",
+      "name": "Order",
+      "kind": "class",
+      "accessibility": "public",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": "Shop",
+      "containingType": null,
+      "declarations": [
+        {
+          "document": "App/Snippet.cs",
+          "lines": {
+            "start": 3,
+            "end": 11
+          }
+        }
+      ]
+    },
+    {
+      "key": "App|T:Shop.Order.Line",
+      "name": "Line",
+      "kind": "class",
+      "accessibility": "private",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": "Shop",
+      "containingType": "App|T:Shop.Order",
+      "declarations": [
+        {
+          "document": "App/Snippet.cs",
+          "lines": {
+            "start": 5,
+            "end": 8
+          }
+        }
+      ]
+    },
+    {
+      "key": "App|T:Shop.Order.Line.State",
+      "name": "State",
+      "kind": "enum",
+      "accessibility": "protected-internal",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": "Shop",
+      "containingType": "App|T:Shop.Order.Line",
+      "declarations": [
+        {
+          "document": "App/Snippet.cs",
+          "lines": {
+            "start": 7,
+            "end": 7
+          }
+        }
+      ]
+    },
+    {
+      "key": "App|T:Shop.Order.IAudit",
+      "name": "IAudit",
+      "kind": "interface",
+      "accessibility": "private-protected",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": "Shop",
+      "containingType": "App|T:Shop.Order",
+      "declarations": [
+        {
+          "document": "App/Snippet.cs",
+          "lines": {
+            "start": 10,
+            "end": 10
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -122,7 +122,7 @@ internal sealed class FakeStages(params int[] documentsPerProject) : IAnalysisSt
         Track("walk", cancellationToken, () =>
         {
             Received.Add(("walk", project.Project.Key, project.Compilation));
-            var facts = new ProjectFacts([]);
+            var facts = new ProjectFacts([], []);
             FactSources[facts] = (project.Project.Key, document);
             return facts;
         });

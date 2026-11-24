@@ -1,0 +1,33 @@
+{
+  "documents": [],
+  "types": [
+    {
+      "key": "App|T:Shop.Order",
+      "name": "Order",
+      "kind": "class",
+      "accessibility": "public",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": "Shop",
+      "containingType": null,
+      "declarations": [
+        {
+          "document": "App/Order.cs",
+          "lines": {
+            "start": 3,
+            "end": 6
+          }
+        },
+        {
+          "document": "App/Order.Lines.cs",
+          "lines": {
+            "start": 3,
+            "end": 3
+          }
+        }
+      ]
+    }
+  ]
+}

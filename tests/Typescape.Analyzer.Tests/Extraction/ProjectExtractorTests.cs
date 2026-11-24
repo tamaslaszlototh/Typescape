@@ -12,7 +12,7 @@ public class ProjectExtractorTests
             ("../Shared/Link.cs", "class Link { }"),
         ]);
 
-        RuleTest.Match(facts);
+        RuleTest.Match(facts with { Types = [] });
     }
 
     [Fact]

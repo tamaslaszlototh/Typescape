@@ -1,0 +1,215 @@
+{
+  "documents": [],
+  "types": [
+    {
+      "key": "App|T:Shape",
+      "name": "Shape",
+      "kind": "class",
+      "accessibility": "internal",
+      "abstract": true,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": "",
+      "containingType": null,
+      "declarations": [
+        {
+          "document": "App/Snippet.cs",
+          "lines": {
+            "start": 1,
+            "end": 1
+          }
+        }
+      ]
+    },
+    {
+      "key": "App|T:Circle",
+      "name": "Circle",
+      "kind": "class",
+      "accessibility": "internal",
+      "abstract": false,
+      "sealed": true,
+      "static": false,
+      "arity": 0,
+      "namespace": "",
+      "containingType": null,
+      "declarations": [
+        {
+          "document": "App/Snippet.cs",
+          "lines": {
+            "start": 2,
+            "end": 2
+          }
+        }
+      ]
+    },
+    {
+      "key": "App|T:Geometry",
+      "name": "Geometry",
+      "kind": "class",
+      "accessibility": "internal",
+      "abstract": false,
+      "sealed": false,
+      "static": true,
+      "arity": 0,
+      "namespace": "",
+      "containingType": null,
+      "declarations": [
+        {
+          "document": "App/Snippet.cs",
+          "lines": {
+            "start": 3,
+            "end": 3
+          }
+        }
+      ]
+    },
+    {
+      "key": "App|T:IShape",
+      "name": "IShape",
+      "kind": "interface",
+      "accessibility": "internal",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": "",
+      "containingType": null,
+      "declarations": [
+        {
+          "document": "App/Snippet.cs",
+          "lines": {
+            "start": 4,
+            "end": 4
+          }
+        }
+      ]
+    },
+    {
+      "key": "App|T:Point",
+      "name": "Point",
+      "kind": "struct",
+      "accessibility": "internal",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": "",
+      "containingType": null,
+      "declarations": [
+        {
+          "document": "App/Snippet.cs",
+          "lines": {
+            "start": 5,
+            "end": 5
+          }
+        }
+      ]
+    },
+    {
+      "key": "App|T:Size",
+      "name": "Size",
+      "kind": "record-struct",
+      "accessibility": "internal",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": "",
+      "containingType": null,
+      "declarations": [
+        {
+          "document": "App/Snippet.cs",
+          "lines": {
+            "start": 6,
+            "end": 6
+          }
+        }
+      ]
+    },
+    {
+      "key": "App|T:Event",
+      "name": "Event",
+      "kind": "record",
+      "accessibility": "internal",
+      "abstract": true,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": "",
+      "containingType": null,
+      "declarations": [
+        {
+          "document": "App/Snippet.cs",
+          "lines": {
+            "start": 7,
+            "end": 7
+          }
+        }
+      ]
+    },
+    {
+      "key": "App|T:Placed",
+      "name": "Placed",
+      "kind": "record",
+      "accessibility": "internal",
+      "abstract": false,
+      "sealed": true,
+      "static": false,
+      "arity": 0,
+      "namespace": "",
+      "containingType": null,
+      "declarations": [
+        {
+          "document": "App/Snippet.cs",
+          "lines": {
+            "start": 8,
+            "end": 8
+          }
+        }
+      ]
+    },
+    {
+      "key": "App|T:Color",
+      "name": "Color",
+      "kind": "enum",
+      "accessibility": "internal",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": "",
+      "containingType": null,
+      "declarations": [
+        {
+          "document": "App/Snippet.cs",
+          "lines": {
+            "start": 9,
+            "end": 9
+          }
+        }
+      ]
+    },
+    {
+      "key": "App|T:Changed",
+      "name": "Changed",
+      "kind": "delegate",
+      "accessibility": "internal",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": "",
+      "containingType": null,
+      "declarations": [
+        {
+          "document": "App/Snippet.cs",
+          "lines": {
+            "start": 10,
+            "end": 10
+          }
+        }
+      ]
+    }
+  ]
+}

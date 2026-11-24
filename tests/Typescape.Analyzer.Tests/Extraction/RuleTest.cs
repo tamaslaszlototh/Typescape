@@ -31,11 +31,17 @@ internal static class RuleTest
     /// <param name="documents">Paths relative to the solution directory.</param>
     /// <param name="cancellationToken">The test's token when <c>null</c>.</param>
     public static ProjectFacts Extract(IEnumerable<(string Path, string Source)> documents, CancellationToken? cancellationToken = null) =>
-        ProjectExtractor.Extract(Compile(documents), Context, cancellationToken ?? TestContext.Current.CancellationToken);
+        Extract(Compile(documents), cancellationToken);
+
+    /// <param name="cancellationToken">The test's token when <c>null</c>.</param>
+    public static ProjectFacts Extract(Compilation compilation, CancellationToken? cancellationToken = null) =>
+        ProjectExtractor.Extract(compilation, Context, cancellationToken ?? TestContext.Current.CancellationToken);
 
     /// <param name="documents">Paths relative to the solution directory.</param>
     /// <exception cref="InvalidOperationException">The documents do not compile.</exception>
-    public static CSharpCompilation Compile(IEnumerable<(string Path, string Source)> documents)
+    public static CSharpCompilation Compile(
+        IEnumerable<(string Path, string Source)> documents,
+        OutputKind outputKind = OutputKind.DynamicallyLinkedLibrary)
     {
         var trees = documents.Select(document => CSharpSyntaxTree.ParseText(
             document.Source,
@@ -45,7 +51,7 @@ internal static class RuleTest
             "App",
             trees,
             Framework,
-            new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+            new CSharpCompilationOptions(outputKind));
 
         // A typo in a snippet would otherwise surface as a puzzling golden diff.
         var errors = compilation.GetDiagnostics().Where(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error).ToArray();

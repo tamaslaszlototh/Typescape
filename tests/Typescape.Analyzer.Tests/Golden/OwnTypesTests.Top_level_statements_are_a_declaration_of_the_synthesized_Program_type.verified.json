@@ -1,0 +1,54 @@
+{
+  "documents": [],
+  "types": [
+    {
+      "key": "App|T:Program",
+      "name": "Program",
+      "kind": "class",
+      "accessibility": "internal",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": "",
+      "containingType": null,
+      "declarations": [
+        {
+          "document": "App/Snippet.cs",
+          "lines": {
+            "start": 3,
+            "end": 5
+          }
+        },
+        {
+          "document": "App/Program.cs",
+          "lines": {
+            "start": 1,
+            "end": 1
+          }
+        }
+      ]
+    },
+    {
+      "key": "App|T:Order",
+      "name": "Order",
+      "kind": "class",
+      "accessibility": "internal",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": "",
+      "containingType": null,
+      "declarations": [
+        {
+          "document": "App/Snippet.cs",
+          "lines": {
+            "start": 7,
+            "end": 7
+          }
+        }
+      ]
+    }
+  ]
+}

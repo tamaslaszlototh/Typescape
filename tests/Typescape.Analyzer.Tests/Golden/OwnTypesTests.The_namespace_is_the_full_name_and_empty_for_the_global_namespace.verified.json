@@ -1,0 +1,68 @@
+{
+  "documents": [],
+  "types": [
+    {
+      "key": "App|T:Shop.Orders.class.Line",
+      "name": "Line",
+      "kind": "class",
+      "accessibility": "internal",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": "Shop.Orders.class",
+      "containingType": null,
+      "declarations": [
+        {
+          "document": "App/Snippet.cs",
+          "lines": {
+            "start": 9,
+            "end": 9
+          }
+        }
+      ]
+    },
+    {
+      "key": "App|T:Shop.Orders.Order",
+      "name": "Order",
+      "kind": "class",
+      "accessibility": "internal",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": "Shop.Orders",
+      "containingType": null,
+      "declarations": [
+        {
+          "document": "App/Snippet.cs",
+          "lines": {
+            "start": 5,
+            "end": 5
+          }
+        }
+      ]
+    },
+    {
+      "key": "App|T:Global",
+      "name": "Global",
+      "kind": "class",
+      "accessibility": "internal",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": "",
+      "containingType": null,
+      "declarations": [
+        {
+          "document": "App/Snippet.cs",
+          "lines": {
+            "start": 1,
+            "end": 1
+          }
+        }
+      ]
+    }
+  ]
+}

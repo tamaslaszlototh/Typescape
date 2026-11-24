@@ -1,0 +1,26 @@
+{
+  "documents": [],
+  "types": [
+    {
+      "key": "App|T:Text",
+      "name": "Text",
+      "kind": "class",
+      "accessibility": "internal",
+      "abstract": false,
+      "sealed": false,
+      "static": true,
+      "arity": 0,
+      "namespace": "",
+      "containingType": null,
+      "declarations": [
+        {
+          "document": "App/Snippet.cs",
+          "lines": {
+            "start": 1,
+            "end": 7
+          }
+        }
+      ]
+    }
+  ]
+}

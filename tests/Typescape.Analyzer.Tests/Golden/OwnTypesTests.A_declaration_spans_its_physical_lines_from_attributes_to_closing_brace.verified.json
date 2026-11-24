@@ -1,0 +1,26 @@
+{
+  "documents": [],
+  "types": [
+    {
+      "key": "App|T:Order",
+      "name": "Order",
+      "kind": "class",
+      "accessibility": "internal",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": "",
+      "containingType": null,
+      "declarations": [
+        {
+          "document": "App/Snippet.cs",
+          "lines": {
+            "start": 4,
+            "end": 9
+          }
+        }
+      ]
+    }
+  ]
+}
