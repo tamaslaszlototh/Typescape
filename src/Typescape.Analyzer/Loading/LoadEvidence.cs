@@ -46,7 +46,7 @@ internal static class LoadEvidence
 
         foreach (var path in unopenedPaths)
         {
-            keys[path] = SolutionLoader.Key(directory, path);
+            keys[path] = SolutionPaths.Key(path, directory);
         }
 
         var owned = diagnostics.ToLookup(diagnostic => Owner(diagnostic, solution, keys), StringComparer.Ordinal);

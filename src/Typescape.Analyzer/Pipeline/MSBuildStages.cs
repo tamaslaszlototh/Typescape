@@ -46,10 +46,10 @@ internal sealed class MSBuildStages : IAnalysisStages
             project.Compilation.GetSpecialType(SpecialType.System_Object).TypeKind != TypeKind.Error);
 
     public ProjectFacts WalkDeclarations(CompiledProject project, CancellationToken cancellationToken) =>
-        throw new NotImplementedException("Declaration extraction is not implemented yet.");
+        ProjectExtractor.ExtractDeclarations(project.Compilation, project.Context, cancellationToken);
 
     public ProjectFacts WalkDocument(CompiledProject project, SyntaxTree document, CancellationToken cancellationToken) =>
-        throw new NotImplementedException("Document extraction is not implemented yet.");
+        ProjectExtractor.ExtractDocument(project.Compilation, project.Context, document, cancellationToken);
 
     public SnapshotRecord Assemble(AssembleInput input, CancellationToken cancellationToken) =>
         throw new NotImplementedException("Assemble is not implemented yet.");

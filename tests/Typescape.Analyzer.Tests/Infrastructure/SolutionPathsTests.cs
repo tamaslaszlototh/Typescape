@@ -13,4 +13,19 @@ public class SolutionPathsTests
     {
         Assert.Equal(expected, SolutionPaths.Relativize(text, directory));
     }
+
+    [Theory]
+    [InlineData("/repo", "/repo/App/Orders/Order.cs", "App/Orders/Order.cs")]
+    [InlineData("/repo/", "/repo/App/App.csproj", "App/App.csproj")]
+    [InlineData("/repo", "/Shared/Link.cs", "../Shared/Link.cs")]
+    public void A_key_is_the_path_relative_to_the_solution_directory_with_forward_slashes(string directory, string path, string expected)
+    {
+        Assert.Equal(expected, SolutionPaths.Key(Path.GetFullPath(path), Path.GetFullPath(directory)));
+    }
+
+    [Fact]
+    public void A_relative_path_is_taken_as_relative_to_the_solution_directory_not_the_working_directory()
+    {
+        Assert.Equal("App/obj/Gen/Hint.g.cs", SolutionPaths.Key("App/obj/Gen/Hint.g.cs", Path.GetFullPath("/repo")));
+    }
 }

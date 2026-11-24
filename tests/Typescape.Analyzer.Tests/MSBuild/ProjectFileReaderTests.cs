@@ -1,3 +1,4 @@
+using Typescape.Analyzer.Infrastructure;
 using Typescape.Analyzer.MSBuild;
 
 namespace Typescape.Analyzer.Tests.MSBuild;
@@ -247,7 +248,7 @@ public sealed class ProjectFileReaderTests : IDisposable
     private (string, ProjectReferenceKind)[] ReadKinds(string project) =>
         [.. ProjectFileReader.ProjectReferences(project, "net10.0", Debug).Select(reference => (Relative(reference.Path), reference.Kind))];
 
-    private string Relative(string path) => Path.GetRelativePath(_directory, path).Replace('\\', '/');
+    private string Relative(string path) => SolutionPaths.Key(path, _directory);
 
     private string Sdk(string path, string body, string properties = "<TargetFramework>net10.0</TargetFramework>") =>
         Write(path, $"""

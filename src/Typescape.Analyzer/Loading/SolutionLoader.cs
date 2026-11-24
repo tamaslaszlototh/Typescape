@@ -148,7 +148,7 @@ internal static class SolutionLoader
             ? candidates.MinBy(candidate => candidate.Project.Name, StringComparer.Ordinal)
             : candidates.First(candidate => candidate.Tfm == chosen);
 
-        return new LoadedProject(Key(directory, path), project, tfm, available);
+        return new LoadedProject(SolutionPaths.Key(path, directory), project, tfm, available);
     }
 
     private static IReadOnlyList<string> Available(string path, IReadOnlyList<Project> perTfm, LoadProgress progress) =>
@@ -158,10 +158,6 @@ internal static class SolutionLoader
     private static string? TfmOf(Project project, IReadOnlyList<string> available) =>
         available.FirstOrDefault(tfm => project.Name.EndsWith($"({tfm})", StringComparison.Ordinal))
         ?? (available.Count == 1 ? available[0] : null);
-
-    /// <summary>The stable key of the project file at <paramref name="path"/>.</summary>
-    public static string Key(string directory, string path) =>
-        Path.GetRelativePath(directory, path).Replace('\\', '/');
 
     /// <summary>
     /// Collects the target frameworks MSBuildWorkspace resolves per project file, and counts each listed project when its

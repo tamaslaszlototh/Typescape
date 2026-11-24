@@ -1,0 +1,13 @@
+{
+  "documents": [
+    {
+      "path": "App/Program.cs"
+    },
+    {
+      "path": "App/Orders/Order.cs"
+    },
+    {
+      "path": "../Shared/Link.cs"
+    }
+  ]
+}
