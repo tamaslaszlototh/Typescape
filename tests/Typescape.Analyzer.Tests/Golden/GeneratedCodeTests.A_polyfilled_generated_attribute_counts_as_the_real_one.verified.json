@@ -1,0 +1,20 @@
+{
+  "documents": [],
+  "types": [],
+  "executableMembers": [
+    {
+      "key": "App|T:Order|M:Order.Validate",
+      "type": "App|T:Order",
+      "signature": "Validate()",
+      "kind": "method",
+      "accessibility": "private",
+      "document": "App/Snippet.cs",
+      "lines": {
+        "start": 9,
+        "end": 10
+      },
+      "generated": true
+    }
+  ],
+  "analyzerErrors": []
+}

@@ -1,10 +1,12 @@
 {
   "documents": [
     {
-      "path": "App/Broken.cs"
+      "path": "App/Broken.cs",
+      "generatedReason": null
     },
     {
-      "path": "App/Customer.cs"
+      "path": "App/Customer.cs",
+      "generatedReason": null
     }
   ],
   "types": [
@@ -25,7 +27,8 @@
           "lines": {
             "start": 2,
             "end": 2
-          }
+          },
+          "generated": false
         }
       ]
     },
@@ -46,7 +49,8 @@
           "lines": {
             "start": 1,
             "end": 1
-          }
+          },
+          "generated": false
         }
       ]
     }

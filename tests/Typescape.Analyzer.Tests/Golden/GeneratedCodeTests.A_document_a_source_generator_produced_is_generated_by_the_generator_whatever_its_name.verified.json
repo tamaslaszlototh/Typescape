@@ -1,0 +1,19 @@
+{
+  "documents": [
+    {
+      "path": "App/obj/Generators/Order.Json.g.cs",
+      "generatedReason": "generator"
+    },
+    {
+      "path": "App/obj/Generators/Registrations.cs",
+      "generatedReason": "generator"
+    },
+    {
+      "path": "App/Order.cs",
+      "generatedReason": null
+    }
+  ],
+  "types": [],
+  "executableMembers": [],
+  "analyzerErrors": []
+}

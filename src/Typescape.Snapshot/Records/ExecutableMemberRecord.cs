@@ -16,7 +16,8 @@ namespace Typescape.Snapshot.Records;
 /// <param name="Cyclomatic">Cyclomatic complexity.</param>
 /// <param name="Cognitive">Cognitive complexity.</param>
 /// <param name="Generated">
-/// Whether the member is generated: in a generated declaration, or carrying <c>[GeneratedCode]</c> or <c>[CompilerGenerated]</c>.
+/// Whether the member is generated: in a generated declaration, or carrying <c>[GeneratedCode]</c> or <c>[CompilerGenerated]</c>;
+/// an accessor also when its property, indexer or event carries one.
 /// </param>
 public sealed record ExecutableMemberRecord(
     string Key,

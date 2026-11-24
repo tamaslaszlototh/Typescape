@@ -1,5 +1,4 @@
 using Microsoft.CodeAnalysis;
-using Typescape.Analyzer.Extraction;
 
 namespace Typescape.Analyzer.Tests.Extraction;
 
@@ -28,7 +27,7 @@ public class ExecutableMembersTests
             }
             """);
 
-        RuleTest.Match(Members(facts));
+        RuleTest.Match(RuleTest.Keep(facts, members: true));
     }
 
     [Fact]
@@ -62,7 +61,7 @@ public class ExecutableMembersTests
             }
             """);
 
-        RuleTest.Match(Members(facts));
+        RuleTest.Match(RuleTest.Keep(facts, members: true));
     }
 
     [Fact]
@@ -91,7 +90,7 @@ public class ExecutableMembersTests
             """);
 
         Assert.Equal(["App|T:Order|M:Order.Total", "App|T:Order|M:Order.Count"], facts.ExecutableMembers.Select(member => member.Key));
-        RuleTest.Match(Members(facts));
+        RuleTest.Match(RuleTest.Keep(facts, members: true));
     }
 
     [Fact]
@@ -165,7 +164,7 @@ public class ExecutableMembersTests
                 """),
         ]);
 
-        RuleTest.Match(Members(facts));
+        RuleTest.Match(RuleTest.Keep(facts, members: true));
     }
 
     [Fact]
@@ -190,7 +189,7 @@ public class ExecutableMembersTests
             }
             """);
 
-        RuleTest.Match(Members(facts));
+        RuleTest.Match(RuleTest.Keep(facts, members: true));
     }
 
     [Fact]
@@ -210,7 +209,7 @@ public class ExecutableMembersTests
             ],
             OutputKind.ConsoleApplication));
 
-        RuleTest.Match(Members(facts));
+        RuleTest.Match(RuleTest.Keep(facts, members: true));
     }
 
     [Fact]
@@ -233,7 +232,7 @@ public class ExecutableMembersTests
             }
             """);
 
-        RuleTest.Match(Members(facts));
+        RuleTest.Match(RuleTest.Keep(facts, members: true));
     }
 
     [Fact]
@@ -258,7 +257,7 @@ public class ExecutableMembersTests
             }
             """);
 
-        RuleTest.Match(Members(facts));
+        RuleTest.Match(RuleTest.Keep(facts, members: true));
     }
 
     [Fact]
@@ -273,7 +272,7 @@ public class ExecutableMembersTests
             }
             """);
 
-        RuleTest.Match(Members(facts));
+        RuleTest.Match(RuleTest.Keep(facts, members: true));
     }
 
     [Fact]
@@ -304,8 +303,4 @@ public class ExecutableMembersTests
             declaration => declaration.Document == member.Document
                 && declaration.Lines.Start <= member.Lines.Start
                 && member.Lines.End <= declaration.Lines.End));
-    }
-
-    private static ProjectFacts Members(ProjectFacts facts) =>
-        ProjectFacts.Empty with { ExecutableMembers = facts.ExecutableMembers, AnalyzerErrors = facts.AnalyzerErrors };
-}
+    }}

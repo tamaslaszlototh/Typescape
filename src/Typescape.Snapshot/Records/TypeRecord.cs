@@ -35,8 +35,9 @@ public sealed record TypeRecord(
 /// <param name="Lines">The lines the declaration spans.</param>
 /// <param name="Loc">Lines of code in this declaration, nested type bodies excluded.</param>
 /// <param name="Generated">
-/// Whether this declaration is generated: in a generated document, or carrying <c>[GeneratedCode]</c> or
-/// <c>[CompilerGenerated]</c>. Per declaration, because a partial type can be half generated.
+/// Whether this declaration is generated: in a generated document, carrying <c>[GeneratedCode]</c> or
+/// <c>[CompilerGenerated]</c>, or nested in a generated declaration of the containing type. Per declaration, because a
+/// partial type can be half generated.
 /// </param>
 public sealed record TypeDeclaration(int Document, LineSpan Lines, int Loc, bool Generated);
 

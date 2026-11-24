@@ -1,5 +1,4 @@
 using Microsoft.CodeAnalysis;
-using Typescape.Analyzer.Extraction;
 
 namespace Typescape.Analyzer.Tests.Extraction;
 
@@ -26,7 +25,7 @@ public class OwnTypesTests
                 """),
         ]);
 
-        RuleTest.Match(Types(facts));
+        RuleTest.Match(RuleTest.Keep(facts, types: true));
     }
 
     [Fact]
@@ -46,7 +45,7 @@ public class OwnTypesTests
             }
             """);
 
-        RuleTest.Match(Types(facts));
+        RuleTest.Match(RuleTest.Keep(facts, types: true));
     }
 
     [Fact]
@@ -67,7 +66,7 @@ public class OwnTypesTests
             public class Orders : Repository<int, string> { }
             """);
 
-        RuleTest.Match(Types(facts));
+        RuleTest.Match(RuleTest.Keep(facts, types: true));
     }
 
     [Fact]
@@ -86,7 +85,7 @@ public class OwnTypesTests
             delegate void Changed(Shape shape);
             """);
 
-        RuleTest.Match(Types(facts));
+        RuleTest.Match(RuleTest.Keep(facts, types: true));
     }
 
     [Fact]
@@ -106,7 +105,7 @@ public class OwnTypesTests
             }
             """);
 
-        RuleTest.Match(Types(facts));
+        RuleTest.Match(RuleTest.Keep(facts, types: true));
     }
 
     [Fact]
@@ -124,7 +123,7 @@ public class OwnTypesTests
             }
             """);
 
-        RuleTest.Match(Types(facts));
+        RuleTest.Match(RuleTest.Keep(facts, types: true));
     }
 
     [Fact]
@@ -145,7 +144,7 @@ public class OwnTypesTests
             ],
             OutputKind.ConsoleApplication));
 
-        RuleTest.Match(Types(facts));
+        RuleTest.Match(RuleTest.Keep(facts, types: true));
     }
 
     [Fact]
@@ -161,7 +160,7 @@ public class OwnTypesTests
             }
             """);
 
-        RuleTest.Match(Types(facts));
+        RuleTest.Match(RuleTest.Keep(facts, types: true));
     }
 
     [Fact]
@@ -170,7 +169,4 @@ public class OwnTypesTests
         var facts = RuleTest.Extract("class Order { System.Collections.Generic.List<int> lines = []; }");
 
         Assert.Equal(["App|T:Order"], facts.Types.Select(type => type.Key));
-    }
-
-    private static ProjectFacts Types(ProjectFacts facts) => ProjectFacts.Empty with { Types = facts.Types, AnalyzerErrors = facts.AnalyzerErrors };
-}
+    }}

@@ -18,14 +18,16 @@
           "lines": {
             "start": 3,
             "end": 6
-          }
+          },
+          "generated": false
         },
         {
           "document": "App/Order.Lines.cs",
           "lines": {
             "start": 3,
             "end": 3
-          }
+          },
+          "generated": false
         }
       ]
     }

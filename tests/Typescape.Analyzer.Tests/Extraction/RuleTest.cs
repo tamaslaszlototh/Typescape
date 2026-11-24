@@ -31,11 +31,16 @@ internal static class RuleTest
     /// <param name="documents">Paths relative to the solution directory.</param>
     /// <param name="cancellationToken">The test's token when <c>null</c>.</param>
     public static ProjectFacts Extract(IEnumerable<(string Path, string Source)> documents, CancellationToken? cancellationToken = null) =>
-        Extract(Compile(documents), cancellationToken);
+        Extract(Compile(documents), cancellationToken: cancellationToken);
 
+    /// <param name="context"><see cref="Context"/> when <c>null</c>.</param>
     /// <param name="cancellationToken">The test's token when <c>null</c>.</param>
-    public static ProjectFacts Extract(Compilation compilation, CancellationToken? cancellationToken = null) =>
-        ProjectExtractor.Extract(compilation, Context, cancellationToken ?? TestContext.Current.CancellationToken);
+    public static ProjectFacts Extract(Compilation compilation, ProjectContext? context = null, CancellationToken? cancellationToken = null) =>
+        ProjectExtractor.Extract(compilation, context ?? Context, cancellationToken ?? TestContext.Current.CancellationToken);
+
+    /// <summary>The absolute file path a document compiled from <paramref name="path"/> has.</summary>
+    /// <param name="path">Relative to the solution directory.</param>
+    public static string FullPath(string path) => Path.GetFullPath(Path.Combine(SolutionDirectory, path));
 
     /// <param name="documents">Paths relative to the solution directory.</param>
     /// <param name="allowedErrors">The compiler error codes the snippet may have, e.g. <c>CS0116</c>.</param>
@@ -48,7 +53,7 @@ internal static class RuleTest
         var trees = documents.Select(document => CSharpSyntaxTree.ParseText(
             document.Source,
             new CSharpParseOptions(LanguageVersion.Latest),
-            Path.GetFullPath(Path.Combine(SolutionDirectory, document.Path))));
+            FullPath(document.Path)));
         var compilation = CSharpCompilation.Create(
             "App",
             trees,
@@ -66,6 +71,19 @@ internal static class RuleTest
 
         return compilation;
     }
+
+    /// <summary>
+    /// Only the chosen fact lists of <paramref name="facts"/>, always with its analyzer errors, so a new fact list leaves
+    /// existing goldens alone.
+    /// </summary>
+    public static ProjectFacts Keep(ProjectFacts facts, bool documents = false, bool types = false, bool members = false) =>
+        ProjectFacts.Empty with
+        {
+            Documents = documents ? facts.Documents : [],
+            Types = types ? facts.Types : [],
+            ExecutableMembers = members ? facts.ExecutableMembers : [],
+            AnalyzerErrors = facts.AnalyzerErrors,
+        };
 
     public static string Render(ProjectFacts facts) => JsonSerializer.Serialize(facts, Json) + "\n";
 

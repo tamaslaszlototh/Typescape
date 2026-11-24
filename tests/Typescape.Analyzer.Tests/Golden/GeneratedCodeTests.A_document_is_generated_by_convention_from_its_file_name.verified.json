@@ -1,0 +1,39 @@
+{
+  "documents": [
+    {
+      "path": "App/Order.g.cs",
+      "generatedReason": "convention"
+    },
+    {
+      "path": "App/Order.g.i.cs",
+      "generatedReason": "convention"
+    },
+    {
+      "path": "App/Order.generated.cs",
+      "generatedReason": "convention"
+    },
+    {
+      "path": "App/Form.Designer.cs",
+      "generatedReason": "convention"
+    },
+    {
+      "path": "App/obj/TemporaryGeneratedFile_E7A71F73.cs",
+      "generatedReason": "convention"
+    },
+    {
+      "path": "App/g.cs",
+      "generatedReason": null
+    },
+    {
+      "path": "App/Designer.cs",
+      "generatedReason": null
+    },
+    {
+      "path": "App/Order.gen.cs",
+      "generatedReason": null
+    }
+  ],
+  "types": [],
+  "executableMembers": [],
+  "analyzerErrors": []
+}

@@ -12,7 +12,8 @@
       "lines": {
         "start": 7,
         "end": 7
-      }
+      },
+      "generated": false
     },
     {
       "key": "App|T:Shop.Money|M:Shop.Money.#cctor",
@@ -24,7 +25,8 @@
       "lines": {
         "start": 8,
         "end": 8
-      }
+      },
+      "generated": false
     },
     {
       "key": "App|T:Shop.Money|M:Shop.Money.Finalize",
@@ -36,7 +38,8 @@
       "lines": {
         "start": 9,
         "end": 9
-      }
+      },
+      "generated": false
     },
     {
       "key": "App|T:Shop.Money|M:Shop.Money.op_Addition(Shop.Money,Shop.Money)",
@@ -48,7 +51,8 @@
       "lines": {
         "start": 11,
         "end": 11
-      }
+      },
+      "generated": false
     },
     {
       "key": "App|T:Shop.Money|M:Shop.Money.op_Implicit(Shop.Money)~System.Decimal",
@@ -60,7 +64,8 @@
       "lines": {
         "start": 12,
         "end": 12
-      }
+      },
+      "generated": false
     },
     {
       "key": "App|T:Shop.Money|M:Shop.Money.op_Explicit(System.Decimal)~Shop.Money",
@@ -72,7 +77,8 @@
       "lines": {
         "start": 13,
         "end": 13
-      }
+      },
+      "generated": false
     },
     {
       "key": "App|T:Shop.Money|M:Shop.Money.Convert``1(``0,System.Int32@,System.Int32[])",
@@ -84,7 +90,8 @@
       "lines": {
         "start": 15,
         "end": 15
-      }
+      },
+      "generated": false
     },
     {
       "key": "App|T:Shop.Money|M:Shop.Money.System#IDisposable#Dispose",
@@ -96,7 +103,8 @@
       "lines": {
         "start": 16,
         "end": 16
-      }
+      },
+      "generated": false
     }
   ],
   "analyzerErrors": []

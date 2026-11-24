@@ -21,31 +21,27 @@ internal static class ExecutableMembers
         parameterOptions: SymbolDisplayParameterOptions.IncludeType | SymbolDisplayParameterOptions.IncludeParamsRefOut,
         miscellaneousOptions: SymbolDisplayMiscellaneousOptions.UseSpecialTypes | SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers);
 
-    public static IEnumerable<ExecutableMemberFact> Of(
-        INamedTypeSymbol type,
-        string typeKey,
-        ProjectContext context,
-        CancellationToken cancellationToken)
+    public static IEnumerable<ExecutableMemberFact> Of(INamedTypeSymbol type, string typeKey, ProjectScope scope)
     {
         // A C# 14 extension block is no type of its own, so its members belong to the static class around it.
         var extensionMembers = type.GetTypeMembers().Where(nested => nested.IsExtension).SelectMany(block => block.GetMembers());
         foreach (var method in type.GetMembers().Concat(extensionMembers).OfType<IMethodSymbol>())
         {
-            cancellationToken.ThrowIfCancellationRequested();
-            if (Fact(method, typeKey, context, cancellationToken) is { } fact)
+            scope.CancellationToken.ThrowIfCancellationRequested();
+            if (Fact(type, method, typeKey, scope) is { } fact)
             {
                 yield return fact;
             }
         }
     }
 
-    private static ExecutableMemberFact? Fact(IMethodSymbol method, string typeKey, ProjectContext context, CancellationToken cancellationToken)
+    private static ExecutableMemberFact? Fact(INamedTypeSymbol type, IMethodSymbol method, string typeKey, ProjectScope scope)
     {
         // A partial member's definition part has no body; the implementation part, when there is one, has it.
         var withBody = method.PartialImplementationPart ?? method;
         if (withBody.IsImplicitlyDeclared
             || Kind(withBody) is not { } kind
-            || withBody.DeclaringSyntaxReferences.Select(reference => reference.GetSyntax(cancellationToken)).FirstOrDefault(HasBody) is not { } body)
+            || withBody.DeclaringSyntaxReferences.Select(reference => reference.GetSyntax(scope.CancellationToken)).FirstOrDefault(HasBody) is not { } body)
         {
             return null;
         }
@@ -59,8 +55,9 @@ internal static class ExecutableMembers
             entryPoint is null ? Signature(withBody) : EntryPointSignature,
             entryPoint is null ? kind : ExecutableMemberKind.EntryPoint,
             Symbols.Accessibility(withBody),
-            Source.Document(body.SyntaxTree, context),
-            Source.Lines(body.SyntaxTree, entryPoint is null ? Span(body) : Source.TopLevelStatements(entryPoint), cancellationToken));
+            Source.Document(body.SyntaxTree, scope.Context),
+            Source.Lines(body.SyntaxTree, entryPoint is null ? Span(body) : Source.TopLevelStatements(entryPoint), scope.CancellationToken),
+            scope.Generated.MemberIsGenerated(type, withBody, body));
     }
 
     private static ExecutableMemberKind? Kind(IMethodSymbol method) =>

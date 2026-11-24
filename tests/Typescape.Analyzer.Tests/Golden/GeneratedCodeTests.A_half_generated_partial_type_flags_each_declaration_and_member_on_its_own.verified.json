@@ -1,0 +1,85 @@
+{
+  "documents": [],
+  "types": [
+    {
+      "key": "App|T:Order",
+      "name": "Order",
+      "kind": "class",
+      "accessibility": "internal",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": "",
+      "containingType": null,
+      "declarations": [
+        {
+          "document": "App/Order.cs",
+          "lines": {
+            "start": 1,
+            "end": 4
+          },
+          "generated": false
+        },
+        {
+          "document": "App/Order.Json.cs",
+          "lines": {
+            "start": 3,
+            "end": 7
+          },
+          "generated": true
+        },
+        {
+          "document": "App/Order.Designer.cs",
+          "lines": {
+            "start": 1,
+            "end": 4
+          },
+          "generated": true
+        }
+      ]
+    }
+  ],
+  "executableMembers": [
+    {
+      "key": "App|T:Order|M:Order.Total",
+      "type": "App|T:Order",
+      "signature": "Total()",
+      "kind": "method",
+      "accessibility": "public",
+      "document": "App/Order.cs",
+      "lines": {
+        "start": 3,
+        "end": 3
+      },
+      "generated": false
+    },
+    {
+      "key": "App|T:Order|M:Order.ToJson",
+      "type": "App|T:Order",
+      "signature": "ToJson()",
+      "kind": "method",
+      "accessibility": "public",
+      "document": "App/Order.Json.cs",
+      "lines": {
+        "start": 6,
+        "end": 6
+      },
+      "generated": true
+    },
+    {
+      "key": "App|T:Order|M:Order.InitializeComponent",
+      "type": "App|T:Order",
+      "signature": "InitializeComponent()",
+      "kind": "method",
+      "accessibility": "private",
+      "document": "App/Order.Designer.cs",
+      "lines": {
+        "start": 3,
+        "end": 3
+      },
+      "generated": true
+    }
+  ],
+  "analyzerErrors": []
+}

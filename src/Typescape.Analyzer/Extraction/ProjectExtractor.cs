@@ -28,6 +28,14 @@ internal static class ProjectExtractor
         CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
-        return ProjectFacts.Empty with { Documents = [new DocumentFact(Source.Document(document, context))] };
+        var scope = ProjectScope.Create(compilation, context, cancellationToken);
+        var key = Source.Document(document, context);
+        var walked = AnalyzerErrors.Catch(
+            key,
+            () => ProjectFacts.Empty with { Documents = [new DocumentFact(key, scope.Generated.Reason(document))] },
+            cancellationToken);
+
+        // The document outlives a failed walk: the declarations in it still name it.
+        return walked.Documents.Count > 0 ? walked : walked with { Documents = [new DocumentFact(key, GeneratedReason: null)] };
     }
 }

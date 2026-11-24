@@ -12,7 +12,8 @@
       "lines": {
         "start": 6,
         "end": 10
-      }
+      },
+      "generated": false
     },
     {
       "key": "App|T:Repository`1.Cursor|M:Repository`1.Cursor.Next",
@@ -24,7 +25,8 @@
       "lines": {
         "start": 14,
         "end": 14
-      }
+      },
+      "generated": false
     }
   ],
   "analyzerErrors": []

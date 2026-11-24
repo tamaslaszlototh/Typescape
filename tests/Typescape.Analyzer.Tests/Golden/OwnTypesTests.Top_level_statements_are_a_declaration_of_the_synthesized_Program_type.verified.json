@@ -18,14 +18,16 @@
           "lines": {
             "start": 3,
             "end": 5
-          }
+          },
+          "generated": false
         },
         {
           "document": "App/Program.cs",
           "lines": {
             "start": 1,
             "end": 1
-          }
+          },
+          "generated": false
         }
       ]
     },
@@ -46,7 +48,8 @@
           "lines": {
             "start": 7,
             "end": 7
-          }
+          },
+          "generated": false
         }
       ]
     }

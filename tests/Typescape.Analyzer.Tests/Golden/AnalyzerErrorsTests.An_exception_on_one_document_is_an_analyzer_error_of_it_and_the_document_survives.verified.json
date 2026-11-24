@@ -1,0 +1,49 @@
+{
+  "documents": [
+    {
+      "path": "App/Broken.cs",
+      "generatedReason": null
+    },
+    {
+      "path": "App/Customer.cs",
+      "generatedReason": null
+    }
+  ],
+  "types": [
+    {
+      "key": "App|T:Customer",
+      "name": "Customer",
+      "kind": "class",
+      "accessibility": "public",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": "",
+      "containingType": null,
+      "declarations": [
+        {
+          "document": "App/Customer.cs",
+          "lines": {
+            "start": 1,
+            "end": 1
+          },
+          "generated": false
+        }
+      ]
+    }
+  ],
+  "executableMembers": [],
+  "analyzerErrors": [
+    {
+      "document": "App/Broken.cs",
+      "exceptionType": "System.InvalidOperationException",
+      "frame": "Typescape.Analyzer.Extraction.GeneratedCode.Decide(SyntaxTree)"
+    },
+    {
+      "document": "App/Broken.cs",
+      "exceptionType": "System.InvalidOperationException",
+      "frame": "Typescape.Analyzer.Extraction.GeneratedCode.Decide(SyntaxTree)"
+    }
+  ]
+}

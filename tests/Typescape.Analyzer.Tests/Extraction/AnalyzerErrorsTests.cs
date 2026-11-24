@@ -1,3 +1,5 @@
+using Microsoft.CodeAnalysis;
+
 namespace Typescape.Analyzer.Tests.Extraction;
 
 public class AnalyzerErrorsTests
@@ -15,5 +17,20 @@ public class AnalyzerErrorsTests
         ], allowedErrors: ["CS9348"]));
 
         RuleTest.Match(facts);
+    }
+
+    [Fact]
+    public void An_exception_on_one_document_is_an_analyzer_error_of_it_and_the_document_survives()
+    {
+        var compilation = RuleTest.Compile(
+        [
+            ("App/Broken.cs", "public class Order { }"),
+            ("App/Customer.cs", "public class Customer { }"),
+        ]);
+        var broken = RuleTest.FullPath("App/Broken.cs");
+        var settings = new GeneratedCodeSettings(tree =>
+            tree.FilePath == broken ? throw new InvalidOperationException("Unreadable settings.") : GeneratedKind.Unknown);
+
+        RuleTest.Match(RuleTest.Extract(compilation.WithOptions(compilation.Options.WithSyntaxTreeOptionsProvider(settings))));
     }
 }

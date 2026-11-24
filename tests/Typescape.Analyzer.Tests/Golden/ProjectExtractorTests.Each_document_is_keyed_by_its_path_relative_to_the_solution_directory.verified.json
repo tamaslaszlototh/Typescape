@@ -1,13 +1,16 @@
 {
   "documents": [
     {
-      "path": "App/Program.cs"
+      "path": "App/Program.cs",
+      "generatedReason": null
     },
     {
-      "path": "App/Orders/Order.cs"
+      "path": "App/Orders/Order.cs",
+      "generatedReason": null
     },
     {
-      "path": "../Shared/Link.cs"
+      "path": "../Shared/Link.cs",
+      "generatedReason": null
     }
   ],
   "types": [],

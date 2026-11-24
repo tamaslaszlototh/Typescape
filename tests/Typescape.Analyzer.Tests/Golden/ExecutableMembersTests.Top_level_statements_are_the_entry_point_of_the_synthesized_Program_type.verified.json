@@ -12,7 +12,8 @@
       "lines": {
         "start": 3,
         "end": 5
-      }
+      },
+      "generated": false
     }
   ],
   "analyzerErrors": []

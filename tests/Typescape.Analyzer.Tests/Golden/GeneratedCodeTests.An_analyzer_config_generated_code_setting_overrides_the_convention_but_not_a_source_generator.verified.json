@@ -1,0 +1,19 @@
+{
+  "documents": [
+    {
+      "path": "App/Marked.cs",
+      "generatedReason": "convention"
+    },
+    {
+      "path": "App/Unmarked.g.cs",
+      "generatedReason": null
+    },
+    {
+      "path": "App/obj/Generators/Unmarked.cs",
+      "generatedReason": "generator"
+    }
+  ],
+  "types": [],
+  "executableMembers": [],
+  "analyzerErrors": []
+}

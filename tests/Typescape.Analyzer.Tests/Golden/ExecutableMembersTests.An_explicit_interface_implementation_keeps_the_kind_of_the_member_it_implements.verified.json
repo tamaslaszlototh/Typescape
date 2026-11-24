@@ -12,7 +12,8 @@
       "lines": {
         "start": 6,
         "end": 6
-      }
+      },
+      "generated": false
     },
     {
       "key": "App|T:Money|M:Money.IAmount{Money}#op_Addition(Money,Money)",
@@ -24,7 +25,8 @@
       "lines": {
         "start": 12,
         "end": 12
-      }
+      },
+      "generated": false
     },
     {
       "key": "App|T:Money|M:Money.IAmount{Money}#op_Explicit(Money)",
@@ -36,7 +38,8 @@
       "lines": {
         "start": 13,
         "end": 13
-      }
+      },
+      "generated": false
     },
     {
       "key": "App|T:Money|M:Money.IAmount{Money}#Create",
@@ -48,7 +51,8 @@
       "lines": {
         "start": 14,
         "end": 14
-      }
+      },
+      "generated": false
     },
     {
       "key": "App|T:Money|M:Money.IAmount{Money}#get_Count",
@@ -60,7 +64,8 @@
       "lines": {
         "start": 15,
         "end": 15
-      }
+      },
+      "generated": false
     }
   ],
   "analyzerErrors": []

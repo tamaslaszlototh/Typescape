@@ -1,0 +1,48 @@
+{
+  "documents": [
+    {
+      "path": "App/Program.g.cs",
+      "generatedReason": "convention"
+    }
+  ],
+  "types": [
+    {
+      "key": "App|T:Program",
+      "name": "Program",
+      "kind": "class",
+      "accessibility": "internal",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": "",
+      "containingType": null,
+      "declarations": [
+        {
+          "document": "App/Program.g.cs",
+          "lines": {
+            "start": 1,
+            "end": 1
+          },
+          "generated": true
+        }
+      ]
+    }
+  ],
+  "executableMembers": [
+    {
+      "key": "App|T:Program|M:Program.{Main}$(System.String[])",
+      "type": "App|T:Program",
+      "signature": "<top-level statements>",
+      "kind": "entry-point",
+      "accessibility": "private",
+      "document": "App/Program.g.cs",
+      "lines": {
+        "start": 1,
+        "end": 1
+      },
+      "generated": true
+    }
+  ],
+  "analyzerErrors": []
+}

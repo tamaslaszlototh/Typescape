@@ -12,7 +12,8 @@
       "lines": {
         "start": 5,
         "end": 5
-      }
+      },
+      "generated": false
     },
     {
       "key": "App|T:Text|M:Text.Twice(System.String)",
@@ -24,7 +25,8 @@
       "lines": {
         "start": 7,
         "end": 7
-      }
+      },
+      "generated": false
     },
     {
       "key": "App|T:Text|M:Text.Twice(System.Int32)",
@@ -36,7 +38,8 @@
       "lines": {
         "start": 12,
         "end": 12
-      }
+      },
+      "generated": false
     }
   ],
   "analyzerErrors": []

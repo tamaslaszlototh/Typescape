@@ -12,7 +12,8 @@
       "lines": {
         "start": 3,
         "end": 3
-      }
+      },
+      "generated": false
     },
     {
       "key": "App|T:Order|M:Order.get_Total",
@@ -24,7 +25,8 @@
       "lines": {
         "start": 5,
         "end": 5
-      }
+      },
+      "generated": false
     }
   ],
   "analyzerErrors": []

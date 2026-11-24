@@ -8,26 +8,29 @@ namespace Typescape.Analyzer.Extraction;
 /// <summary>The project's own types: every named type its source declares, nested ones included.</summary>
 internal static class OwnTypes
 {
-    public static ProjectFacts Extract(Compilation compilation, ProjectContext context, CancellationToken cancellationToken) =>
-        ProjectFacts.Combine(Declared(compilation.Assembly.GlobalNamespace).Select(type => Guarded(type, context, cancellationToken)));
+    public static ProjectFacts Extract(Compilation compilation, ProjectContext context, CancellationToken cancellationToken)
+    {
+        var scope = ProjectScope.Create(compilation, context, cancellationToken);
+        return ProjectFacts.Combine(Declared(compilation.Assembly.GlobalNamespace).Select(type => Guarded(type, scope)));
+    }
 
     // An exception on one type is pinned to the document of its first declaration, and the other types survive it.
-    private static ProjectFacts Guarded(INamedTypeSymbol type, ProjectContext context, CancellationToken cancellationToken)
+    private static ProjectFacts Guarded(INamedTypeSymbol type, ProjectScope scope)
     {
         ProjectFacts Walk()
         {
-            cancellationToken.ThrowIfCancellationRequested();
-            return Fact(type, context, cancellationToken) is { } fact
-                ? ProjectFacts.Empty with { Types = [fact], ExecutableMembers = [.. ExecutableMembers.Of(type, fact.Key, context, cancellationToken)] }
+            scope.CancellationToken.ThrowIfCancellationRequested();
+            return Fact(type, scope) is { } fact
+                ? ProjectFacts.Empty with { Types = [fact], ExecutableMembers = [.. ExecutableMembers.Of(type, fact.Key, scope)] }
                 : ProjectFacts.Empty;
         }
 
         return type.DeclaringSyntaxReferences.FirstOrDefault() is { } first
-            ? AnalyzerErrors.Catch(Source.Document(first.SyntaxTree, context), Walk, cancellationToken)
+            ? AnalyzerErrors.Catch(Source.Document(first.SyntaxTree, scope.Context), Walk, scope.CancellationToken)
             : Walk();
     }
 
-    private static TypeFact? Fact(INamedTypeSymbol type, ProjectContext context, CancellationToken cancellationToken)
+    private static TypeFact? Fact(INamedTypeSymbol type, ProjectScope scope)
     {
         // C# 14 extension blocks are named types too, but not ones a reader would call a type.
         if (Kind(type) is not { } kind)
@@ -47,7 +50,7 @@ internal static class OwnTypes
             type.Arity,
             NamespaceName(type.ContainingNamespace),
             type.ContainingType is { } containing ? Key(containing) : null,
-            [.. type.DeclaringSyntaxReferences.Select(reference => Declaration(reference, context, cancellationToken))]);
+            [.. type.DeclaringSyntaxReferences.Select(reference => Declaration(type, reference, scope))]);
     }
 
     private static IEnumerable<INamedTypeSymbol> Declared(INamespaceSymbol container) =>
@@ -75,9 +78,12 @@ internal static class OwnTypes
         : ns.ContainingNamespace.IsGlobalNamespace ? ns.Name
         : $"{NamespaceName(ns.ContainingNamespace)}.{ns.Name}";
 
-    private static TypeDeclarationFact Declaration(SyntaxReference reference, ProjectContext context, CancellationToken cancellationToken)
+    private static TypeDeclarationFact Declaration(INamedTypeSymbol type, SyntaxReference reference, ProjectScope scope)
     {
-        var span = reference.GetSyntax(cancellationToken) is CompilationUnitSyntax unit ? Source.TopLevelStatements(unit) : reference.Span;
-        return new TypeDeclarationFact(Source.Document(reference.SyntaxTree, context), Source.Lines(reference.SyntaxTree, span, cancellationToken));
+        var span = reference.GetSyntax(scope.CancellationToken) is CompilationUnitSyntax unit ? Source.TopLevelStatements(unit) : reference.Span;
+        return new TypeDeclarationFact(
+            Source.Document(reference.SyntaxTree, scope.Context),
+            Source.Lines(reference.SyntaxTree, span, scope.CancellationToken),
+            scope.Generated.DeclarationIsGenerated(type, reference));
     }
 }
