@@ -9,8 +9,11 @@ namespace Typescape.Analyzer.Extraction;
 internal sealed record ProjectFacts(
     IReadOnlyList<DocumentFact> Documents,
     IReadOnlyList<TypeFact> Types,
+    IReadOnlyList<ExecutableMemberFact> ExecutableMembers,
     IReadOnlyList<AnalyzerErrorFact> AnalyzerErrors)
 {
+    public static ProjectFacts Empty { get; } = new([], [], [], []);
+
     /// <summary>The facts of all <paramref name="parts"/> together, in their order.</summary>
     public static ProjectFacts Combine(IEnumerable<ProjectFacts> parts)
     {
@@ -18,6 +21,7 @@ internal sealed record ProjectFacts(
         return new(
             [.. all.SelectMany(part => part.Documents)],
             [.. all.SelectMany(part => part.Types)],
+            [.. all.SelectMany(part => part.ExecutableMembers)],
             [.. all.SelectMany(part => part.AnalyzerErrors)]);
     }
 }
@@ -50,6 +54,25 @@ internal sealed record TypeFact(
 /// <param name="Document">The document's key.</param>
 /// <param name="Lines">The physical lines the declaration spans, <c>#line</c> directives ignored.</param>
 internal sealed record TypeDeclarationFact(string Document, LineSpan Lines);
+
+/// <summary>
+/// A member with an executable body; each property, indexer and event accessor is its own. Its declaration is the one
+/// of its type's declarations in <see cref="Document"/> whose lines contain <see cref="Lines"/>: the parts of a partial
+/// type never overlap, so there is exactly one.
+/// </summary>
+/// <param name="Key">Stable key: type key + documentation comment ID.</param>
+/// <param name="Type">The containing type's key.</param>
+/// <param name="Signature">The display signature: name and parameter types, no containing type or return type.</param>
+/// <param name="Document">The key of the document holding the body.</param>
+/// <param name="Lines">The physical lines the member spans, from its attributes to its end; for an entry point, the top-level statements.</param>
+internal sealed record ExecutableMemberFact(
+    string Key,
+    string Type,
+    string Signature,
+    ExecutableMemberKind Kind,
+    DeclaredAccessibility Accessibility,
+    string Document,
+    LineSpan Lines);
 
 /// <summary>An exception in Typescape's own walker, caught on one document.</summary>
 /// <param name="Document">The document's key.</param>

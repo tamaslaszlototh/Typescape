@@ -1,0 +1,31 @@
+{
+  "documents": [],
+  "types": [],
+  "executableMembers": [
+    {
+      "key": "App|T:Order|M:Order.Validate",
+      "type": "App|T:Order",
+      "signature": "Validate()",
+      "kind": "method",
+      "accessibility": "private",
+      "document": "App/Order.Impl.cs",
+      "lines": {
+        "start": 3,
+        "end": 3
+      }
+    },
+    {
+      "key": "App|T:Order|M:Order.get_Total",
+      "type": "App|T:Order",
+      "signature": "Total.get",
+      "kind": "accessor",
+      "accessibility": "public",
+      "document": "App/Order.Impl.cs",
+      "lines": {
+        "start": 5,
+        "end": 5
+      }
+    }
+  ],
+  "analyzerErrors": []
+}

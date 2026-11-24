@@ -1,0 +1,31 @@
+{
+  "documents": [],
+  "types": [],
+  "executableMembers": [
+    {
+      "key": "App|T:Order|M:Order.Total",
+      "type": "App|T:Order",
+      "signature": "Total()",
+      "kind": "method",
+      "accessibility": "public",
+      "document": "App/Snippet.cs",
+      "lines": {
+        "start": 9,
+        "end": 16
+      }
+    },
+    {
+      "key": "App|T:Order|M:Order.Count",
+      "type": "App|T:Order",
+      "signature": "Count()",
+      "kind": "method",
+      "accessibility": "private",
+      "document": "App/Snippet.cs",
+      "lines": {
+        "start": 18,
+        "end": 18
+      }
+    }
+  ],
+  "analyzerErrors": []
+}

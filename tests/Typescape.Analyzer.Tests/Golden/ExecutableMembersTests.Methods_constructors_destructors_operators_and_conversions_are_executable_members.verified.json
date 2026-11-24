@@ -1,0 +1,103 @@
+{
+  "documents": [],
+  "types": [],
+  "executableMembers": [
+    {
+      "key": "App|T:Shop.Money|M:Shop.Money.#ctor(System.Decimal)",
+      "type": "App|T:Shop.Money",
+      "signature": "Money(decimal)",
+      "kind": "constructor",
+      "accessibility": "public",
+      "document": "App/Snippet.cs",
+      "lines": {
+        "start": 7,
+        "end": 7
+      }
+    },
+    {
+      "key": "App|T:Shop.Money|M:Shop.Money.#cctor",
+      "type": "App|T:Shop.Money",
+      "signature": "static Money()",
+      "kind": "constructor",
+      "accessibility": "private",
+      "document": "App/Snippet.cs",
+      "lines": {
+        "start": 8,
+        "end": 8
+      }
+    },
+    {
+      "key": "App|T:Shop.Money|M:Shop.Money.Finalize",
+      "type": "App|T:Shop.Money",
+      "signature": "~Money()",
+      "kind": "destructor",
+      "accessibility": "protected",
+      "document": "App/Snippet.cs",
+      "lines": {
+        "start": 9,
+        "end": 9
+      }
+    },
+    {
+      "key": "App|T:Shop.Money|M:Shop.Money.op_Addition(Shop.Money,Shop.Money)",
+      "type": "App|T:Shop.Money",
+      "signature": "operator +(Money, Money)",
+      "kind": "operator",
+      "accessibility": "public",
+      "document": "App/Snippet.cs",
+      "lines": {
+        "start": 11,
+        "end": 11
+      }
+    },
+    {
+      "key": "App|T:Shop.Money|M:Shop.Money.op_Implicit(Shop.Money)~System.Decimal",
+      "type": "App|T:Shop.Money",
+      "signature": "implicit operator decimal(Money)",
+      "kind": "conversion",
+      "accessibility": "public",
+      "document": "App/Snippet.cs",
+      "lines": {
+        "start": 12,
+        "end": 12
+      }
+    },
+    {
+      "key": "App|T:Shop.Money|M:Shop.Money.op_Explicit(System.Decimal)~Shop.Money",
+      "type": "App|T:Shop.Money",
+      "signature": "explicit operator Money(decimal)",
+      "kind": "conversion",
+      "accessibility": "public",
+      "document": "App/Snippet.cs",
+      "lines": {
+        "start": 13,
+        "end": 13
+      }
+    },
+    {
+      "key": "App|T:Shop.Money|M:Shop.Money.Convert``1(``0,System.Int32@,System.Int32[])",
+      "type": "App|T:Shop.Money",
+      "signature": "Convert<T>(T, ref int, params int[])",
+      "kind": "method",
+      "accessibility": "internal",
+      "document": "App/Snippet.cs",
+      "lines": {
+        "start": 15,
+        "end": 15
+      }
+    },
+    {
+      "key": "App|T:Shop.Money|M:Shop.Money.System#IDisposable#Dispose",
+      "type": "App|T:Shop.Money",
+      "signature": "IDisposable.Dispose()",
+      "kind": "method",
+      "accessibility": "private",
+      "document": "App/Snippet.cs",
+      "lines": {
+        "start": 16,
+        "end": 16
+      }
+    }
+  ],
+  "analyzerErrors": []
+}

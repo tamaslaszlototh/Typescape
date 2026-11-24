@@ -51,11 +51,12 @@
       ]
     }
   ],
+  "executableMembers": [],
   "analyzerErrors": [
     {
       "document": "App/Broken.cs",
       "exceptionType": "System.IndexOutOfRangeException",
-      "frame": "Typescape.Analyzer.Extraction.OwnTypes.TopLevelStatements(CompilationUnitSyntax)"
+      "frame": "Typescape.Analyzer.Extraction.Source.TopLevelStatements(CompilationUnitSyntax)"
     }
   ]
 }

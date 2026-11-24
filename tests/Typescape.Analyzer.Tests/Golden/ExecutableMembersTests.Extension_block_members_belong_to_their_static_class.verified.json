@@ -1,0 +1,43 @@
+{
+  "documents": [],
+  "types": [],
+  "executableMembers": [
+    {
+      "key": "App|T:Text|M:Text.get_IsBlank(System.String)",
+      "type": "App|T:Text",
+      "signature": "extension(string).IsBlank.get",
+      "kind": "accessor",
+      "accessibility": "public",
+      "document": "App/Snippet.cs",
+      "lines": {
+        "start": 5,
+        "end": 5
+      }
+    },
+    {
+      "key": "App|T:Text|M:Text.Twice(System.String)",
+      "type": "App|T:Text",
+      "signature": "extension(string).Twice()",
+      "kind": "method",
+      "accessibility": "public",
+      "document": "App/Snippet.cs",
+      "lines": {
+        "start": 7,
+        "end": 7
+      }
+    },
+    {
+      "key": "App|T:Text|M:Text.Twice(System.Int32)",
+      "type": "App|T:Text",
+      "signature": "extension(int).Twice()",
+      "kind": "method",
+      "accessibility": "public",
+      "document": "App/Snippet.cs",
+      "lines": {
+        "start": 12,
+        "end": 12
+      }
+    }
+  ],
+  "analyzerErrors": []
+}

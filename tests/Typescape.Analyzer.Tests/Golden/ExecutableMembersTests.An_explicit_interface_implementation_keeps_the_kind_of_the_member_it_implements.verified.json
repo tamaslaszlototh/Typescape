@@ -1,0 +1,67 @@
+{
+  "documents": [],
+  "types": [],
+  "executableMembers": [
+    {
+      "key": "App|T:IAmount`1|M:IAmount`1.Zero",
+      "type": "App|T:IAmount`1",
+      "signature": "Zero()",
+      "kind": "method",
+      "accessibility": "public",
+      "document": "App/Snippet.cs",
+      "lines": {
+        "start": 6,
+        "end": 6
+      }
+    },
+    {
+      "key": "App|T:Money|M:Money.IAmount{Money}#op_Addition(Money,Money)",
+      "type": "App|T:Money",
+      "signature": "IAmount<Money>.operator +(Money, Money)",
+      "kind": "operator",
+      "accessibility": "private",
+      "document": "App/Snippet.cs",
+      "lines": {
+        "start": 12,
+        "end": 12
+      }
+    },
+    {
+      "key": "App|T:Money|M:Money.IAmount{Money}#op_Explicit(Money)",
+      "type": "App|T:Money",
+      "signature": "IAmount<Money>.explicit operator int(Money)",
+      "kind": "conversion",
+      "accessibility": "private",
+      "document": "App/Snippet.cs",
+      "lines": {
+        "start": 13,
+        "end": 13
+      }
+    },
+    {
+      "key": "App|T:Money|M:Money.IAmount{Money}#Create",
+      "type": "App|T:Money",
+      "signature": "IAmount<Money>.Create()",
+      "kind": "method",
+      "accessibility": "private",
+      "document": "App/Snippet.cs",
+      "lines": {
+        "start": 14,
+        "end": 14
+      }
+    },
+    {
+      "key": "App|T:Money|M:Money.IAmount{Money}#get_Count",
+      "type": "App|T:Money",
+      "signature": "IAmount<Money>.Count.get",
+      "kind": "accessor",
+      "accessibility": "private",
+      "document": "App/Snippet.cs",
+      "lines": {
+        "start": 15,
+        "end": 15
+      }
+    }
+  ],
+  "analyzerErrors": []
+}

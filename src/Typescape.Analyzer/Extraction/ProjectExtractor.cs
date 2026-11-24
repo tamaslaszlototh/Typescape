@@ -1,5 +1,4 @@
 using Microsoft.CodeAnalysis;
-using Typescape.Analyzer.Infrastructure;
 
 namespace Typescape.Analyzer.Extraction;
 
@@ -29,6 +28,6 @@ internal static class ProjectExtractor
         CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
-        return new ProjectFacts([new DocumentFact(SolutionPaths.Key(document.FilePath, context.SolutionDirectory))], [], []);
+        return ProjectFacts.Empty with { Documents = [new DocumentFact(Source.Document(document, context))] };
     }
 }

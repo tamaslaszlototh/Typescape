@@ -1,4 +1,5 @@
 using Microsoft.CodeAnalysis;
+using Typescape.Analyzer.Extraction;
 
 namespace Typescape.Analyzer.Tests.Extraction;
 
@@ -25,7 +26,7 @@ public class OwnTypesTests
                 """),
         ]);
 
-        RuleTest.Match(facts with { Documents = [] });
+        RuleTest.Match(Types(facts));
     }
 
     [Fact]
@@ -45,7 +46,7 @@ public class OwnTypesTests
             }
             """);
 
-        RuleTest.Match(facts with { Documents = [] });
+        RuleTest.Match(Types(facts));
     }
 
     [Fact]
@@ -66,7 +67,7 @@ public class OwnTypesTests
             public class Orders : Repository<int, string> { }
             """);
 
-        RuleTest.Match(facts with { Documents = [] });
+        RuleTest.Match(Types(facts));
     }
 
     [Fact]
@@ -85,7 +86,7 @@ public class OwnTypesTests
             delegate void Changed(Shape shape);
             """);
 
-        RuleTest.Match(facts with { Documents = [] });
+        RuleTest.Match(Types(facts));
     }
 
     [Fact]
@@ -105,7 +106,7 @@ public class OwnTypesTests
             }
             """);
 
-        RuleTest.Match(facts with { Documents = [] });
+        RuleTest.Match(Types(facts));
     }
 
     [Fact]
@@ -123,7 +124,7 @@ public class OwnTypesTests
             }
             """);
 
-        RuleTest.Match(facts with { Documents = [] });
+        RuleTest.Match(Types(facts));
     }
 
     [Fact]
@@ -144,7 +145,7 @@ public class OwnTypesTests
             ],
             OutputKind.ConsoleApplication));
 
-        RuleTest.Match(facts with { Documents = [] });
+        RuleTest.Match(Types(facts));
     }
 
     [Fact]
@@ -160,7 +161,7 @@ public class OwnTypesTests
             }
             """);
 
-        RuleTest.Match(facts with { Documents = [] });
+        RuleTest.Match(Types(facts));
     }
 
     [Fact]
@@ -170,4 +171,6 @@ public class OwnTypesTests
 
         Assert.Equal(["App|T:Order"], facts.Types.Select(type => type.Key));
     }
+
+    private static ProjectFacts Types(ProjectFacts facts) => ProjectFacts.Empty with { Types = facts.Types, AnalyzerErrors = facts.AnalyzerErrors };
 }

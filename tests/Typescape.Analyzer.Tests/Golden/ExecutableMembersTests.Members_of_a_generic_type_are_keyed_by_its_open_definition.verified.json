@@ -1,0 +1,31 @@
+{
+  "documents": [],
+  "types": [],
+  "executableMembers": [
+    {
+      "key": "App|T:Repository`1|M:Repository`1.#ctor(`0)",
+      "type": "App|T:Repository`1",
+      "signature": "Repository(T)",
+      "kind": "constructor",
+      "accessibility": "public",
+      "document": "App/Snippet.cs",
+      "lines": {
+        "start": 3,
+        "end": 3
+      }
+    },
+    {
+      "key": "App|T:Repository`1|M:Repository`1.get_Seed",
+      "type": "App|T:Repository`1",
+      "signature": "Seed.get",
+      "kind": "accessor",
+      "accessibility": "public",
+      "document": "App/Snippet.cs",
+      "lines": {
+        "start": 5,
+        "end": 5
+      }
+    }
+  ],
+  "analyzerErrors": []
+}

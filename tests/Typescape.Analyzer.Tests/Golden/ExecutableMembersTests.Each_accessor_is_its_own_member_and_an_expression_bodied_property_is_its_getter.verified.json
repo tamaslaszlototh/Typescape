@@ -1,0 +1,103 @@
+{
+  "documents": [],
+  "types": [],
+  "executableMembers": [
+    {
+      "key": "App|T:Order|M:Order.get_Total",
+      "type": "App|T:Order",
+      "signature": "Total.get",
+      "kind": "accessor",
+      "accessibility": "public",
+      "document": "App/Snippet.cs",
+      "lines": {
+        "start": 9,
+        "end": 9
+      }
+    },
+    {
+      "key": "App|T:Order|M:Order.set_Total(System.Int32)",
+      "type": "App|T:Order",
+      "signature": "Total.set",
+      "kind": "accessor",
+      "accessibility": "private",
+      "document": "App/Snippet.cs",
+      "lines": {
+        "start": 10,
+        "end": 10
+      }
+    },
+    {
+      "key": "App|T:Order|M:Order.get_Label",
+      "type": "App|T:Order",
+      "signature": "Label.get",
+      "kind": "accessor",
+      "accessibility": "public",
+      "document": "App/Snippet.cs",
+      "lines": {
+        "start": 13,
+        "end": 14
+      }
+    },
+    {
+      "key": "App|T:Order|M:Order.get_Discount",
+      "type": "App|T:Order",
+      "signature": "Discount.get",
+      "kind": "accessor",
+      "accessibility": "public",
+      "document": "App/Snippet.cs",
+      "lines": {
+        "start": 16,
+        "end": 16
+      }
+    },
+    {
+      "key": "App|T:Order|M:Order.set_Discount(System.Int32)",
+      "type": "App|T:Order",
+      "signature": "Discount.init",
+      "kind": "accessor",
+      "accessibility": "public",
+      "document": "App/Snippet.cs",
+      "lines": {
+        "start": 16,
+        "end": 16
+      }
+    },
+    {
+      "key": "App|T:Order|M:Order.get_Item(System.Int32)",
+      "type": "App|T:Order",
+      "signature": "this[int].get",
+      "kind": "accessor",
+      "accessibility": "public",
+      "document": "App/Snippet.cs",
+      "lines": {
+        "start": 18,
+        "end": 18
+      }
+    },
+    {
+      "key": "App|T:Order|M:Order.add_Changed(System.EventHandler)",
+      "type": "App|T:Order",
+      "signature": "Changed.add",
+      "kind": "accessor",
+      "accessibility": "public",
+      "document": "App/Snippet.cs",
+      "lines": {
+        "start": 22,
+        "end": 22
+      }
+    },
+    {
+      "key": "App|T:Order|M:Order.remove_Changed(System.EventHandler)",
+      "type": "App|T:Order",
+      "signature": "Changed.remove",
+      "kind": "accessor",
+      "accessibility": "public",
+      "document": "App/Snippet.cs",
+      "lines": {
+        "start": 23,
+        "end": 23
+      }
+    }
+  ],
+  "analyzerErrors": []
+}

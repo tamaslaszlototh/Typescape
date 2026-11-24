@@ -1,0 +1,19 @@
+{
+  "documents": [],
+  "types": [],
+  "executableMembers": [
+    {
+      "key": "App|T:Program|M:Program.{Main}$(System.String[])",
+      "type": "App|T:Program",
+      "signature": "<top-level statements>",
+      "kind": "entry-point",
+      "accessibility": "private",
+      "document": "App/Snippet.cs",
+      "lines": {
+        "start": 3,
+        "end": 5
+      }
+    }
+  ],
+  "analyzerErrors": []
+}

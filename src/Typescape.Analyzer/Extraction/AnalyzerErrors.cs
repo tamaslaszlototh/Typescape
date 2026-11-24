@@ -20,7 +20,7 @@ internal static class AnalyzerErrors
         catch (Exception exception) when (Recordable(exception, cancellationToken))
         {
             var type = exception.GetType();
-            return new ProjectFacts([], [], [new AnalyzerErrorFact(document, type.FullName ?? type.Name, TopFrame(exception))]);
+            return ProjectFacts.Empty with { AnalyzerErrors = [new AnalyzerErrorFact(document, type.FullName ?? type.Name, TopFrame(exception))] };
         }
     }
 

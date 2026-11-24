@@ -1,3 +1,5 @@
+using Typescape.Analyzer.Extraction;
+
 namespace Typescape.Analyzer.Tests.Extraction;
 
 public class ProjectExtractorTests
@@ -12,7 +14,7 @@ public class ProjectExtractorTests
             ("../Shared/Link.cs", "class Link { }"),
         ]);
 
-        RuleTest.Match(facts with { Types = [] });
+        RuleTest.Match(Documents(facts));
     }
 
     [Fact]
@@ -49,4 +51,6 @@ public class ProjectExtractorTests
 
         Assert.Equal("System.Runtime", compilation.GetSpecialType(Microsoft.CodeAnalysis.SpecialType.System_Object).ContainingAssembly.Name);
     }
+
+    private static ProjectFacts Documents(ProjectFacts facts) => ProjectFacts.Empty with { Documents = facts.Documents, AnalyzerErrors = facts.AnalyzerErrors };
 }

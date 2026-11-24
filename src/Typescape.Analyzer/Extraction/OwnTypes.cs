@@ -1,7 +1,5 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Text;
-using Typescape.Analyzer.Infrastructure;
 using Typescape.Snapshot;
 using Typescape.Snapshot.Records;
 
@@ -19,11 +17,13 @@ internal static class OwnTypes
         ProjectFacts Walk()
         {
             cancellationToken.ThrowIfCancellationRequested();
-            return Fact(type, context, cancellationToken) is { } fact ? new([], [fact], []) : new([], [], []);
+            return Fact(type, context, cancellationToken) is { } fact
+                ? ProjectFacts.Empty with { Types = [fact], ExecutableMembers = [.. ExecutableMembers.Of(type, fact.Key, context, cancellationToken)] }
+                : ProjectFacts.Empty;
         }
 
         return type.DeclaringSyntaxReferences.FirstOrDefault() is { } first
-            ? AnalyzerErrors.Catch(SolutionPaths.Key(first.SyntaxTree.FilePath, context.SolutionDirectory), Walk, cancellationToken)
+            ? AnalyzerErrors.Catch(Source.Document(first.SyntaxTree, context), Walk, cancellationToken)
             : Walk();
     }
 
@@ -40,7 +40,7 @@ internal static class OwnTypes
             Key(type),
             type.Name,
             kind,
-            Accessibility(type),
+            Symbols.Accessibility(type),
             Abstract: isClass && type.IsAbstract,
             Sealed: isClass && type.IsSealed,
             Static: isClass && type.IsStatic,
@@ -57,9 +57,7 @@ internal static class OwnTypes
         type.GetTypeMembers().SelectMany(WithNested).Prepend(type);
 
     private static string Key(INamedTypeSymbol type) =>
-        StableKeys.Type(
-            type.ContainingAssembly.Name,
-            type.GetDocumentationCommentId() ?? throw new InvalidOperationException($"{type} has no documentation comment ID."));
+        StableKeys.Type(type.ContainingAssembly.Name, Symbols.DocumentationCommentId(type));
 
     private static DeclaredTypeKind? Kind(INamedTypeSymbol type) => type.TypeKind switch
     {
@@ -71,17 +69,6 @@ internal static class OwnTypes
         _ => null,
     };
 
-    private static DeclaredAccessibility Accessibility(INamedTypeSymbol type) => type.DeclaredAccessibility switch
-    {
-        Microsoft.CodeAnalysis.Accessibility.Public => DeclaredAccessibility.Public,
-        Microsoft.CodeAnalysis.Accessibility.Internal => DeclaredAccessibility.Internal,
-        Microsoft.CodeAnalysis.Accessibility.Protected => DeclaredAccessibility.Protected,
-        Microsoft.CodeAnalysis.Accessibility.ProtectedOrInternal => DeclaredAccessibility.ProtectedInternal,
-        Microsoft.CodeAnalysis.Accessibility.ProtectedAndInternal => DeclaredAccessibility.PrivateProtected,
-        Microsoft.CodeAnalysis.Accessibility.Private => DeclaredAccessibility.Private,
-        var other => throw new InvalidOperationException($"{type} has no declared accessibility ({other})."),
-    };
-
     // Built from the names rather than ToDisplayString, which escapes keywords such as @class.
     private static string NamespaceName(INamespaceSymbol ns) =>
         ns.IsGlobalNamespace ? ""
@@ -90,18 +77,7 @@ internal static class OwnTypes
 
     private static TypeDeclarationFact Declaration(SyntaxReference reference, ProjectContext context, CancellationToken cancellationToken)
     {
-        // Top-level statements declare the synthesized Program through their whole compilation unit, which would
-        // also cover the usings and every type declared after them.
-        var span = reference.GetSyntax(cancellationToken) is CompilationUnitSyntax unit ? TopLevelStatements(unit) : reference.Span;
-        var lines = reference.SyntaxTree.GetLineSpan(span, cancellationToken);
-        return new TypeDeclarationFact(
-            SolutionPaths.Key(reference.SyntaxTree.FilePath, context.SolutionDirectory),
-            new LineSpan(lines.StartLinePosition.Line + 1, lines.EndLinePosition.Line + 1));
-    }
-
-    private static TextSpan TopLevelStatements(CompilationUnitSyntax unit)
-    {
-        var statements = unit.Members.OfType<GlobalStatementSyntax>().ToArray();
-        return TextSpan.FromBounds(statements[0].SpanStart, statements[^1].Span.End);
+        var span = reference.GetSyntax(cancellationToken) is CompilationUnitSyntax unit ? Source.TopLevelStatements(unit) : reference.Span;
+        return new TypeDeclarationFact(Source.Document(reference.SyntaxTree, context), Source.Lines(reference.SyntaxTree, span, cancellationToken));
     }
 }

@@ -1,0 +1,31 @@
+{
+  "documents": [],
+  "types": [],
+  "executableMembers": [
+    {
+      "key": "App|T:Repository`1|M:Repository`1.Find(System.Int32)",
+      "type": "App|T:Repository`1",
+      "signature": "Find(int)",
+      "kind": "method",
+      "accessibility": "public",
+      "document": "App/Snippet.cs",
+      "lines": {
+        "start": 6,
+        "end": 10
+      }
+    },
+    {
+      "key": "App|T:Repository`1.Cursor|M:Repository`1.Cursor.Next",
+      "type": "App|T:Repository`1.Cursor",
+      "signature": "Next()",
+      "kind": "method",
+      "accessibility": "public",
+      "document": "App/Snippet.cs",
+      "lines": {
+        "start": 14,
+        "end": 14
+      }
+    }
+  ],
+  "analyzerErrors": []
+}
