@@ -372,6 +372,56 @@ public sealed class SolutionLoaderTests : IDisposable
     }
 
     [Fact]
+    public async Task Test_projects_are_flagged_by_framework_reference_name_and_override()
+    {
+        Directory.CreateDirectory(Path.Combine(_directory, "lib"));
+        File.WriteAllBytes(Path.Combine(_directory, "lib", "nunit.framework.dll"), FakeAssemblies.Empty("nunit.framework"));
+        const string nunit = "<Reference Include=\"nunit.framework\"><HintPath>../lib/nunit.framework.dll</HintPath></Reference>";
+        Project("App", "<TargetFramework>net10.0</TargetFramework>");
+        Project("Checks", "<TargetFramework>net10.0</TargetFramework>", nunit);
+        Project("App.Tests", "<TargetFramework>net10.0</TargetFramework>");
+        Project("App.Fixtures", "<TargetFramework>net10.0</TargetFramework>");
+        Project("App.Specs", "<TargetFramework>net10.0</TargetFramework>", nunit);
+        var request = new AnalysisRequest { SolutionPath = "", TestPatterns = ["*.Fixtures"], NotTestPatterns = ["*.Specs"] };
+
+        using var solution = await LoadAsync(Solution("App", "App.Fixtures", "App.Specs", "App.Tests", "Checks"), request);
+
+        Assert.Equal(
+            [
+                ("App.Fixtures/App.Fixtures.csproj", true, "override"),
+                ("App.Specs/App.Specs.csproj", false, "override"),
+                ("App.Tests/App.Tests.csproj", true, "name"),
+                ("App/App.csproj", false, null),
+                ("Checks/Checks.csproj", true, "framework:nunit"),
+            ],
+            solution.Projects.Select(project => (project.Key, project.Test, project.TestReason)));
+    }
+
+    // The real package's layout decides which assemblies stand for it, so the user's NuGet cache serves as an offline
+    // feed; without the package there, the test skips.
+    [Fact]
+    public async Task A_restored_Microsoft_NET_Test_Sdk_makes_a_test_project()
+    {
+        var cache = Environment.GetEnvironmentVariable("NUGET_PACKAGES")
+            ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".nuget", "packages");
+        var versions = Path.Combine(cache, "microsoft.net.test.sdk");
+        var version = Directory.Exists(versions)
+            ? Directory.GetDirectories(versions).Select(Path.GetFileName).OfType<string>().Where(v => !v.Contains('-', StringComparison.Ordinal)).Max(NuGet.Versioning.NuGetVersion.Parse)
+            : null;
+        Assert.SkipUnless(version is not null, $"No Microsoft.NET.Test.Sdk in {cache}.");
+        FakeReferenceAssemblies.NuGetConfig(_directory, cache);
+        Project("Checks", "<TargetFramework>net10.0</TargetFramework>", $"<PackageReference Include=\"Microsoft.NET.Test.Sdk\" Version=\"{version}\" />");
+        var request = new AnalysisRequest { SolutionPath = Solution("Checks") };
+        var warning = await DotnetRestore.RunAsync(request, TestContext.Current.CancellationToken);
+        Assert.True(warning is null, warning);
+
+        using var solution = await LoadAsync(request.SolutionPath);
+
+        var checks = Assert.Single(solution.Projects);
+        Assert.Equal((true, "framework:microsoft.net.test.sdk"), (checks.Test, checks.TestReason));
+    }
+
+    [Fact]
     public async Task A_file_that_is_not_a_solution_fails_the_load()
     {
         var path = Path.Combine(_directory, "App.csproj");

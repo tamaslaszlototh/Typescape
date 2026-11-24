@@ -1,6 +1,3 @@
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.Emit;
 using NuGet.Packaging;
 using Typescape.Analyzer.Loading;
 
@@ -73,7 +70,7 @@ internal static class FakeReferenceAssemblies
         static PhysicalPackageFile File(string path, byte[] content) => new(new MemoryStream(content)) { TargetPath = path };
     }
 
-    private static byte[] CompileMscorlib() => Compile("mscorlib", """
+    private static byte[] CompileMscorlib() => FakeAssemblies.Compile("mscorlib", """
             [assembly: System.Reflection.AssemblyVersion("4.0.0.0")]
             namespace System
             {
@@ -106,22 +103,4 @@ internal static class FakeReferenceAssemblies
                 }
             }
             """);
-
-    private static byte[] Compile(string name, string source, params byte[][] references)
-    {
-        var compilation = CSharpCompilation.Create(
-            name,
-            [CSharpSyntaxTree.ParseText(source)],
-            [.. references.Select(reference => MetadataReference.CreateFromImage(reference))],
-            new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
-
-        using var stream = new MemoryStream();
-        var result = compilation.Emit(stream, options: new EmitOptions(runtimeMetadataVersion: "v4.0.30319"));
-        if (!result.Success)
-        {
-            throw new InvalidOperationException(string.Join(Environment.NewLine, result.Diagnostics));
-        }
-
-        return stream.ToArray();
-    }
 }

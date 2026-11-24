@@ -17,7 +17,9 @@ public sealed record AnalysisRequest
 
     public IReadOnlyDictionary<string, string> Properties { get; init; } = ImmutableDictionary<string, string>.Empty;
 
+    /// <summary><c>--test</c>: wildcard patterns (<c>*</c>, <c>?</c>, any case) for the project names that are test projects.</summary>
     public IReadOnlyList<string> TestPatterns { get; init; } = [];
 
+    /// <summary><c>--not-test</c>: wildcard patterns for the project names that are not; they win over <see cref="TestPatterns"/>.</summary>
     public IReadOnlyList<string> NotTestPatterns { get; init; } = [];
 }

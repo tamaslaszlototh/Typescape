@@ -63,6 +63,12 @@ internal sealed record LoadedProject(string Key, Project Project, string? Tfm, I
     /// <see cref="Loading.DirectReferences.Resolve"/> decides it.
     /// </summary>
     public bool ProjectReferenceMismatch { get; init; }
+
+    /// <summary>Whether the project counts as a test project, as <see cref="Loading.TestProjects.Detect"/> decides it.</summary>
+    public bool Test { get; init; }
+
+    /// <summary>Why <see cref="Test"/> has its value, spelled as <see cref="Snapshot.Records.ProjectRecord.TestReason"/>.</summary>
+    public string? TestReason { get; init; }
 }
 
 /// <summary>The reference assemblies of one .NET Framework version could not be fetched, e.g. offline.</summary>

@@ -36,8 +36,7 @@ internal sealed class MSBuildStages : IAnalysisStages
             .OfType<string>()
             .ToHashSet(StringComparer.Ordinal);
 
-        // Test detection is not implemented yet: every project is a non-test project until then.
-        var context = new ProjectContext(project.Key, solution.Directory, Test: false, generatedPaths);
+        var context = new ProjectContext(project.Key, solution.Directory, project.Test, generatedPaths);
         return new CompiledProject(project, compilation, context);
     }
 

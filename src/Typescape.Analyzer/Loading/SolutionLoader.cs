@@ -67,6 +67,7 @@ internal static class SolutionLoader
             }
 
             projects = DirectReferences.Resolve(projects, solution, GlobalProperties.WithSolution(properties, solutionPath), cancellationToken);
+            projects = TestProjects.Detect(projects, request.TestPatterns, request.NotTestPatterns);
 
             var opened = solution.Projects.Select(project => project.FilePath).OfType<string>().ToHashSet(MSBuildPaths.Comparer);
             var unopened = listed
