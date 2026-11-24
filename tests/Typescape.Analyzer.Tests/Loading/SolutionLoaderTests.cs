@@ -3,7 +3,10 @@ using Typescape.Analyzer.Loading;
 using Typescape.Analyzer.Pipeline;
 using Typescape.Analyzer.Restore;
 using Typescape.Analyzer.Tests.Fakes;
+using Typescape.Snapshot.Records;
 using static Typescape.Analyzer.AnalysisProgress;
+using Kind = Typescape.Snapshot.Records.WorkspaceDiagnosticKind;
+using RoslynKind = Microsoft.CodeAnalysis.WorkspaceDiagnosticKind;
 
 namespace Typescape.Analyzer.Tests.Loading;
 
@@ -33,6 +36,10 @@ public sealed class SolutionLoaderTests : IDisposable
                 Assert.Equal("net10.0", multi.Tfm);
                 Assert.Equal(["net10.0", "net8.0"], multi.AvailableTfms);
                 Assert.Equal("Multi(net10.0)", multi.Project.Name);
+                Assert.Equal(ProjectStyle.Sdk, multi.Style);
+                Assert.False(multi.SdkFallback);
+                Assert.NotEqual(0, multi.MetadataReferences);
+                Assert.Empty(multi.WorkspaceDiagnostics);
             },
             single =>
             {
@@ -41,6 +48,7 @@ public sealed class SolutionLoaderTests : IDisposable
                 Assert.Equal(["net10.0"], single.AvailableTfms);
             });
         Assert.Equal(Path.GetFullPath(_directory), solution.Directory);
+        Assert.Empty(solution.SolutionDiagnostics);
     }
 
     [Fact]
@@ -118,12 +126,23 @@ public sealed class SolutionLoaderTests : IDisposable
             TestContext.Current.CancellationToken);
 
         Assert.Equal(["Broken/Broken.csproj", "Good/Good.csproj"], solution.Projects.Select(project => project.Key));
-        var broken = solution.Projects[0];
+        var (broken, good) = (solution.Projects[0], solution.Projects[1]);
         Assert.Null(broken.Tfm);
         Assert.Empty(broken.AvailableTfms);
-        Assert.Equal(["Missing/Missing.csproj"], solution.UnopenedProjects);
-        Assert.Contains(solution.Diagnostics, d => d.Kind == WorkspaceDiagnosticKind.Failure && d.Message.Contains("Broken.csproj", StringComparison.Ordinal));
-        Assert.Contains(solution.Diagnostics, d => d.Kind == WorkspaceDiagnosticKind.Failure && d.Message.Contains("Missing.csproj", StringComparison.Ordinal));
+        Assert.Equal(ProjectStyle.Sdk, broken.Style);
+        var brokenFailure = Assert.Single(broken.WorkspaceDiagnostics);
+        Assert.Equal(Kind.Failure, brokenFailure.Kind);
+        Assert.StartsWith("Msbuild failed when processing the file 'Broken/Broken.csproj' with message: ", brokenFailure.Message);
+        Assert.Empty(good.WorkspaceDiagnostics);
+
+        var missing = Assert.Single(solution.UnopenedProjects);
+        Assert.Equal(("Missing/Missing.csproj", null), (missing.Key, missing.Style));
+        Assert.Equal([new WorkspaceDiagnosticRecord(Kind.Failure, "Project file not found: 'Missing/Missing.csproj'")], missing.WorkspaceDiagnostics);
+
+        // The F# project is not analyzed, so what the workspace says about it belongs to the solution.
+        Assert.All(solution.SolutionDiagnostics, d => Assert.Contains("Fsharp/Fsharp.fsproj", d.Message, StringComparison.Ordinal));
+        Assert.Equal(solution.Diagnostics.Count, broken.WorkspaceDiagnostics.Count + missing.WorkspaceDiagnostics.Count + solution.SolutionDiagnostics.Count);
+        Assert.DoesNotContain(_directory, string.Join(" ", solution.SolutionDiagnostics.Select(d => d.Message)), StringComparison.OrdinalIgnoreCase);
         Assert.Equal(
             [Counted(0), Counted(1), Counted(2), Counted(3)],
             progress.Events);
@@ -169,7 +188,11 @@ public sealed class SolutionLoaderTests : IDisposable
     {
         var cache = new ReferenceAssemblies(Path.Combine(_directory, "cache"));
         FakeReferenceAssemblies.NuGetConfig(_directory, "http://127.0.0.1:9/v3/index.json");
-        LegacyProject("Legacy", "v4.7.2");
+        LegacyProject("Legacy", "v4.7.2", targets: """
+            <Target Name="WarnFramework" BeforeTargets="CoreCompile">
+              <Warning Code="MSB3268" Text="The primary reference &quot;Lib&quot; depends on framework assemblies that are not in the currently targeted framework &quot;.NETFramework,Version=v4.7.2&quot;." />
+            </Target>
+            """);
         Project("Modern", "<TargetFramework>net10.0</TargetFramework>");
         var progress = new RecordingProgress();
 
@@ -180,6 +203,14 @@ public sealed class SolutionLoaderTests : IDisposable
         var failure = Assert.Single(solution.ReferenceAssemblyFailures);
         Assert.Equal("v4.7.2", failure.Version);
         Assert.Equal(["Legacy/Legacy.csproj"], failure.ProjectKeys);
+
+        // MSBuild's advice to install a Developer Pack gives way to why the fetch failed; another diagnostic that names
+        // the version keeps its own text.
+        var legacy = solution.Projects[0];
+        Assert.Contains(new WorkspaceDiagnosticRecord(Kind.Failure, failure.ProjectMessage), legacy.WorkspaceDiagnostics);
+        Assert.DoesNotContain(legacy.WorkspaceDiagnostics, d => d.Message.Contains("Developer Pack", StringComparison.Ordinal));
+        Assert.Contains(legacy.WorkspaceDiagnostics, d => d.Message.EndsWith("not in the currently targeted framework \".NETFramework,Version=v4.7.2\".", StringComparison.Ordinal));
+        Assert.Empty(solution.Projects[1].WorkspaceDiagnostics);
         Assert.StartsWith("not found in any reachable source; test: ", failure.Reason);
         Assert.StartsWith(
             "The reference assemblies for .NET Framework v4.7.2 could not be fetched from the NuGet sources; "
@@ -195,7 +226,10 @@ public sealed class SolutionLoaderTests : IDisposable
 
         using var solution = await LoadAsync(Solution("App"));
 
-        Assert.Contains(solution.Diagnostics, d => d.Message.Contains("Missing.Lib", StringComparison.Ordinal));
+        var app = Assert.Single(solution.Projects);
+        var failure = Assert.Single(app.WorkspaceDiagnostics, d => d.Message.Contains("Missing.Lib", StringComparison.Ordinal));
+        Assert.Equal(Kind.Failure, failure.Kind);
+        Assert.StartsWith("Msbuild failed when processing the file 'App/App.csproj' with message: ", failure.Message);
     }
 
     [Fact]
@@ -211,8 +245,18 @@ public sealed class SolutionLoaderTests : IDisposable
         var legacy = Assert.Single(solution.Projects);
         Assert.Equal("net48", legacy.Tfm);
         Assert.Equal(["net48"], legacy.AvailableTfms);
+        Assert.Equal(ProjectStyle.Legacy, legacy.Style);
 
-        // On Windows with Visual Studio, this project goes to Visual Studio MSBuild.
+        // On Windows with Visual Studio, this project goes to Visual Studio MSBuild; on macOS there is no Mono MSBuild.
+        Assert.Equal(solution.Diagnostics.Any(d => d.Message.Contains("will be loaded with the .NET Core SDK", StringComparison.Ordinal)), legacy.SdkFallback);
+        if (OperatingSystem.IsMacOS())
+        {
+            Assert.True(legacy.SdkFallback);
+        }
+
+        Assert.Equal(
+            legacy.SdkFallback,
+            legacy.WorkspaceDiagnostics.Any(d => d.Kind == Kind.Warning && d.Message.Contains("; Legacy/Legacy.csproj will be loaded with the .NET Core SDK", StringComparison.Ordinal)));
         var compilation = await legacy.Project.GetCompilationAsync(TestContext.Current.CancellationToken);
         Assert.Empty(compilation!.GetDiagnostics(TestContext.Current.CancellationToken).Where(d => d.Severity == DiagnosticSeverity.Error));
     }
@@ -320,6 +364,9 @@ public sealed class SolutionLoaderTests : IDisposable
         Assert.Equal(["Domain"], WorkspaceReferences(solution, app));
         Assert.Equal(["Domain/Domain.csproj"], app.References);
         Assert.All(solution.Projects, project => Assert.False(project.ProjectReferenceMismatch));
+
+        // The workspace says each reference has no matching metadata reference, yet keeps it: harmless.
+        Assert.Contains(new WorkspaceDiagnosticRecord(Kind.Info, "Found project reference without a matching metadata reference: Domain/Domain.csproj"), app.WorkspaceDiagnostics);
     }
 
     [Fact]
@@ -369,6 +416,14 @@ public sealed class SolutionLoaderTests : IDisposable
         Assert.DoesNotContain(solution.Projects, project => project.ProjectReferenceMismatch);
         var server = solution.Projects.Single(project => project.Key == "Jellyfin.Server/Jellyfin.Server.csproj");
         Assert.Equal((7, 23), (server.References.Count, server.Project.ProjectReferences.Count()));
+
+        // Its only workspace diagnostics: the analyzer project, referenced without a matching metadata reference.
+        Assert.All(
+            solution.Projects.SelectMany(project => project.WorkspaceDiagnostics),
+            diagnostic => Assert.Equal(
+                new WorkspaceDiagnosticRecord(Kind.Info, "Found project reference without a matching metadata reference: src/Jellyfin.CodeAnalysis/Jellyfin.CodeAnalysis.csproj"),
+                diagnostic));
+        Assert.Empty(solution.SolutionDiagnostics);
     }
 
     [Fact]

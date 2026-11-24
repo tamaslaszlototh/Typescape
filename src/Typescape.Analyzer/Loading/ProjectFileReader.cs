@@ -90,7 +90,7 @@ internal sealed class ProjectFileReader
             return [];
         }
 
-        var sdkStyle = project.Attribute("Sdk") is not null || project.Elements().Any(element => element.Name.LocalName == "Sdk");
+        var sdkStyle = ProjectStyles.IsSdk(project);
         _expressions.Set("UsingMicrosoftNETSdk", sdkStyle ? "true" : "");
 
         // Each Roslyn project of an SDK-style file is MSBuild's inner build for one target framework; a classic project

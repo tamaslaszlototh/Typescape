@@ -23,7 +23,10 @@ internal interface IAnalysisStages
     /// <summary>Compile, for one project.</summary>
     Task<CompiledProject> CompileAsync(LoadedSolution solution, LoadedProject project, CancellationToken cancellationToken);
 
-    /// <summary>Diagnostics, for one project: the compiler errors that become Load Health evidence.</summary>
+    /// <summary>
+    /// Diagnostics, for one project: the full compiler diagnostics, summarized as Load Health evidence. Always runs,
+    /// because it also pre-binds what Walk needs.
+    /// </summary>
     ProjectDiagnostics Diagnose(CompiledProject project, CancellationToken cancellationToken);
 
     /// <summary>Walk, the part that runs once per project: the declarations.</summary>

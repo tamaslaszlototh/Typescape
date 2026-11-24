@@ -76,7 +76,7 @@ internal sealed class FakeStages(params int[] documentsPerProject) : IAnalysisSt
                 .OrderBy(project => project.Name, StringComparer.Ordinal)
                 .Select(project => new LoadedProject($"{project.Name}/{project.Name}.csproj", project, "net10.0", ["net10.0"]))
                 .ToArray();
-            return Task.FromResult(new LoadedSolution(workspace, solution, "/repo", projects, [], [], ReferenceAssemblyFailures));
+            return Task.FromResult(new LoadedSolution(workspace, solution, "/repo", projects, [], [], [], ReferenceAssemblyFailures));
         });
 
     public async Task<CompiledProject> CompileAsync(LoadedSolution solution, LoadedProject project, CancellationToken cancellationToken)
@@ -101,7 +101,7 @@ internal sealed class FakeStages(params int[] documentsPerProject) : IAnalysisSt
         Track("diagnostics", cancellationToken, () =>
         {
             Received.Add(("diagnostics", project.Project.Key, project.Compilation));
-            return new ProjectDiagnostics(ImmutableArray<Diagnostic>.Empty);
+            return new ProjectDiagnostics(new CompileErrorsRecord(0, []), ObjectResolves: true);
         });
 
     public ProjectFacts WalkDeclarations(CompiledProject project, CancellationToken cancellationToken) =>

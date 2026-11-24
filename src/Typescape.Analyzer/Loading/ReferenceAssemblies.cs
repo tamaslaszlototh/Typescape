@@ -50,6 +50,15 @@ internal sealed partial class ReferenceAssemblies(string root)
         MissingFramework().Match(diagnostic.Message) is { Success: true } match && match.Groups["version"].Value == version;
 
     /// <summary>
+    /// Whether <paramref name="diagnostic"/> is MSB3644 for <paramref name="version"/>, told from other diagnostics that
+    /// name the version by its link to the Developer Packs, which no translation changes.
+    /// </summary>
+    public static bool AdvisesDeveloperPack(WorkspaceDiagnostic diagnostic, string version) =>
+        Reports(diagnostic, version) && diagnostic.Message.Contains(DeveloperPackLink, StringComparison.OrdinalIgnoreCase);
+
+    private const string DeveloperPackLink = "aka.ms/msbuild/developerpacks";
+
+    /// <summary>
     /// Fetches each version into <see cref="Root"/>, from the global packages folder when it holds the package, else
     /// from the sources of the <c>nuget.config</c> files that apply to <paramref name="solutionDirectory"/>.
     /// </summary>

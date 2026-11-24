@@ -1,6 +1,6 @@
-using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Typescape.Analyzer.Extraction;
+using Typescape.Snapshot.Records;
 
 namespace Typescape.Analyzer.Pipeline;
 
@@ -13,6 +13,7 @@ namespace Typescape.Analyzer.Pipeline;
 /// <param name="Context">What extraction needs to know about the project.</param>
 internal sealed record CompiledProject(LoadedProject Project, Compilation Compilation, ProjectContext Context);
 
-/// <summary>The output of Diagnostics for one project.</summary>
-/// <param name="Errors">The compilation's error diagnostics.</param>
-internal sealed record ProjectDiagnostics(ImmutableArray<Diagnostic> Errors);
+/// <summary>The output of Diagnostics for one project: its compile evidence for Load Health.</summary>
+/// <param name="CompileErrors">The compilation's error statistics, messages relative to the solution directory.</param>
+/// <param name="ObjectResolves">Whether <c>System.Object</c> resolves in the compilation.</param>
+internal sealed record ProjectDiagnostics(CompileErrorsRecord CompileErrors, bool ObjectResolves);

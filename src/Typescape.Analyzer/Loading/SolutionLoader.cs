@@ -70,18 +70,15 @@ internal static class SolutionLoader
             projects = TestProjects.Detect(projects, request.TestPatterns, request.NotTestPatterns);
 
             var opened = solution.Projects.Select(project => project.FilePath).OfType<string>().ToHashSet(MSBuildPaths.Comparer);
-            var unopened = listed
-                .Where(path => !opened.Contains(path))
-                .Select(path => Key(directory, path))
-                .Order(StringComparer.Ordinal)
-                .ToArray();
+            string[] unopenedPaths = [.. listed.Where(path => !opened.Contains(path))];
 
             var failures = failed
                 .OrderBy(failure => failure.Key, StringComparer.Ordinal)
                 .Select(failure => new ReferenceAssemblyFailure(failure.Key, failure.Value, Targeting(failure.Key, projects, diagnostics)))
                 .ToArray();
 
-            return new LoadedSolution(workspace, solution, directory, projects, unopened, diagnostics, failures);
+            (projects, var unopened, var solutionDiagnostics) = LoadEvidence.Collect(projects, unopenedPaths, solution, diagnostics, failures, directory);
+            return new LoadedSolution(workspace, solution, directory, projects, unopened, diagnostics, solutionDiagnostics, failures);
         }
         catch
         {
@@ -131,7 +128,7 @@ internal static class SolutionLoader
         [
             .. projects
                 .Where(project => project.Tfm is null || TargetFrameworks.IsNetFramework(project.Tfm, version))
-                .Where(project => reports.Any(report => report.Message.Contains(project.Project.FilePath!, StringComparison.OrdinalIgnoreCase)))
+                .Where(project => reports.Any(report => MSBuildPaths.IndexIn(report.Message, project.Project.FilePath!) >= 0))
                 .Select(project => project.Key),
         ];
     }
@@ -160,7 +157,8 @@ internal static class SolutionLoader
         available.FirstOrDefault(tfm => project.Name.EndsWith($"({tfm})", StringComparison.Ordinal))
         ?? (available.Count == 1 ? available[0] : null);
 
-    private static string Key(string directory, string path) =>
+    /// <summary>The stable key of the project file at <paramref name="path"/>.</summary>
+    public static string Key(string directory, string path) =>
         Path.GetRelativePath(directory, path).Replace('\\', '/');
 
     /// <summary>

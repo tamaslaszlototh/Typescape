@@ -25,6 +25,17 @@ internal static partial class MSBuildPaths
     public static string Normalize(string path) =>
         OperatingSystem.IsWindows() ? path : path.Replace('\\', '/');
 
+    /// <summary>
+    /// Where <paramref name="text"/>, e.g. a diagnostic's message, names <paramref name="path"/>, in either case and with
+    /// either separator, as MSBuild writes them on Windows; <c>-1</c> when it does not.
+    /// </summary>
+    public static int IndexIn(string text, string path) =>
+        Slashed(text).IndexOf(Slashed(path), StringComparison.OrdinalIgnoreCase);
+
+    /// <summary>Whether <paramref name="text"/> ends with <paramref name="path"/>, as <see cref="IndexIn"/> matches it.</summary>
+    public static bool EndsWith(string text, string path) =>
+        Slashed(text).EndsWith(Slashed(path), StringComparison.OrdinalIgnoreCase);
+
     public static bool HasTrailingSlash(string path) => path.EndsWith('/') || path.EndsWith('\\');
 
     public static string EnsureTrailingSlash(string path) =>
@@ -82,6 +93,8 @@ internal static partial class MSBuildPaths
             .Where(file => regex.IsMatch(Path.GetRelativePath(root, file).Replace('\\', '/')))
             .Order(StringComparer.Ordinal);
     }
+
+    private static string Slashed(string text) => text.Replace('\\', '/');
 
     private static string Unescape(string value) =>
         EscapedCharacter().Replace(value, match => ((char)Convert.ToInt32(match.Groups[1].Value, 16)).ToString());

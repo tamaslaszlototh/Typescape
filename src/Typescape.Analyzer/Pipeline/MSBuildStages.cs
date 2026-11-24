@@ -41,7 +41,9 @@ internal sealed class MSBuildStages : IAnalysisStages
     }
 
     public ProjectDiagnostics Diagnose(CompiledProject project, CancellationToken cancellationToken) =>
-        new([.. project.Compilation.GetDiagnostics(cancellationToken).Where(d => d.Severity == DiagnosticSeverity.Error)]);
+        new(
+            CompileErrors.Summarize(project.Compilation.GetDiagnostics(cancellationToken), project.Context.SolutionDirectory),
+            project.Compilation.GetSpecialType(SpecialType.System_Object).TypeKind != TypeKind.Error);
 
     public ProjectFacts WalkDeclarations(CompiledProject project, CancellationToken cancellationToken) =>
         throw new NotImplementedException("Declaration extraction is not implemented yet.");
