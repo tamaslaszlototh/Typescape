@@ -8,7 +8,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Typescape.targets" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="Typescape.targets;Typescape.Legacy.targets" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>

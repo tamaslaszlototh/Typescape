@@ -13,13 +13,16 @@ internal static class GlobalProperties
 
     public const string TargetFrameworkRootPath = nameof(TargetFrameworkRootPath);
 
+    public const string ResolveAssemblyReferencesSilent = nameof(ResolveAssemblyReferencesSilent);
+
     /// <summary>Ships next to the Analyzer dll; each tool version has its own copy.</summary>
     public static string TargetsPath { get; } = Path.Combine(AppContext.BaseDirectory, "Typescape.targets");
 
     /// <summary>
     /// The request's properties plus <see cref="DefaultConfiguration"/> unless the request sets a configuration, and
-    /// two that always win: the hook that imports <see cref="TargetsPath"/>, and the root of
-    /// <paramref name="referenceAssemblies"/> (<see cref="ReferenceAssemblies.Default"/> when <c>null</c>).
+    /// three that always win: the hook that imports <see cref="TargetsPath"/>, the root of
+    /// <paramref name="referenceAssemblies"/> (<see cref="ReferenceAssemblies.Default"/> when <c>null</c>), and loud
+    /// reference resolution.
     /// </summary>
     public static IReadOnlyDictionary<string, string> For(AnalysisRequest request, ReferenceAssemblies? referenceAssemblies = null)
     {
@@ -32,6 +35,9 @@ internal static class GlobalProperties
 
             // Even over an installed Developer Pack, so every machine binds to the same reference assemblies.
             [TargetFrameworkRootPath] = (referenceAssemblies ?? ReferenceAssemblies.Default).Root,
+
+            // Design-time builds resolve references silently, so an unresolved one would vanish without a diagnostic.
+            [ResolveAssemblyReferencesSilent] = "false",
         };
 
         // Set explicitly, so a project that defaults to another configuration cannot contradict Provenance.

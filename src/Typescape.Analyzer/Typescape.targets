@@ -7,4 +7,6 @@
   <PropertyGroup Condition="'$(TargetPlatformIdentifier)' == 'windows'">
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
   </PropertyGroup>
+
+  <Import Project="$(MSBuildThisFileDirectory)Typescape.Legacy.targets" />
 </Project>

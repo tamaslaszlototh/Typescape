@@ -1,3 +1,4 @@
+using Microsoft.CodeAnalysis;
 using NuGet.Frameworks;
 
 namespace Typescape.Analyzer.Loading;
@@ -38,6 +39,39 @@ internal static class TargetFrameworks
     public static bool IsNetFramework(string tfm, string version) =>
         Version.TryParse(version.TrimStart('v'), out var parsed)
         && Parse(tfm).Equals(new NuGetFramework(FrameworkConstants.FrameworkIdentifiers.Net, parsed));
+
+    /// <summary>
+    /// The target framework of a classic project, which declares only <c>TargetFrameworkVersion</c> and so reports no
+    /// TFM: read from the attributes file MSBuild generates for it, e.g. <c>.NETFramework,Version=v4.8.AssemblyAttributes.cs</c>
+    /// → <c>net48</c>.
+    /// </summary>
+    /// <returns>Each TFM once, sorted ordinally; empty when no project generated the file.</returns>
+    public static IReadOnlyList<string> OfClassic(IEnumerable<Project> projects) =>
+    [
+        .. projects
+            .SelectMany(project => project.Documents)
+            .Select(document => Path.GetFileName(document.FilePath))
+            .Where(name => name is not null && name.EndsWith(AssemblyAttributesSuffix, StringComparison.OrdinalIgnoreCase))
+            .Select(name => FromMoniker(name![..^AssemblyAttributesSuffix.Length]))
+            .OfType<string>()
+            .Distinct(StringComparer.Ordinal)
+            .Order(StringComparer.Ordinal),
+    ];
+
+    private const string AssemblyAttributesSuffix = ".AssemblyAttributes.cs";
+
+    private static string? FromMoniker(string moniker)
+    {
+        try
+        {
+            var framework = NuGetFramework.ParseFrameworkName(moniker, DefaultFrameworkNameProvider.Instance);
+            return framework.IsUnsupported ? null : framework.GetShortFolderName();
+        }
+        catch (ArgumentException)
+        {
+            return null;
+        }
+    }
 
     private static bool Same(string tfm, string requested)
     {

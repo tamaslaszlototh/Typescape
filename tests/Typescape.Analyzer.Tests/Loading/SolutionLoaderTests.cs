@@ -188,6 +188,35 @@ public sealed class SolutionLoaderTests : IDisposable
     }
 
     [Fact]
+    public async Task An_unresolved_reference_is_a_workspace_diagnostic()
+    {
+        Project("App", "<TargetFramework>net10.0</TargetFramework>", "<Reference Include=\"Missing.Lib\"><HintPath>../lib/Missing.Lib.dll</HintPath></Reference>");
+
+        using var solution = await LoadAsync(Solution("App"));
+
+        Assert.Contains(solution.Diagnostics, d => d.Message.Contains("Missing.Lib", StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public async Task A_classic_project_is_analyzed_for_its_NET_Framework_version_and_compiles_cleanly()
+    {
+        var cache = new ReferenceAssemblies(Path.Combine(_directory, "cache"));
+        FakeReferenceAssemblies.NuGetConfig(_directory);
+        FakeReferenceAssemblies.Publish(_directory, "v4.8");
+        LegacyProject("Legacy", "v4.8");
+
+        using var solution = await LoadAsync(Solution("Legacy"), cache, new RecordingProgress());
+
+        var legacy = Assert.Single(solution.Projects);
+        Assert.Equal("net48", legacy.Tfm);
+        Assert.Equal(["net48"], legacy.AvailableTfms);
+
+        // On Windows with Visual Studio, this project goes to Visual Studio MSBuild.
+        var compilation = await legacy.Project.GetCompilationAsync(TestContext.Current.CancellationToken);
+        Assert.Empty(compilation!.GetDiagnostics(TestContext.Current.CancellationToken).Where(d => d.Severity == DiagnosticSeverity.Error));
+    }
+
+    [Fact]
     public async Task A_file_that_is_not_a_solution_fails_the_load()
     {
         var path = Path.Combine(_directory, "App.csproj");

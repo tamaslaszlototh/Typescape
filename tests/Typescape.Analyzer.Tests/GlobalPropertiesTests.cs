@@ -19,6 +19,7 @@ public class GlobalPropertiesTests
                 ["Configuration"] = "Release",
                 ["CustomAfterMicrosoftCommonTargets"] = GlobalProperties.TargetsPath,
                 ["TargetFrameworkRootPath"] = ReferenceAssemblies.Default.Root,
+                ["ResolveAssemblyReferencesSilent"] = "false",
             },
             GlobalProperties.For(request));
     }
@@ -55,6 +56,18 @@ public class GlobalPropertiesTests
     }
 
     [Fact]
+    public void Reference_resolution_cannot_be_silenced_in_any_casing()
+    {
+        var request = new AnalysisRequest
+        {
+            SolutionPath = "/repo/Fake.slnx",
+            Properties = new Dictionary<string, string> { ["resolveassemblyreferencessilent"] = "true" },
+        };
+
+        Assert.Equal("false", GlobalProperties.For(request)["ResolveAssemblyReferencesSilent"]);
+    }
+
+    [Fact]
     public void The_configuration_defaults_to_Debug()
     {
         var request = new AnalysisRequest
@@ -70,6 +83,7 @@ public class GlobalPropertiesTests
                 ["Configuration"] = "Debug",
                 ["CustomAfterMicrosoftCommonTargets"] = GlobalProperties.TargetsPath,
                 ["TargetFrameworkRootPath"] = ReferenceAssemblies.Default.Root,
+                ["ResolveAssemblyReferencesSilent"] = "false",
             },
             GlobalProperties.For(request));
     }
@@ -84,12 +98,14 @@ public class GlobalPropertiesTests
         };
 
         Assert.Equal("Release", GlobalProperties.For(request)["Configuration"]);
-        Assert.Equal(3, GlobalProperties.For(request).Count);
+        Assert.Equal(4, GlobalProperties.For(request).Count);
     }
 
     [Fact]
     public void The_targets_ship_next_to_the_Analyzer()
     {
         Assert.True(File.Exists(GlobalProperties.TargetsPath), GlobalProperties.TargetsPath);
+        var legacy = Path.Combine(Path.GetDirectoryName(GlobalProperties.TargetsPath)!, "Typescape.Legacy.targets");
+        Assert.True(File.Exists(legacy), legacy);
     }
 }

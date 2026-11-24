@@ -67,7 +67,7 @@ internal static class SolutionLoader
             var projects = solution.Projects
                 .Where(project => project.Language == LanguageNames.CSharp && project.FilePath is not null)
                 .GroupBy(project => project.FilePath!, PathComparer)
-                .Select(file => Choose(file.Key, [.. file], progress.TargetFrameworks(file.Key), request.Framework, directory))
+                .Select(file => Choose(file.Key, [.. file], Available(file.Key, [.. file], progress), request.Framework, directory))
                 .OrderBy(project => project.Key, StringComparer.Ordinal)
                 .ToArray();
 
@@ -144,6 +144,9 @@ internal static class SolutionLoader
 
         return new LoadedProject(Key(directory, path), project, tfm, available);
     }
+
+    private static IReadOnlyList<string> Available(string path, IReadOnlyList<Project> perTfm, LoadProgress progress) =>
+        progress.TargetFrameworks(path) is { Count: > 0 } reported ? reported : TargetFrameworks.OfClassic(perTfm);
 
     // Roslyn names the projects of a multi-targeting file "Name(tfm)"; a single-target project keeps its plain name.
     private static string? TfmOf(Project project, IReadOnlyList<string> available) =>

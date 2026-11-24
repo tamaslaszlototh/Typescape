@@ -43,7 +43,10 @@ internal sealed class LoadedSolution(
 /// <param name="Key">The project's stable key: its file path relative to the solution directory, forward slashes.</param>
 /// <param name="Project">The Roslyn project, the one for <paramref name="Tfm"/>.</param>
 /// <param name="Tfm">The target framework the project is analyzed for, or <c>null</c> when MSBuild reported none.</param>
-/// <param name="AvailableTfms">Every target framework MSBuild reported for the project file, sorted ordinally.</param>
+/// <param name="AvailableTfms">
+/// Every target framework MSBuild reported for the project file, sorted ordinally; for a classic project, the one its
+/// <c>TargetFrameworkVersion</c> stands for.
+/// </param>
 internal sealed record LoadedProject(string Key, Project Project, string? Tfm, IReadOnlyList<string> AvailableTfms);
 
 /// <summary>The reference assemblies of one .NET Framework version could not be fetched, e.g. offline.</summary>

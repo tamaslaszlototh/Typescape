@@ -96,6 +96,14 @@ internal static class FakeReferenceAssemblies
             {
                 public sealed class AssemblyVersionAttribute : Attribute { public AssemblyVersionAttribute(string version) { } }
             }
+            namespace System.Runtime.Versioning
+            {
+                public sealed class TargetFrameworkAttribute : Attribute
+                {
+                    public TargetFrameworkAttribute(string frameworkName) { }
+                    public string FrameworkDisplayName { get; set; }
+                }
+            }
             """;
         var compilation = CSharpCompilation.Create(
             "mscorlib",
