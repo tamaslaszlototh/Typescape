@@ -90,11 +90,15 @@ internal sealed record ExecutableMemberFact(
 /// A Dependency at one place in the source. Assemble aggregates them per (source, target, Dependency Kind).
 /// </summary>
 /// <param name="Source">The key of the innermost own type around the place.</param>
+/// <param name="SourceMember">
+/// The key of the Executable Member whose declaration holds the place, lambdas and local functions included;
+/// <c>null</c> in an initializer or outside any Executable Member.
+/// </param>
 /// <param name="Target">The key of the named type's open definition, own or External.</param>
 /// <param name="Document">The document's key.</param>
 /// <param name="Line">The 1-based physical line the place starts on, <c>#line</c> directives ignored.</param>
 /// <param name="Generated">As <see cref="GeneratedCode.CodeIsGenerated"/> decides.</param>
-internal sealed record DependencyFact(string Source, string Target, DependencyKind Kind, string Document, int Line, bool Generated);
+internal sealed record DependencyFact(string Source, string? SourceMember, string Target, DependencyKind Kind, string Document, int Line, bool Generated);
 
 /// <summary>An exception in Typescape's own walker, caught on one document.</summary>
 /// <param name="Document">The document's key.</param>

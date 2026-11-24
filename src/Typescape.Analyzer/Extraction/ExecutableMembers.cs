@@ -35,6 +35,14 @@ internal static class ExecutableMembers
         }
     }
 
+    /// <summary>
+    /// The key of <paramref name="method"/> as an Executable Member, when <paramref name="declaration"/> is the syntax that
+    /// holds its body; <c>null</c> otherwise.
+    /// </summary>
+    /// <param name="typeKey">The key of the own type the member belongs to: for an extension-block member, the static class.</param>
+    public static string? Key(IMethodSymbol method, SyntaxNode declaration, string typeKey) =>
+        !method.IsImplicitlyDeclared && Kind(method) is not null && HasBody(declaration) ? Key(method, typeKey) : null;
+
     private static ExecutableMemberFact? Fact(INamedTypeSymbol type, IMethodSymbol method, string typeKey, ProjectScope scope)
     {
         // A partial member's definition part has no body; the implementation part, when there is one, has it.
@@ -46,11 +54,9 @@ internal static class ExecutableMembers
             return null;
         }
 
-        // The extension block's own IDs hash its receiver; the implementation method on the static class has a plain one.
-        var keySource = withBody.AssociatedExtensionImplementation ?? withBody;
         var entryPoint = body as CompilationUnitSyntax;
         return new ExecutableMemberFact(
-            StableKeys.Member(typeKey, Symbols.DocumentationCommentId(keySource)),
+            Key(withBody, typeKey),
             typeKey,
             entryPoint is null ? Signature(withBody) : EntryPointSignature,
             entryPoint is null ? kind : ExecutableMemberKind.EntryPoint,
@@ -59,6 +65,10 @@ internal static class ExecutableMembers
             Source.Lines(body.SyntaxTree, entryPoint is null ? Span(body) : Source.TopLevelStatements(entryPoint), scope.CancellationToken),
             scope.Generated.MemberIsGenerated(type, withBody, body));
     }
+
+    // The extension block's own IDs hash its receiver; the implementation method on the static class has a plain one.
+    private static string Key(IMethodSymbol withBody, string typeKey) =>
+        StableKeys.Member(typeKey, Symbols.DocumentationCommentId(withBody.AssociatedExtensionImplementation ?? withBody));
 
     private static ExecutableMemberKind? Kind(IMethodSymbol method) =>
         // An explicit implementation is the kind of the interface member it implements: an operator stays an operator.

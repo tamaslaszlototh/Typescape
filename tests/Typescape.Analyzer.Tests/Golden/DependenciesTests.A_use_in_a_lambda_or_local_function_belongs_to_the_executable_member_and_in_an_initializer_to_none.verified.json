@@ -1,0 +1,165 @@
+{
+  "documents": [],
+  "types": [],
+  "executableMembers": [
+    {
+      "key": "App|T:Order|M:Order.get_Current",
+      "type": "App|T:Order",
+      "signature": "Current.get",
+      "kind": "accessor",
+      "accessibility": "public",
+      "document": "App/Snippet.cs",
+      "lines": {
+        "start": 8,
+        "end": 8
+      },
+      "generated": false
+    },
+    {
+      "key": "App|T:Order|M:Order.get_Note",
+      "type": "App|T:Order",
+      "signature": "Note.get",
+      "kind": "accessor",
+      "accessibility": "public",
+      "document": "App/Snippet.cs",
+      "lines": {
+        "start": 12,
+        "end": 12
+      },
+      "generated": false
+    },
+    {
+      "key": "App|T:Order|M:Order.Place",
+      "type": "App|T:Order",
+      "signature": "Place()",
+      "kind": "method",
+      "accessibility": "public",
+      "document": "App/Snippet.cs",
+      "lines": {
+        "start": 15,
+        "end": 21
+      },
+      "generated": false
+    }
+  ],
+  "dependencies": [
+    {
+      "source": "App|T:Order",
+      "sourceMember": null,
+      "target": "System.Runtime|T:System.Func`1",
+      "kind": "member-type",
+      "document": "App/Snippet.cs",
+      "line": 5,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": null,
+      "target": "System.Runtime|T:System.Uri",
+      "kind": "generic-arg",
+      "document": "App/Snippet.cs",
+      "line": 5,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": null,
+      "target": "System.Runtime|T:System.Uri",
+      "kind": "new",
+      "document": "App/Snippet.cs",
+      "line": 5,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": null,
+      "target": "System.Runtime|T:System.Guid",
+      "kind": "member-type",
+      "document": "App/Snippet.cs",
+      "line": 6,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": null,
+      "target": "System.Runtime|T:System.Guid",
+      "kind": "call",
+      "document": "App/Snippet.cs",
+      "line": 6,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": null,
+      "target": "System.Runtime|T:System.Version",
+      "kind": "member-type",
+      "document": "App/Snippet.cs",
+      "line": 8,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.get_Current",
+      "target": "System.Runtime|T:System.Version",
+      "kind": "new",
+      "document": "App/Snippet.cs",
+      "line": 8,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": null,
+      "target": "System.Runtime|T:System.String",
+      "kind": "member-type",
+      "document": "App/Snippet.cs",
+      "line": 10,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.get_Note",
+      "target": "System.Runtime|T:System.DateTime",
+      "kind": "call",
+      "document": "App/Snippet.cs",
+      "line": 12,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.get_Note",
+      "target": "System.Runtime|T:System.DateTime",
+      "kind": "member-access",
+      "document": "App/Snippet.cs",
+      "line": 12,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place",
+      "target": "System.Runtime|T:System.Action",
+      "kind": "type-usage",
+      "document": "App/Snippet.cs",
+      "line": 17,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place",
+      "target": "System.Console|T:System.Console",
+      "kind": "call",
+      "document": "App/Snippet.cs",
+      "line": 17,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place",
+      "target": "System.Runtime|T:System.Math",
+      "kind": "call",
+      "document": "App/Snippet.cs",
+      "line": 20,
+      "generated": false
+    }
+  ],
+  "analyzerErrors": []
+}

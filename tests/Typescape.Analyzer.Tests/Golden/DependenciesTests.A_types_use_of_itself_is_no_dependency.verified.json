@@ -5,6 +5,7 @@
   "dependencies": [
     {
       "source": "App|T:Node`1",
+      "sourceMember": null,
       "target": "System.Runtime|T:System.IEquatable`1",
       "kind": "implements",
       "document": "App/Snippet.cs",
@@ -13,6 +14,7 @@
     },
     {
       "source": "App|T:Node`1",
+      "sourceMember": "App|T:Node`1|M:Node`1.Next(Node{System.Int32})",
       "target": "System.Runtime|T:System.Int32",
       "kind": "generic-arg",
       "document": "App/Snippet.cs",
@@ -21,6 +23,7 @@
     },
     {
       "source": "App|T:Node`1",
+      "sourceMember": "App|T:Node`1|M:Node`1.Equals(Node{`0})",
       "target": "System.Runtime|T:System.Boolean",
       "kind": "signature",
       "document": "App/Snippet.cs",

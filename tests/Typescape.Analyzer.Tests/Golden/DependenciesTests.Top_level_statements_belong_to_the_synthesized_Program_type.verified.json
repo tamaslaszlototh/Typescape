@@ -5,6 +5,25 @@
   "dependencies": [
     {
       "source": "App|T:Program",
+      "sourceMember": "App|T:Program|M:Program.{Main}$(System.String[])",
+      "target": "System.Console|T:System.Console",
+      "kind": "call",
+      "document": "App/Snippet.cs",
+      "line": 1,
+      "generated": false
+    },
+    {
+      "source": "App|T:Program",
+      "sourceMember": "App|T:Program|M:Program.{Main}$(System.String[])",
+      "target": "System.Runtime|T:System.Array",
+      "kind": "call",
+      "document": "App/Snippet.cs",
+      "line": 1,
+      "generated": false
+    },
+    {
+      "source": "App|T:Program",
+      "sourceMember": "App|T:Program|M:Program.{Main}$(System.String[])",
       "target": "System.Runtime|T:System.Guid",
       "kind": "generic-arg",
       "document": "App/Snippet.cs",

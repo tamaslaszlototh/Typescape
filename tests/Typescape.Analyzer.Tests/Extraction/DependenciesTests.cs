@@ -271,4 +271,198 @@ public class DependenciesTests
 
         RuleTest.Match(RuleTest.Keep(facts, dependencies: true));
     }
+
+    [Fact]
+    public void An_object_creation_is_new_of_the_created_type_target_typed_ones_included()
+    {
+        var facts = RuleTest.Extract("""
+            using System;
+            using System.Collections.Generic;
+
+            class Order
+            {
+                public void Place(bool valid)
+                {
+                    var source = new Uri("https://example.com");
+                    var lines = new List<Guid>();
+                    Exception error = new();
+                    DateTime? placed = new();
+                    var copy = new Order();
+                    if (!valid) throw new InvalidOperationException();
+                }
+            }
+            """);
+
+        RuleTest.Match(RuleTest.Keep(facts, dependencies: true));
+    }
+
+    [Fact]
+    public void An_invocation_is_call_of_the_called_methods_type_and_an_extension_method_of_its_static_class()
+    {
+        var facts = RuleTest.Extract("""
+            using System;
+            using System.Linq;
+
+            class Order
+            {
+                public void Place(string note, Guid[] ids, Action done)
+                {
+                    Console.WriteLine(note.Trim());
+                    var list = ids
+                        .Where(id => id != Guid.Empty)
+                        .ToList();
+                    note.Shout();
+                    done();
+                    Close();
+                    Local();
+
+                    void Local() { }
+                }
+
+                void Close() { }
+            }
+
+            static class Texts
+            {
+                extension(string text)
+                {
+                    public string Shout() => text;
+                }
+            }
+            """);
+
+        RuleTest.Match(RuleTest.Keep(facts, dependencies: true));
+    }
+
+    [Fact]
+    public void A_field_property_event_or_indexer_access_or_a_method_group_is_member_access_of_the_members_type()
+    {
+        var facts = RuleTest.Extract("""
+            using System;
+            using System.Collections.Generic;
+
+            class Order
+            {
+                int count;
+
+                public void Place(string? note, List<Guid> ids, (int Count, Uri Source) origin)
+                {
+                    count = int.MaxValue + note?.Length ?? 0;
+                    AppDomain.CurrentDomain.ProcessExit += (_, _) => { };
+                    var first = ids[0];
+                    var day = DayOfWeek.Monday;
+                    Action<string> write = Console.WriteLine;
+                    var builder = new UriBuilder { Port = origin.Count };
+                }
+            }
+            """);
+
+        RuleTest.Match(RuleTest.Keep(facts, dependencies: true));
+    }
+
+    [Fact]
+    public void Locals_casts_typeof_is_as_patterns_nameof_and_default_are_type_usage()
+    {
+        var facts = RuleTest.Extract("""
+            using System;
+            using System.Collections.Generic;
+
+            class Order
+            {
+                public object Place(object value, Uri[] sources)
+                {
+                    Guid id = default;
+                    var inferred = sources;
+                    var version = (Version)value;
+                    var type = typeof(DateTime);
+                    if (value is TimeSpan || value as Exception is not null) { }
+                    if (value is Uri { IsFile: true } file) { }
+                    switch (value)
+                    {
+                        case DateOnly:
+                        case TimeOnly time:
+                            break;
+                    }
+                    foreach (Uri source in sources) { }
+                    try { } catch (FormatException) { }
+                    int.TryParse("1", out int parsed);
+                    var names = new[] { nameof(Decimal), nameof(Environment.NewLine) };
+                    var empty = new Half[0];
+                    return default(TimeZoneInfo)!;
+                }
+            }
+            """);
+
+        RuleTest.Match(RuleTest.Keep(facts, dependencies: true));
+    }
+
+    [Fact]
+    public void A_constant_after_is_is_member_access_of_its_type_not_type_usage()
+    {
+        var facts = RuleTest.Extract("""
+            using System;
+
+            class Order
+            {
+                const int Limit = 10;
+
+                public bool Check(object value) => value is DayOfWeek.Monday || value is Math.PI || value is Limit || value is Version;
+            }
+            """);
+
+        RuleTest.Match(RuleTest.Keep(facts, dependencies: true));
+    }
+
+    [Fact]
+    public void Lambda_and_local_function_parameter_return_and_constraint_types_are_type_usage()
+    {
+        var facts = RuleTest.Extract("""
+            using System;
+
+            class Order
+            {
+                public void Place()
+                {
+                    Func<Uri, bool> isFile = (Uri source) => source.IsFile;
+                    var parse = Version (string text) => new(text);
+                    Action<Guid> log = delegate (Guid id) { };
+
+                    TimeSpan Age<T>(DateTime now) where T : IComparable => TimeSpan.Zero;
+                }
+            }
+            """);
+
+        RuleTest.Match(RuleTest.Keep(facts, dependencies: true));
+    }
+
+    [Fact]
+    public void A_use_in_a_lambda_or_local_function_belongs_to_the_executable_member_and_in_an_initializer_to_none()
+    {
+        var facts = RuleTest.Extract("""
+            using System;
+
+            class Order
+            {
+                Func<Uri> source = () => new Uri("https://example.com");
+                public Guid Id { get; } = Guid.NewGuid();
+
+                public Version Current => new(1, 0);
+
+                public string Note
+                {
+                    get => DateTime.Now.ToString();
+                }
+
+                public void Place()
+                {
+                    Action run = () => Console.WriteLine();
+                    Local();
+
+                    void Local() => Math.Abs(1);
+                }
+            }
+            """);
+
+        RuleTest.Match(RuleTest.Keep(facts, members: true, dependencies: true));
+    }
 }

@@ -1,0 +1,62 @@
+{
+  "documents": [],
+  "types": [],
+  "executableMembers": [],
+  "dependencies": [
+    {
+      "source": "App|T:Order",
+      "sourceMember": null,
+      "target": "System.Runtime|T:System.Int32",
+      "kind": "member-type",
+      "document": "App/Snippet.cs",
+      "line": 5,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Check(System.Object)",
+      "target": "System.Runtime|T:System.Boolean",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 7,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Check(System.Object)",
+      "target": "System.Runtime|T:System.Object",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 7,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Check(System.Object)",
+      "target": "System.Runtime|T:System.DayOfWeek",
+      "kind": "member-access",
+      "document": "App/Snippet.cs",
+      "line": 7,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Check(System.Object)",
+      "target": "System.Runtime|T:System.Math",
+      "kind": "member-access",
+      "document": "App/Snippet.cs",
+      "line": 7,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Check(System.Object)",
+      "target": "System.Runtime|T:System.Version",
+      "kind": "type-usage",
+      "document": "App/Snippet.cs",
+      "line": 7,
+      "generated": false
+    }
+  ],
+  "analyzerErrors": []
+}

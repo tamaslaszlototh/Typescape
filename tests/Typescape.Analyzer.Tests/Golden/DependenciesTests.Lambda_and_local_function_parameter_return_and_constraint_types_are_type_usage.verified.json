@@ -1,0 +1,143 @@
+{
+  "documents": [],
+  "types": [],
+  "executableMembers": [],
+  "dependencies": [
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place",
+      "target": "System.Runtime|T:System.Func`2",
+      "kind": "type-usage",
+      "document": "App/Snippet.cs",
+      "line": 7,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place",
+      "target": "System.Runtime|T:System.Uri",
+      "kind": "generic-arg",
+      "document": "App/Snippet.cs",
+      "line": 7,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place",
+      "target": "System.Runtime|T:System.Boolean",
+      "kind": "generic-arg",
+      "document": "App/Snippet.cs",
+      "line": 7,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place",
+      "target": "System.Runtime|T:System.Uri",
+      "kind": "type-usage",
+      "document": "App/Snippet.cs",
+      "line": 7,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place",
+      "target": "System.Runtime|T:System.Uri",
+      "kind": "member-access",
+      "document": "App/Snippet.cs",
+      "line": 7,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place",
+      "target": "System.Runtime|T:System.Version",
+      "kind": "type-usage",
+      "document": "App/Snippet.cs",
+      "line": 8,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place",
+      "target": "System.Runtime|T:System.String",
+      "kind": "type-usage",
+      "document": "App/Snippet.cs",
+      "line": 8,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place",
+      "target": "System.Runtime|T:System.Version",
+      "kind": "new",
+      "document": "App/Snippet.cs",
+      "line": 8,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place",
+      "target": "System.Runtime|T:System.Action`1",
+      "kind": "type-usage",
+      "document": "App/Snippet.cs",
+      "line": 9,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place",
+      "target": "System.Runtime|T:System.Guid",
+      "kind": "generic-arg",
+      "document": "App/Snippet.cs",
+      "line": 9,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place",
+      "target": "System.Runtime|T:System.Guid",
+      "kind": "type-usage",
+      "document": "App/Snippet.cs",
+      "line": 9,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place",
+      "target": "System.Runtime|T:System.TimeSpan",
+      "kind": "type-usage",
+      "document": "App/Snippet.cs",
+      "line": 11,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place",
+      "target": "System.Runtime|T:System.DateTime",
+      "kind": "type-usage",
+      "document": "App/Snippet.cs",
+      "line": 11,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place",
+      "target": "System.Runtime|T:System.IComparable",
+      "kind": "type-usage",
+      "document": "App/Snippet.cs",
+      "line": 11,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place",
+      "target": "System.Runtime|T:System.TimeSpan",
+      "kind": "member-access",
+      "document": "App/Snippet.cs",
+      "line": 11,
+      "generated": false
+    }
+  ],
+  "analyzerErrors": []
+}

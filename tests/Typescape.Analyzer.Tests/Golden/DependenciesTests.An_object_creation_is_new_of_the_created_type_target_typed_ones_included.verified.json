@@ -1,0 +1,89 @@
+{
+  "documents": [],
+  "types": [],
+  "executableMembers": [],
+  "dependencies": [
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Boolean)",
+      "target": "System.Runtime|T:System.Boolean",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 6,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Boolean)",
+      "target": "System.Runtime|T:System.Uri",
+      "kind": "new",
+      "document": "App/Snippet.cs",
+      "line": 8,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Boolean)",
+      "target": "System.Collections|T:System.Collections.Generic.List`1",
+      "kind": "new",
+      "document": "App/Snippet.cs",
+      "line": 9,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Boolean)",
+      "target": "System.Runtime|T:System.Guid",
+      "kind": "generic-arg",
+      "document": "App/Snippet.cs",
+      "line": 9,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Boolean)",
+      "target": "System.Runtime|T:System.Exception",
+      "kind": "type-usage",
+      "document": "App/Snippet.cs",
+      "line": 10,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Boolean)",
+      "target": "System.Runtime|T:System.Exception",
+      "kind": "new",
+      "document": "App/Snippet.cs",
+      "line": 10,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Boolean)",
+      "target": "System.Runtime|T:System.DateTime",
+      "kind": "type-usage",
+      "document": "App/Snippet.cs",
+      "line": 11,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Boolean)",
+      "target": "System.Runtime|T:System.DateTime",
+      "kind": "new",
+      "document": "App/Snippet.cs",
+      "line": 11,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Boolean)",
+      "target": "System.Runtime|T:System.InvalidOperationException",
+      "kind": "new",
+      "document": "App/Snippet.cs",
+      "line": 13,
+      "generated": false
+    }
+  ],
+  "analyzerErrors": []
+}

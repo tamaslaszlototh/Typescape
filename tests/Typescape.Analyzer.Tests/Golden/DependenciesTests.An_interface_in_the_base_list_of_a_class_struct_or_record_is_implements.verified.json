@@ -5,6 +5,7 @@
   "dependencies": [
     {
       "source": "App|T:Order",
+      "sourceMember": null,
       "target": "System.Runtime|T:System.IDisposable",
       "kind": "implements",
       "document": "App/Snippet.cs",
@@ -13,6 +14,7 @@
     },
     {
       "source": "App|T:Money",
+      "sourceMember": null,
       "target": "System.Runtime|T:System.IComparable",
       "kind": "implements",
       "document": "App/Snippet.cs",
@@ -21,6 +23,7 @@
     },
     {
       "source": "App|T:Money",
+      "sourceMember": "App|T:Money|M:Money.CompareTo(System.Object)",
       "target": "System.Runtime|T:System.Int32",
       "kind": "signature",
       "document": "App/Snippet.cs",
@@ -29,6 +32,7 @@
     },
     {
       "source": "App|T:Money",
+      "sourceMember": "App|T:Money|M:Money.CompareTo(System.Object)",
       "target": "System.Runtime|T:System.Object",
       "kind": "signature",
       "document": "App/Snippet.cs",
@@ -37,6 +41,7 @@
     },
     {
       "source": "App|T:Line",
+      "sourceMember": null,
       "target": "System.Runtime|T:System.IDisposable",
       "kind": "implements",
       "document": "App/Snippet.cs",
@@ -45,6 +50,7 @@
     },
     {
       "source": "App|T:Tax",
+      "sourceMember": null,
       "target": "System.Runtime|T:System.IFormattable",
       "kind": "implements",
       "document": "App/Snippet.cs",
@@ -53,6 +59,7 @@
     },
     {
       "source": "App|T:Tax",
+      "sourceMember": "App|T:Tax|M:Tax.ToString(System.String,System.IFormatProvider)",
       "target": "System.Runtime|T:System.String",
       "kind": "signature",
       "document": "App/Snippet.cs",
@@ -61,6 +68,7 @@
     },
     {
       "source": "App|T:Tax",
+      "sourceMember": "App|T:Tax|M:Tax.ToString(System.String,System.IFormatProvider)",
       "target": "System.Runtime|T:System.String",
       "kind": "signature",
       "document": "App/Snippet.cs",
@@ -69,6 +77,7 @@
     },
     {
       "source": "App|T:Tax",
+      "sourceMember": "App|T:Tax|M:Tax.ToString(System.String,System.IFormatProvider)",
       "target": "System.Runtime|T:System.IFormatProvider",
       "kind": "signature",
       "document": "App/Snippet.cs",

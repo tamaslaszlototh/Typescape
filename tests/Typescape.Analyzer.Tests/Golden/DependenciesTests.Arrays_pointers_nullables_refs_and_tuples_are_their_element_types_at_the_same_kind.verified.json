@@ -5,6 +5,7 @@
   "dependencies": [
     {
       "source": "App|T:Order",
+      "sourceMember": null,
       "target": "System.Runtime|T:System.Guid",
       "kind": "member-type",
       "document": "App/Snippet.cs",
@@ -13,6 +14,7 @@
     },
     {
       "source": "App|T:Order",
+      "sourceMember": null,
       "target": "System.Runtime|T:System.Int32",
       "kind": "member-type",
       "document": "App/Snippet.cs",
@@ -21,6 +23,7 @@
     },
     {
       "source": "App|T:Order",
+      "sourceMember": null,
       "target": "System.Runtime|T:System.DateTime",
       "kind": "member-type",
       "document": "App/Snippet.cs",
@@ -29,6 +32,7 @@
     },
     {
       "source": "App|T:Order",
+      "sourceMember": null,
       "target": "System.Runtime|T:System.Uri",
       "kind": "member-type",
       "document": "App/Snippet.cs",
@@ -37,6 +41,7 @@
     },
     {
       "source": "App|T:Order",
+      "sourceMember": null,
       "target": "System.Runtime|T:System.Version",
       "kind": "member-type",
       "document": "App/Snippet.cs",
@@ -45,6 +50,7 @@
     },
     {
       "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Total(System.Int64@)",
       "target": "System.Runtime|T:System.Decimal",
       "kind": "signature",
       "document": "App/Snippet.cs",
@@ -53,8 +59,18 @@
     },
     {
       "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Total(System.Int64@)",
       "target": "System.Runtime|T:System.Int64",
       "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 10,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Total(System.Int64@)",
+      "target": "System.Runtime|T:System.Exception",
+      "kind": "new",
       "document": "App/Snippet.cs",
       "line": 10,
       "generated": false

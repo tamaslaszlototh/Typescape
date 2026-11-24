@@ -1,0 +1,161 @@
+{
+  "documents": [],
+  "types": [],
+  "executableMembers": [],
+  "dependencies": [
+    {
+      "source": "App|T:Order",
+      "sourceMember": null,
+      "target": "System.Runtime|T:System.Int32",
+      "kind": "member-type",
+      "document": "App/Snippet.cs",
+      "line": 6,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
+      "target": "System.Runtime|T:System.String",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 8,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
+      "target": "System.Collections|T:System.Collections.Generic.List`1",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 8,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
+      "target": "System.Runtime|T:System.Int32",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 8,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
+      "target": "System.Runtime|T:System.Uri",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 8,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
+      "target": "System.Runtime|T:System.Guid",
+      "kind": "generic-arg",
+      "document": "App/Snippet.cs",
+      "line": 8,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
+      "target": "System.Runtime|T:System.Int32",
+      "kind": "member-access",
+      "document": "App/Snippet.cs",
+      "line": 10,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
+      "target": "System.Runtime|T:System.String",
+      "kind": "member-access",
+      "document": "App/Snippet.cs",
+      "line": 10,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
+      "target": "System.Runtime|T:System.AppDomain",
+      "kind": "member-access",
+      "document": "App/Snippet.cs",
+      "line": 11,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
+      "target": "System.Runtime|T:System.AppDomain",
+      "kind": "member-access",
+      "document": "App/Snippet.cs",
+      "line": 11,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
+      "target": "System.Collections|T:System.Collections.Generic.List`1",
+      "kind": "member-access",
+      "document": "App/Snippet.cs",
+      "line": 12,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
+      "target": "System.Runtime|T:System.DayOfWeek",
+      "kind": "member-access",
+      "document": "App/Snippet.cs",
+      "line": 13,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
+      "target": "System.Runtime|T:System.Action`1",
+      "kind": "type-usage",
+      "document": "App/Snippet.cs",
+      "line": 14,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
+      "target": "System.Runtime|T:System.String",
+      "kind": "generic-arg",
+      "document": "App/Snippet.cs",
+      "line": 14,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
+      "target": "System.Console|T:System.Console",
+      "kind": "member-access",
+      "document": "App/Snippet.cs",
+      "line": 14,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
+      "target": "System.Runtime|T:System.UriBuilder",
+      "kind": "new",
+      "document": "App/Snippet.cs",
+      "line": 15,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
+      "target": "System.Runtime|T:System.UriBuilder",
+      "kind": "member-access",
+      "document": "App/Snippet.cs",
+      "line": 15,
+      "generated": false
+    }
+  ],
+  "analyzerErrors": []
+}
