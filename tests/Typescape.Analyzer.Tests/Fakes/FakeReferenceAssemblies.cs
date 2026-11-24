@@ -1,5 +1,5 @@
 using NuGet.Packaging;
-using Typescape.Analyzer.Loading;
+using Typescape.Analyzer.Packages;
 
 namespace Typescape.Analyzer.Tests.Fakes;
 

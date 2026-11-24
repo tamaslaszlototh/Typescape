@@ -1,6 +1,6 @@
-using Typescape.Analyzer.Loading;
+using Typescape.Analyzer.MSBuild;
 
-namespace Typescape.Analyzer.Tests.Loading;
+namespace Typescape.Analyzer.Tests.MSBuild;
 
 public class TargetFrameworksTests
 {

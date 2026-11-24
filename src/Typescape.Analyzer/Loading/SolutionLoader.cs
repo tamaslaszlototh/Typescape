@@ -1,6 +1,8 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.MSBuild;
-using Typescape.Analyzer.Pipeline;
+using Typescape.Analyzer.Infrastructure;
+using Typescape.Analyzer.MSBuild;
+using Typescape.Analyzer.Packages;
 
 namespace Typescape.Analyzer.Loading;
 

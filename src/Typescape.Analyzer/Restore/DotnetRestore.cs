@@ -1,4 +1,6 @@
 using System.ComponentModel;
+using Typescape.Analyzer.Infrastructure;
+using Typescape.Analyzer.MSBuild;
 
 namespace Typescape.Analyzer.Restore;
 

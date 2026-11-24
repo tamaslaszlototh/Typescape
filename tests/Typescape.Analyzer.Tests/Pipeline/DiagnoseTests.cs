@@ -1,6 +1,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Typescape.Analyzer.Extraction;
+using Typescape.Analyzer.Loading;
 using Typescape.Analyzer.Pipeline;
 
 namespace Typescape.Analyzer.Tests.Pipeline;

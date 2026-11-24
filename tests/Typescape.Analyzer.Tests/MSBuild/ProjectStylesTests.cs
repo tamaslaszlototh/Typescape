@@ -1,7 +1,7 @@
-using Typescape.Analyzer.Loading;
+using Typescape.Analyzer.MSBuild;
 using Typescape.Snapshot.Records;
 
-namespace Typescape.Analyzer.Tests.Loading;
+namespace Typescape.Analyzer.Tests.MSBuild;
 
 public sealed class ProjectStylesTests : IDisposable
 {

@@ -1,5 +1,5 @@
 using Microsoft.CodeAnalysis;
-using Typescape.Analyzer.Pipeline;
+using Typescape.Analyzer.MSBuild;
 
 namespace Typescape.Analyzer.Loading;
 

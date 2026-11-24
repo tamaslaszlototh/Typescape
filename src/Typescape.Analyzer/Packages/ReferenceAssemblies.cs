@@ -6,7 +6,7 @@ using NuGet.Packaging;
 using NuGet.Packaging.Core;
 using NuGet.Versioning;
 
-namespace Typescape.Analyzer.Loading;
+namespace Typescape.Analyzer.Packages;
 
 /// <summary>
 /// Typescape's own .NET Framework reference assemblies: one merged root (<c>.NETFramework/v4.7.2</c>, <c>/v4.8</c>, …)

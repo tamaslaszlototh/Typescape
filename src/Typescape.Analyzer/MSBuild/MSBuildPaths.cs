@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace Typescape.Analyzer.Loading;
+namespace Typescape.Analyzer.MSBuild;
 
 /// <summary>Paths as project files write them, resolved on this machine.</summary>
 internal static partial class MSBuildPaths

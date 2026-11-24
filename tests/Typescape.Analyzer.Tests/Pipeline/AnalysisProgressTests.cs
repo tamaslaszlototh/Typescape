@@ -1,3 +1,4 @@
+using Typescape.Analyzer.Loading;
 using Typescape.Analyzer.Pipeline;
 using Typescape.Analyzer.Tests.Fakes;
 using Typescape.Snapshot.Records;

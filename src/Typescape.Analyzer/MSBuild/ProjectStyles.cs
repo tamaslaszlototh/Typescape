@@ -3,7 +3,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Typescape.Snapshot.Records;
 
-namespace Typescape.Analyzer.Loading;
+namespace Typescape.Analyzer.MSBuild;
 
 /// <summary>Tells an SDK-style project file from a classic one.</summary>
 internal static partial class ProjectStyles

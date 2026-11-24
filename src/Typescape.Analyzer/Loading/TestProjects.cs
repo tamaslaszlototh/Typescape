@@ -1,6 +1,5 @@
 using System.IO.Enumeration;
 using Microsoft.CodeAnalysis;
-using Typescape.Analyzer.Pipeline;
 
 namespace Typescape.Analyzer.Loading;
 

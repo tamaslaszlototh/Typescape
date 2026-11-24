@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using Typescape.Analyzer.Infrastructure;
 using Typescape.Analyzer.Pipeline;
 using Typescape.Analyzer.Provenance;
 using Typescape.Analyzer.Tests.Fakes;

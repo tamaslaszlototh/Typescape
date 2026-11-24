@@ -1,6 +1,7 @@
 using Microsoft.CodeAnalysis;
 using Typescape.Analyzer.Loading;
-using Typescape.Analyzer.Pipeline;
+using Typescape.Analyzer.MSBuild;
+using Typescape.Analyzer.Packages;
 using Typescape.Analyzer.Restore;
 using Typescape.Analyzer.Tests.Fakes;
 using Typescape.Snapshot.Records;

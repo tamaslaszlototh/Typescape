@@ -1,6 +1,8 @@
 using System.Reflection;
+using Typescape.Analyzer.Infrastructure;
+using Typescape.Analyzer.MSBuild;
 
-namespace Typescape.Analyzer.Tests;
+namespace Typescape.Analyzer.Tests.MSBuild;
 
 /// <summary>
 /// Evaluates throwaway projects with the real <c>dotnet msbuild</c> (.NET SDK MSBuild) under <see cref="GlobalProperties"/>,

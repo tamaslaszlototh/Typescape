@@ -1,8 +1,8 @@
 using Microsoft.CodeAnalysis;
-using Typescape.Analyzer.Loading;
+using Typescape.Analyzer.Packages;
 using Typescape.Analyzer.Tests.Fakes;
 
-namespace Typescape.Analyzer.Tests.Loading;
+namespace Typescape.Analyzer.Tests.Packages;
 
 /// <summary>
 /// Fetches fake reference-assembly packages from a local feed, into a throwaway root, with a throwaway global packages

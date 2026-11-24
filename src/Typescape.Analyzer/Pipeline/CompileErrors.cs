@@ -1,5 +1,6 @@
 using System.Globalization;
 using Microsoft.CodeAnalysis;
+using Typescape.Analyzer.Infrastructure;
 using Typescape.Snapshot.Records;
 
 namespace Typescape.Analyzer.Pipeline;

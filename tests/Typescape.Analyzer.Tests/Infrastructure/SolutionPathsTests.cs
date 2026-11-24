@@ -1,4 +1,6 @@
-namespace Typescape.Analyzer.Tests;
+using Typescape.Analyzer.Infrastructure;
+
+namespace Typescape.Analyzer.Tests.Infrastructure;
 
 public class SolutionPathsTests
 {

@@ -2,7 +2,7 @@ using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 using NuGet.Frameworks;
 
-namespace Typescape.Analyzer.Loading;
+namespace Typescape.Analyzer.MSBuild;
 
 /// <summary>Picks the one target framework a project is analyzed for.</summary>
 internal static partial class TargetFrameworks

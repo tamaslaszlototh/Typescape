@@ -1,5 +1,7 @@
 using Microsoft.CodeAnalysis;
-using Typescape.Analyzer.Pipeline;
+using Typescape.Analyzer.Infrastructure;
+using Typescape.Analyzer.MSBuild;
+using Typescape.Analyzer.Packages;
 using Typescape.Snapshot.Records;
 using Kind = Typescape.Snapshot.Records.WorkspaceDiagnosticKind;
 using RoslynKind = Microsoft.CodeAnalysis.WorkspaceDiagnosticKind;

@@ -1,7 +1,7 @@
 using Microsoft.CodeAnalysis;
 using Typescape.Snapshot.Records;
 
-namespace Typescape.Analyzer.Pipeline;
+namespace Typescape.Analyzer.Loading;
 
 /// <summary>The output of Load: the Roslyn solution and the projects to analyze. Disposing it disposes the workspace.</summary>
 /// <param name="workspace">The workspace that owns <paramref name="solution"/>.</param>

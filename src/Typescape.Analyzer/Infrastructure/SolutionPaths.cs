@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace Typescape.Analyzer;
+namespace Typescape.Analyzer.Infrastructure;
 
 /// <summary>Keeps absolute paths out of the messages a Snapshot stores.</summary>
 internal static class SolutionPaths

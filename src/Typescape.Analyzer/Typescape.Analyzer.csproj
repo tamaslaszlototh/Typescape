@@ -8,7 +8,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Typescape.targets;Typescape.Legacy.targets" CopyToOutputDirectory="PreserveNewest" />
+    <!-- Flat in the output: GlobalProperties.TargetsPath looks next to the dll. -->
+    <None Include="MSBuild/Typescape.targets;MSBuild/Typescape.Legacy.targets" Link="%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>

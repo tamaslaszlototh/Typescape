@@ -1,6 +1,6 @@
 using System.Diagnostics;
 
-namespace Typescape.Analyzer;
+namespace Typescape.Analyzer.Infrastructure;
 
 internal sealed record ProcessResult(int ExitCode, string Output, string Error);
 

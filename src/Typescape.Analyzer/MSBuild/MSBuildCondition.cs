@@ -1,6 +1,6 @@
 using System.Globalization;
 
-namespace Typescape.Analyzer.Loading;
+namespace Typescape.Analyzer.MSBuild;
 
 /// <summary>MSBuild's condition grammar, in three-valued logic: <c>null</c> is "cannot tell".</summary>
 internal sealed class MSBuildCondition

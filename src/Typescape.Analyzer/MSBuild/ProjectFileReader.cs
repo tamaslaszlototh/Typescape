@@ -1,7 +1,7 @@
 using System.Xml;
 using System.Xml.Linq;
 
-namespace Typescape.Analyzer.Loading;
+namespace Typescape.Analyzer.MSBuild;
 
 /// <summary>
 /// Reads the <c>ProjectReference</c> items of one project file without MSBuild, because MSBuildWorkspace reports only

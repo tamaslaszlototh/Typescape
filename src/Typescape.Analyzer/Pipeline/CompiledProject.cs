@@ -1,5 +1,6 @@
 using Microsoft.CodeAnalysis;
 using Typescape.Analyzer.Extraction;
+using Typescape.Analyzer.Loading;
 using Typescape.Snapshot.Records;
 
 namespace Typescape.Analyzer.Pipeline;

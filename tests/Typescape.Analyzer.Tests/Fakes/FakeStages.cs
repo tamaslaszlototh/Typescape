@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Host.Mef;
 using Typescape.Analyzer.Extraction;
+using Typescape.Analyzer.Loading;
 using Typescape.Analyzer.Pipeline;
 using Typescape.Snapshot;
 using Typescape.Snapshot.Records;

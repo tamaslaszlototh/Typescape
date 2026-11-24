@@ -1,6 +1,6 @@
-using Typescape.Analyzer.Loading;
+using Typescape.Analyzer.Packages;
 
-namespace Typescape.Analyzer;
+namespace Typescape.Analyzer.MSBuild;
 
 /// <summary>The MSBuild global properties that Restore and Load both evaluate the projects with.</summary>
 internal static class GlobalProperties

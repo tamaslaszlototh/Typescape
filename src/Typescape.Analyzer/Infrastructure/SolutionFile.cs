@@ -1,6 +1,6 @@
 using Microsoft.VisualStudio.SolutionPersistence.Serializer;
 
-namespace Typescape.Analyzer;
+namespace Typescape.Analyzer.Infrastructure;
 
 /// <summary>Reads a <c>.sln</c> or <c>.slnx</c> with the parser MSBuildWorkspace uses.</summary>
 internal static class SolutionFile

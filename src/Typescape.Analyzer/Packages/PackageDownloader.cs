@@ -7,7 +7,7 @@ using NuGet.Packaging.Signing;
 using NuGet.Protocol;
 using NuGet.Protocol.Core.Types;
 
-namespace Typescape.Analyzer;
+namespace Typescape.Analyzer.Packages;
 
 /// <summary>
 /// Finds a package in the global packages folder or the enabled <c>nuget.config</c> sources, in order, and extracts it

@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using Typescape.Analyzer.Infrastructure;
 using Typescape.Snapshot.Records;
 
 namespace Typescape.Analyzer.Provenance;

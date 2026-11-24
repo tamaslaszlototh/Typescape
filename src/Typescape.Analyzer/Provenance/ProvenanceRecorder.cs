@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using Typescape.Analyzer.MSBuild;
 using Typescape.Snapshot.Records;
 
 namespace Typescape.Analyzer.Provenance;

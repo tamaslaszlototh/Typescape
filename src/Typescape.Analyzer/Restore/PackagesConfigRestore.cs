@@ -2,6 +2,8 @@ using System.Collections.Concurrent;
 using NuGet.Configuration;
 using NuGet.Packaging;
 using NuGet.Packaging.Core;
+using Typescape.Analyzer.Infrastructure;
+using Typescape.Analyzer.Packages;
 
 namespace Typescape.Analyzer.Restore;
 

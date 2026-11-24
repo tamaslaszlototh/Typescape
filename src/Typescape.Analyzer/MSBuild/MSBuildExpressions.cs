@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace Typescape.Analyzer.Loading;
+namespace Typescape.Analyzer.MSBuild;
 
 /// <summary>
 /// Best-effort MSBuild properties and <c>$(…)</c> expansion for <see cref="ProjectFileReader"/>. <c>null</c> stands for

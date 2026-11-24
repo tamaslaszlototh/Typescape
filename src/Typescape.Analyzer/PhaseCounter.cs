@@ -1,4 +1,4 @@
-namespace Typescape.Analyzer.Pipeline;
+namespace Typescape.Analyzer;
 
 internal sealed class PhaseCounter(AnalysisPhase phase, IProgress<AnalysisProgress>? progress)
 {

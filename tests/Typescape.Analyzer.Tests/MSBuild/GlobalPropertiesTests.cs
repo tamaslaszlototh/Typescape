@@ -1,6 +1,7 @@
-using Typescape.Analyzer.Loading;
+using Typescape.Analyzer.MSBuild;
+using Typescape.Analyzer.Packages;
 
-namespace Typescape.Analyzer.Tests;
+namespace Typescape.Analyzer.Tests.MSBuild;
 
 public class GlobalPropertiesTests
 {
