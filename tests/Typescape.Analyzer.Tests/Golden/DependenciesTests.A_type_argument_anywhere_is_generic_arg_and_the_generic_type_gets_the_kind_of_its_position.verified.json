@@ -1,0 +1,64 @@
+{
+  "documents": [],
+  "types": [],
+  "executableMembers": [],
+  "dependencies": [
+    {
+      "source": "App|T:Order",
+      "target": "System.Collections|T:System.Collections.Generic.List`1",
+      "kind": "inherits",
+      "document": "App/Snippet.cs",
+      "line": 4,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "target": "System.Runtime|T:System.Guid",
+      "kind": "generic-arg",
+      "document": "App/Snippet.cs",
+      "line": 4,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "target": "System.Collections|T:System.Collections.Generic.Dictionary`2",
+      "kind": "member-type",
+      "document": "App/Snippet.cs",
+      "line": 6,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "target": "System.Runtime|T:System.String",
+      "kind": "generic-arg",
+      "document": "App/Snippet.cs",
+      "line": 6,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "target": "System.Collections|T:System.Collections.Generic.List`1",
+      "kind": "generic-arg",
+      "document": "App/Snippet.cs",
+      "line": 6,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "target": "System.Runtime|T:System.Uri",
+      "kind": "generic-arg",
+      "document": "App/Snippet.cs",
+      "line": 6,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "target": "System.Runtime|T:System.Version",
+      "kind": "generic-arg",
+      "document": "App/Snippet.cs",
+      "line": 8,
+      "generated": false
+    }
+  ],
+  "analyzerErrors": []
+}

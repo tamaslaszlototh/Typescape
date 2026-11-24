@@ -1,0 +1,56 @@
+{
+  "documents": [],
+  "types": [],
+  "executableMembers": [],
+  "dependencies": [
+    {
+      "source": "App|T:Order",
+      "target": "System.Runtime|T:System.Guid",
+      "kind": "member-type",
+      "document": "App/Snippet.cs",
+      "line": 5,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "target": "System.Runtime|T:System.DateTime",
+      "kind": "member-type",
+      "document": "App/Snippet.cs",
+      "line": 6,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "target": "System.Runtime|T:System.EventHandler",
+      "kind": "member-type",
+      "document": "App/Snippet.cs",
+      "line": 7,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "target": "System.Runtime|T:System.Action",
+      "kind": "member-type",
+      "document": "App/Snippet.cs",
+      "line": 8,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "target": "System.Runtime|T:System.Decimal",
+      "kind": "member-type",
+      "document": "App/Snippet.cs",
+      "line": 9,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "target": "System.Runtime|T:System.Int32",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 9,
+      "generated": false
+    }
+  ],
+  "analyzerErrors": []
+}

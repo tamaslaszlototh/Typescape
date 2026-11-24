@@ -42,10 +42,19 @@ internal sealed class GeneratedCode(Compilation compilation, ProjectContext cont
     /// <summary>The <see cref="ExecutableMemberFact.Generated"/> flag of <paramref name="member"/>.</summary>
     /// <param name="type">The own type the member belongs to: for an extension-block member, the static class.</param>
     /// <param name="body">The member's syntax that holds its body.</param>
-    public bool MemberIsGenerated(INamedTypeSymbol type, IMethodSymbol member, SyntaxNode body) =>
-        type.DeclaringSyntaxReferences.Any(declaration => Encloses(declaration, body.GetReference()) && DeclarationIsGenerated(type, declaration))
-        || member.GetAttributes().Any(Marks)
-        || member.AssociatedSymbol?.GetAttributes().Any(Marks) == true;
+    public bool MemberIsGenerated(INamedTypeSymbol type, IMethodSymbol member, SyntaxNode body) => CodeIsGenerated(type, body, member);
+
+    /// <summary>
+    /// Whether <paramref name="code"/> is generated: in a generated declaration of <paramref name="type"/>, or in a
+    /// <paramref name="member"/> that carries <c>[GeneratedCode]</c> or <c>[CompilerGenerated]</c>, as an accessor also
+    /// does when its property, indexer or event carries one.
+    /// </summary>
+    /// <param name="member">The member <paramref name="code"/> sits in, if any.</param>
+    public bool CodeIsGenerated(INamedTypeSymbol type, SyntaxNode code, ISymbol? member) =>
+        type.DeclaringSyntaxReferences.Any(declaration => Encloses(declaration, code.GetReference()) && DeclarationIsGenerated(type, declaration))
+        || member is not null && (IsMarked(member) || member is IMethodSymbol { AssociatedSymbol: { } associated } && IsMarked(associated));
+
+    private static bool IsMarked(ISymbol symbol) => symbol.GetAttributes().Any(Marks);
 
     private GeneratedReason? Decide(SyntaxTree document)
     {

@@ -76,12 +76,13 @@ internal static class RuleTest
     /// Only the chosen fact lists of <paramref name="facts"/>, always with its analyzer errors, so a new fact list leaves
     /// existing goldens alone.
     /// </summary>
-    public static ProjectFacts Keep(ProjectFacts facts, bool documents = false, bool types = false, bool members = false) =>
+    public static ProjectFacts Keep(ProjectFacts facts, bool documents = false, bool types = false, bool members = false, bool dependencies = false) =>
         ProjectFacts.Empty with
         {
             Documents = documents ? facts.Documents : [],
             Types = types ? facts.Types : [],
             ExecutableMembers = members ? facts.ExecutableMembers : [],
+            Dependencies = dependencies ? facts.Dependencies : [],
             AnalyzerErrors = facts.AnalyzerErrors,
         };
 

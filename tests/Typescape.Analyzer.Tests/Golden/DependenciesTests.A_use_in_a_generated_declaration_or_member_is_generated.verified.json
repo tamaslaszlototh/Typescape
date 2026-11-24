@@ -1,0 +1,48 @@
+{
+  "documents": [],
+  "types": [],
+  "executableMembers": [],
+  "dependencies": [
+    {
+      "source": "App|T:Order",
+      "target": "System.Runtime|T:System.Guid",
+      "kind": "member-type",
+      "document": "App/Snippet.cs",
+      "line": 6,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "target": "System.Runtime|T:System.Uri",
+      "kind": "member-type",
+      "document": "App/Snippet.cs",
+      "line": 7,
+      "generated": true
+    },
+    {
+      "source": "App|T:Order",
+      "target": "System.Runtime|T:System.CodeDom.Compiler.GeneratedCodeAttribute",
+      "kind": "attribute",
+      "document": "App/Snippet.cs",
+      "line": 7,
+      "generated": true
+    },
+    {
+      "source": "App|T:Order",
+      "target": "System.Runtime|T:System.CodeDom.Compiler.GeneratedCodeAttribute",
+      "kind": "attribute",
+      "document": "App/Snippet.cs",
+      "line": 10,
+      "generated": true
+    },
+    {
+      "source": "App|T:Order",
+      "target": "System.Runtime|T:System.Version",
+      "kind": "member-type",
+      "document": "App/Snippet.cs",
+      "line": 13,
+      "generated": true
+    }
+  ],
+  "analyzerErrors": []
+}

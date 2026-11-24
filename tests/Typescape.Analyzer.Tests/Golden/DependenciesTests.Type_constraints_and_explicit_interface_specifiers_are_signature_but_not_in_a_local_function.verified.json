@@ -1,0 +1,88 @@
+{
+  "documents": [],
+  "types": [],
+  "executableMembers": [],
+  "dependencies": [
+    {
+      "source": "App|T:Repository`1",
+      "target": "System.Runtime|T:System.IEquatable`1",
+      "kind": "implements",
+      "document": "App/Snippet.cs",
+      "line": 4,
+      "generated": false
+    },
+    {
+      "source": "App|T:Repository`1",
+      "target": "System.Runtime|T:System.Guid",
+      "kind": "generic-arg",
+      "document": "App/Snippet.cs",
+      "line": 4,
+      "generated": false
+    },
+    {
+      "source": "App|T:Repository`1",
+      "target": "System.Runtime|T:System.IComparable",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 4,
+      "generated": false
+    },
+    {
+      "source": "App|T:Repository`1",
+      "target": "System.Runtime|T:System.Boolean",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 6,
+      "generated": false
+    },
+    {
+      "source": "App|T:Repository`1",
+      "target": "System.Runtime|T:System.Guid",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 6,
+      "generated": false
+    },
+    {
+      "source": "App|T:Repository`1",
+      "target": "System.Runtime|T:System.IEquatable`1",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 6,
+      "generated": false
+    },
+    {
+      "source": "App|T:Repository`1",
+      "target": "System.Runtime|T:System.Guid",
+      "kind": "generic-arg",
+      "document": "App/Snippet.cs",
+      "line": 6,
+      "generated": false
+    },
+    {
+      "source": "App|T:Repository`1",
+      "target": "System.Runtime|T:System.Collections.Generic.IComparer`1",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 8,
+      "generated": false
+    },
+    {
+      "source": "App|T:Repository`1",
+      "target": "System.Runtime|T:System.Uri",
+      "kind": "generic-arg",
+      "document": "App/Snippet.cs",
+      "line": 8,
+      "generated": false
+    },
+    {
+      "source": "App|T:Handler`1",
+      "target": "System.Runtime|T:System.Exception",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 14,
+      "generated": false
+    }
+  ],
+  "analyzerErrors": []
+}

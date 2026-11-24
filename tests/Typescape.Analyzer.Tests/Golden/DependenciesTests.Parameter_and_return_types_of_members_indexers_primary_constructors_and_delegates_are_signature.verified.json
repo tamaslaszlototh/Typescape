@@ -1,0 +1,104 @@
+{
+  "documents": [],
+  "types": [],
+  "executableMembers": [],
+  "dependencies": [
+    {
+      "source": "App|T:Order",
+      "target": "System.Runtime|T:System.Guid",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 3,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "target": "System.Runtime|T:System.Uri",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 5,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "target": "System.Runtime|T:System.TimeSpan",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 6,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "target": "System.Runtime|T:System.DateTime",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 6,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "target": "System.Runtime|T:System.Decimal",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 7,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "target": "System.Runtime|T:System.String",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 7,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "target": "System.Runtime|T:System.Int32",
+      "kind": "member-type",
+      "document": "App/Snippet.cs",
+      "line": 8,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "target": "System.Runtime|T:System.Int64",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 8,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "target": "System.Runtime|T:System.Version",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 9,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "target": "System.Runtime|T:System.Exception",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 10,
+      "generated": false
+    },
+    {
+      "source": "App|T:Parse",
+      "target": "System.Runtime|T:System.Version",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 13,
+      "generated": false
+    },
+    {
+      "source": "App|T:Parse",
+      "target": "System.Runtime|T:System.String",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 13,
+      "generated": false
+    }
+  ],
+  "analyzerErrors": []
+}

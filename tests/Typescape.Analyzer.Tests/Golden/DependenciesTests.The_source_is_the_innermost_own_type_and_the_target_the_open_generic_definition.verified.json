@@ -1,0 +1,56 @@
+{
+  "documents": [],
+  "types": [],
+  "executableMembers": [],
+  "dependencies": [
+    {
+      "source": "App|T:Outer",
+      "target": "App|T:Outer.Inner",
+      "kind": "member-type",
+      "document": "App/Snippet.cs",
+      "line": 6,
+      "generated": false
+    },
+    {
+      "source": "App|T:Outer.Inner",
+      "target": "App|T:Outer",
+      "kind": "member-type",
+      "document": "App/Snippet.cs",
+      "line": 10,
+      "generated": false
+    },
+    {
+      "source": "App|T:Outer.Inner",
+      "target": "System.Collections|T:System.Collections.Generic.Dictionary`2",
+      "kind": "member-type",
+      "document": "App/Snippet.cs",
+      "line": 11,
+      "generated": false
+    },
+    {
+      "source": "App|T:Outer.Inner",
+      "target": "App|T:Outer",
+      "kind": "generic-arg",
+      "document": "App/Snippet.cs",
+      "line": 11,
+      "generated": false
+    },
+    {
+      "source": "App|T:Extensions",
+      "target": "App|T:Outer",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 17,
+      "generated": false
+    },
+    {
+      "source": "App|T:Extensions",
+      "target": "System.Runtime|T:System.Uri",
+      "kind": "member-type",
+      "document": "App/Snippet.cs",
+      "line": 19,
+      "generated": false
+    }
+  ],
+  "analyzerErrors": []
+}

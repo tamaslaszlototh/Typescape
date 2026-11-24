@@ -1,0 +1,80 @@
+{
+  "documents": [],
+  "types": [],
+  "executableMembers": [],
+  "dependencies": [
+    {
+      "source": "App|T:Order",
+      "target": "System.Runtime|T:System.IDisposable",
+      "kind": "implements",
+      "document": "App/Snippet.cs",
+      "line": 3,
+      "generated": false
+    },
+    {
+      "source": "App|T:Money",
+      "target": "System.Runtime|T:System.IComparable",
+      "kind": "implements",
+      "document": "App/Snippet.cs",
+      "line": 4,
+      "generated": false
+    },
+    {
+      "source": "App|T:Money",
+      "target": "System.Runtime|T:System.Int32",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 4,
+      "generated": false
+    },
+    {
+      "source": "App|T:Money",
+      "target": "System.Runtime|T:System.Object",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 4,
+      "generated": false
+    },
+    {
+      "source": "App|T:Line",
+      "target": "System.Runtime|T:System.IDisposable",
+      "kind": "implements",
+      "document": "App/Snippet.cs",
+      "line": 5,
+      "generated": false
+    },
+    {
+      "source": "App|T:Tax",
+      "target": "System.Runtime|T:System.IFormattable",
+      "kind": "implements",
+      "document": "App/Snippet.cs",
+      "line": 6,
+      "generated": false
+    },
+    {
+      "source": "App|T:Tax",
+      "target": "System.Runtime|T:System.String",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 6,
+      "generated": false
+    },
+    {
+      "source": "App|T:Tax",
+      "target": "System.Runtime|T:System.String",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 6,
+      "generated": false
+    },
+    {
+      "source": "App|T:Tax",
+      "target": "System.Runtime|T:System.IFormatProvider",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 6,
+      "generated": false
+    }
+  ],
+  "analyzerErrors": []
+}

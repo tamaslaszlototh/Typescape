@@ -10,9 +10,10 @@ internal sealed record ProjectFacts(
     IReadOnlyList<DocumentFact> Documents,
     IReadOnlyList<TypeFact> Types,
     IReadOnlyList<ExecutableMemberFact> ExecutableMembers,
+    IReadOnlyList<DependencyFact> Dependencies,
     IReadOnlyList<AnalyzerErrorFact> AnalyzerErrors)
 {
-    public static ProjectFacts Empty { get; } = new([], [], [], []);
+    public static ProjectFacts Empty { get; } = new([], [], [], [], []);
 
     /// <summary>The facts of all <paramref name="parts"/> together, in their order.</summary>
     public static ProjectFacts Combine(IEnumerable<ProjectFacts> parts)
@@ -22,6 +23,7 @@ internal sealed record ProjectFacts(
             [.. all.SelectMany(part => part.Documents)],
             [.. all.SelectMany(part => part.Types)],
             [.. all.SelectMany(part => part.ExecutableMembers)],
+            [.. all.SelectMany(part => part.Dependencies)],
             [.. all.SelectMany(part => part.AnalyzerErrors)]);
     }
 }
@@ -83,6 +85,16 @@ internal sealed record ExecutableMemberFact(
     string Document,
     LineSpan Lines,
     bool Generated);
+
+/// <summary>
+/// A Dependency at one place in the source. Assemble aggregates them per (source, target, Dependency Kind).
+/// </summary>
+/// <param name="Source">The key of the innermost own type around the place.</param>
+/// <param name="Target">The key of the named type's open definition, own or External.</param>
+/// <param name="Document">The document's key.</param>
+/// <param name="Line">The 1-based physical line the place starts on, <c>#line</c> directives ignored.</param>
+/// <param name="Generated">As <see cref="GeneratedCode.CodeIsGenerated"/> decides.</param>
+internal sealed record DependencyFact(string Source, string Target, DependencyKind Kind, string Document, int Line, bool Generated);
 
 /// <summary>An exception in Typescape's own walker, caught on one document.</summary>
 /// <param name="Document">The document's key.</param>

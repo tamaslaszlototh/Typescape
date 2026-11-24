@@ -30,12 +30,20 @@ internal static class ProjectExtractor
         cancellationToken.ThrowIfCancellationRequested();
         var scope = ProjectScope.Create(compilation, context, cancellationToken);
         var key = Source.Document(document, context);
-        var walked = AnalyzerErrors.Catch(
+        var documented = AnalyzerErrors.Catch(
             key,
             () => ProjectFacts.Empty with { Documents = [new DocumentFact(key, scope.Generated.Reason(document))] },
             cancellationToken);
 
-        // The document outlives a failed walk: the declarations in it still name it.
-        return walked.Documents.Count > 0 ? walked : walked with { Documents = [new DocumentFact(key, GeneratedReason: null)] };
+        // The document outlives a failed walk: the declarations in it still name it. A failed Dependencies walk alone
+        // keeps its generated reason.
+        return ProjectFacts.Combine(
+        [
+            documented.Documents.Count > 0 ? documented : documented with { Documents = [new DocumentFact(key, GeneratedReason: null)] },
+            AnalyzerErrors.Catch(
+                key,
+                () => ProjectFacts.Empty with { Dependencies = Dependencies.Of(compilation.GetSemanticModel(document), key, scope) },
+                cancellationToken),
+        ]);
     }
 }

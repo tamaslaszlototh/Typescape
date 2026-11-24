@@ -1,0 +1,64 @@
+{
+  "documents": [],
+  "types": [],
+  "executableMembers": [],
+  "dependencies": [
+    {
+      "source": "App|T:Order",
+      "target": "App|T:Entity",
+      "kind": "inherits",
+      "document": "App/Snippet.cs",
+      "line": 4,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "target": "System.Runtime|T:System.IDisposable",
+      "kind": "implements",
+      "document": "App/Snippet.cs",
+      "line": 4,
+      "generated": false
+    },
+    {
+      "source": "App|T:Line",
+      "target": "App|T:Base",
+      "kind": "inherits",
+      "document": "App/Snippet.cs",
+      "line": 5,
+      "generated": false
+    },
+    {
+      "source": "App|T:Line",
+      "target": "System.Runtime|T:System.Int32",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 5,
+      "generated": false
+    },
+    {
+      "source": "App|T:Base",
+      "target": "System.Runtime|T:System.Int32",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 6,
+      "generated": false
+    },
+    {
+      "source": "App|T:Base",
+      "target": "System.Runtime|T:System.Int32",
+      "kind": "member-type",
+      "document": "App/Snippet.cs",
+      "line": 6,
+      "generated": false
+    },
+    {
+      "source": "App|T:IRepository",
+      "target": "System.Runtime|T:System.IDisposable",
+      "kind": "inherits",
+      "document": "App/Snippet.cs",
+      "line": 7,
+      "generated": false
+    }
+  ],
+  "analyzerErrors": []
+}

@@ -1,0 +1,32 @@
+{
+  "documents": [],
+  "types": [],
+  "executableMembers": [],
+  "dependencies": [
+    {
+      "source": "App|T:Node`1",
+      "target": "System.Runtime|T:System.IEquatable`1",
+      "kind": "implements",
+      "document": "App/Snippet.cs",
+      "line": 3,
+      "generated": false
+    },
+    {
+      "source": "App|T:Node`1",
+      "target": "System.Runtime|T:System.Int32",
+      "kind": "generic-arg",
+      "document": "App/Snippet.cs",
+      "line": 6,
+      "generated": false
+    },
+    {
+      "source": "App|T:Node`1",
+      "target": "System.Runtime|T:System.Boolean",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 7,
+      "generated": false
+    }
+  ],
+  "analyzerErrors": []
+}

@@ -1,0 +1,48 @@
+{
+  "documents": [],
+  "types": [],
+  "executableMembers": [],
+  "dependencies": [
+    {
+      "source": "App|T:Line",
+      "target": "System.Runtime|T:System.Guid",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 3,
+      "generated": false
+    },
+    {
+      "source": "App|T:Line",
+      "target": "System.Runtime|T:System.Decimal",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 3,
+      "generated": false
+    },
+    {
+      "source": "App|T:Line",
+      "target": "System.Runtime|T:System.Guid",
+      "kind": "member-type",
+      "document": "App/Snippet.cs",
+      "line": 3,
+      "generated": false
+    },
+    {
+      "source": "App|T:Line",
+      "target": "System.Runtime|T:System.Decimal",
+      "kind": "member-type",
+      "document": "App/Snippet.cs",
+      "line": 5,
+      "generated": false
+    },
+    {
+      "source": "App|T:Order",
+      "target": "System.Runtime|T:System.Uri",
+      "kind": "signature",
+      "document": "App/Snippet.cs",
+      "line": 8,
+      "generated": false
+    }
+  ],
+  "analyzerErrors": []
+}

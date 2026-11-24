@@ -1,0 +1,16 @@
+{
+  "documents": [],
+  "types": [],
+  "executableMembers": [],
+  "dependencies": [
+    {
+      "source": "App|T:Program",
+      "target": "System.Runtime|T:System.Guid",
+      "kind": "generic-arg",
+      "document": "App/Snippet.cs",
+      "line": 1,
+      "generated": false
+    }
+  ],
+  "analyzerErrors": []
+}
