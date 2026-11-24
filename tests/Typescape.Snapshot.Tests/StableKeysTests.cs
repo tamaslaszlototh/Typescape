@@ -9,6 +9,18 @@ public class StableKeysTests
     }
 
     [Fact]
+    public void File_local_type_key_adds_the_document_key()
+    {
+        Assert.Equal("App|T:Helper@App/A.cs", StableKeys.Type("App", "T:Helper", "App/A.cs"));
+    }
+
+    [Fact]
+    public void Empty_file_local_document_is_rejected()
+    {
+        Assert.Throws<ArgumentException>(() => StableKeys.Type("App", "T:Helper", ""));
+    }
+
+    [Fact]
     public void Member_key_is_type_key_and_documentation_comment_id()
     {
         var typeKey = StableKeys.Type("App", "T:App.Service`1");
@@ -25,6 +37,15 @@ public class StableKeysTests
         var memberKey = StableKeys.Member(typeKey, "F:App.Service`1.Count");
 
         Assert.Equal("F:App.Service`1.Count", StableKeys.MemberDocumentationCommentId(memberKey, typeKey));
+    }
+
+    [Fact]
+    public void Member_documentation_comment_id_is_read_back_from_a_file_local_member_key()
+    {
+        var typeKey = StableKeys.Type("App", "T:Helper", "App/A.cs");
+        var memberKey = StableKeys.Member(typeKey, "M:Helper.Run");
+
+        Assert.Equal("M:Helper.Run", StableKeys.MemberDocumentationCommentId(memberKey, typeKey));
     }
 
     [Theory]

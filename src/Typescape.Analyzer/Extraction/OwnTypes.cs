@@ -1,6 +1,5 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Typescape.Snapshot;
 using Typescape.Snapshot.Records;
 
 namespace Typescape.Analyzer.Extraction;
@@ -40,7 +39,7 @@ internal static class OwnTypes
 
         var isClass = type.TypeKind == TypeKind.Class;
         return new TypeFact(
-            Key(type),
+            Symbols.TypeKey(type, scope.Context),
             type.Name,
             kind,
             Symbols.Accessibility(type),
@@ -49,7 +48,7 @@ internal static class OwnTypes
             Static: isClass && type.IsStatic,
             type.Arity,
             NamespaceName(type.ContainingNamespace),
-            type.ContainingType is { } containing ? Key(containing) : null,
+            type.ContainingType is { } containing ? Symbols.TypeKey(containing, scope.Context) : null,
             [.. type.DeclaringSyntaxReferences.Select(reference => Declaration(type, reference, scope))]);
     }
 
@@ -58,9 +57,6 @@ internal static class OwnTypes
 
     private static IEnumerable<INamedTypeSymbol> WithNested(INamedTypeSymbol type) =>
         type.GetTypeMembers().SelectMany(WithNested).Prepend(type);
-
-    private static string Key(INamedTypeSymbol type) =>
-        StableKeys.Type(type.ContainingAssembly.Name, Symbols.DocumentationCommentId(type));
 
     private static DeclaredTypeKind? Kind(INamedTypeSymbol type) => type.TypeKind switch
     {

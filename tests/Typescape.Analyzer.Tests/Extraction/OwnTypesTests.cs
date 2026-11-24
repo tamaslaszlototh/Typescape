@@ -29,6 +29,34 @@ public class OwnTypesTests
     }
 
     [Fact]
+    public void File_local_types_of_one_name_in_two_documents_are_two_types_keyed_by_their_document()
+    {
+        var facts = RuleTest.Extract(
+        [
+            ("App/A.cs", """
+                file class Helper
+                {
+                    class Inner { }
+
+                    void Run() { }
+                }
+                """),
+            ("App/B.cs", """
+                file class Helper
+                {
+                    class Inner { }
+
+                    void Run() { }
+                }
+
+                class Shared { }
+                """),
+        ]);
+
+        RuleTest.Match(RuleTest.Keep(facts, types: true, members: true));
+    }
+
+    [Fact]
     public void A_nested_type_is_its_own_type_that_names_its_containing_type()
     {
         var facts = RuleTest.Extract("""

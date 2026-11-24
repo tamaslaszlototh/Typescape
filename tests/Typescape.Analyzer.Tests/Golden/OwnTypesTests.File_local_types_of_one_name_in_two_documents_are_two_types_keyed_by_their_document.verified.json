@@ -1,0 +1,144 @@
+{
+  "documents": [],
+  "types": [
+    {
+      "key": "App|T:Helper@App/A.cs",
+      "name": "Helper",
+      "kind": "class",
+      "accessibility": "internal",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": "",
+      "containingType": null,
+      "declarations": [
+        {
+          "document": "App/A.cs",
+          "lines": {
+            "start": 1,
+            "end": 6
+          },
+          "generated": false
+        }
+      ]
+    },
+    {
+      "key": "App|T:Helper.Inner@App/A.cs",
+      "name": "Inner",
+      "kind": "class",
+      "accessibility": "private",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": "",
+      "containingType": "App|T:Helper@App/A.cs",
+      "declarations": [
+        {
+          "document": "App/A.cs",
+          "lines": {
+            "start": 3,
+            "end": 3
+          },
+          "generated": false
+        }
+      ]
+    },
+    {
+      "key": "App|T:Helper@App/B.cs",
+      "name": "Helper",
+      "kind": "class",
+      "accessibility": "internal",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": "",
+      "containingType": null,
+      "declarations": [
+        {
+          "document": "App/B.cs",
+          "lines": {
+            "start": 1,
+            "end": 6
+          },
+          "generated": false
+        }
+      ]
+    },
+    {
+      "key": "App|T:Helper.Inner@App/B.cs",
+      "name": "Inner",
+      "kind": "class",
+      "accessibility": "private",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": "",
+      "containingType": "App|T:Helper@App/B.cs",
+      "declarations": [
+        {
+          "document": "App/B.cs",
+          "lines": {
+            "start": 3,
+            "end": 3
+          },
+          "generated": false
+        }
+      ]
+    },
+    {
+      "key": "App|T:Shared",
+      "name": "Shared",
+      "kind": "class",
+      "accessibility": "internal",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": "",
+      "containingType": null,
+      "declarations": [
+        {
+          "document": "App/B.cs",
+          "lines": {
+            "start": 8,
+            "end": 8
+          },
+          "generated": false
+        }
+      ]
+    }
+  ],
+  "executableMembers": [
+    {
+      "key": "App|T:Helper@App/A.cs|M:Helper.Run",
+      "type": "App|T:Helper@App/A.cs",
+      "signature": "Run()",
+      "kind": "method",
+      "accessibility": "private",
+      "document": "App/A.cs",
+      "lines": {
+        "start": 5,
+        "end": 5
+      },
+      "generated": false
+    },
+    {
+      "key": "App|T:Helper@App/B.cs|M:Helper.Run",
+      "type": "App|T:Helper@App/B.cs",
+      "signature": "Run()",
+      "kind": "method",
+      "accessibility": "private",
+      "document": "App/B.cs",
+      "lines": {
+        "start": 5,
+        "end": 5
+      },
+      "generated": false
+    }
+  ],
+  "analyzerErrors": []
+}

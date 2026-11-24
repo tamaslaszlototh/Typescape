@@ -4,7 +4,10 @@ namespace Typescape.Snapshot.Records;
 /// One of the solution's own types. A partial type is one row with several declarations; a nested type is its own row.
 /// Generic types are stored as their open definition.
 /// </summary>
-/// <param name="Key">Stable key: assembly name + documentation comment ID (<see cref="StableKeys.Type"/>).</param>
+/// <param name="Key">
+/// Stable key: assembly name + documentation comment ID, + document key for a file-local type and the types nested in
+/// it (<see cref="StableKeys.Type"/>).
+/// </param>
 /// <param name="Name">The type's name, without namespace or containing type.</param>
 /// <param name="Kind">The kind of type.</param>
 /// <param name="Accessibility">The declared accessibility.</param>

@@ -31,7 +31,7 @@ internal sealed record ProjectFacts(
 internal sealed record DocumentFact(string Path, GeneratedReason? GeneratedReason);
 
 /// <summary>One of the project's own types, as its open definition.</summary>
-/// <param name="Key">Stable key: assembly name + documentation comment ID.</param>
+/// <param name="Key">Stable key: assembly name + documentation comment ID, + document key for a file-local type and the types nested in it.</param>
 /// <param name="Name">The name without namespace, containing type or type parameters.</param>
 /// <param name="Abstract">Declared <c>abstract</c>: only classes and records; an interface is not.</param>
 /// <param name="Sealed">Declared <c>sealed</c>: only classes and records; a struct, enum or delegate is not.</param>

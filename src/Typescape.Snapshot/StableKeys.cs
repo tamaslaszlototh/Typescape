@@ -11,11 +11,29 @@ public static class StableKeys
 {
     public const char Separator = '|';
 
-    /// <summary>The key of a type, own or External: <c>&lt;assembly&gt;|&lt;doc ID&gt;</c>.</summary>
+    private const char FileLocalSeparator = '@';
+
+    /// <summary>
+    /// The key of a type, own or External: <c>&lt;assembly&gt;|&lt;doc ID&gt;</c>, or
+    /// <c>&lt;assembly&gt;|&lt;doc ID&gt;@&lt;document key&gt;</c> for a file-local type and the types nested in it.
+    /// </summary>
     /// <param name="assembly">The defining assembly's name.</param>
     /// <param name="documentationCommentId">Roslyn's documentation comment ID of the open definition, e.g. <c>T:N.List`1</c>.</param>
-    public static string Type(string assembly, string documentationCommentId) =>
-        Join(assembly, documentationCommentId);
+    /// <param name="fileLocalDocument">
+    /// The key of the document declaring the outermost file-local type, when there is one. Every document's
+    /// <c>file class Helper</c> has the doc ID <c>T:Helper</c>, and the metadata name hashes the absolute path.
+    /// </param>
+    public static string Type(string assembly, string documentationCommentId, string? fileLocalDocument = null)
+    {
+        var key = Join(assembly, documentationCommentId);
+        if (fileLocalDocument is null)
+        {
+            return key;
+        }
+
+        ArgumentException.ThrowIfNullOrEmpty(fileLocalDocument);
+        return string.Concat(key, FileLocalSeparator.ToString(), fileLocalDocument);
+    }
 
     /// <summary>
     /// The key of an own member, an Executable Member or a non-executable one: <c>&lt;type key&gt;|&lt;doc ID&gt;</c>.
