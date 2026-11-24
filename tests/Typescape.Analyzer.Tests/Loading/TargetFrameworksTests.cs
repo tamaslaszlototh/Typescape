@@ -55,6 +55,7 @@ public class TargetFrameworksTests
     [InlineData("net472", "v4.7.2", true)]
     [InlineData("net48", "v4.8", true)]
     [InlineData("net4.8", "v4.8", true)]
+    [InlineData("net40-client", "v4.0", true)]
     [InlineData("net48", "v4.7.2", false)]
     [InlineData("net8.0", "v4.8", false)]
     [InlineData("foo", "v4.8", false)]

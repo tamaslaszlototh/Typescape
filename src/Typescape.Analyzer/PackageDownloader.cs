@@ -63,10 +63,16 @@ internal sealed class PackageDownloader(ISettings settings, PackagePathResolver 
                         return null;
                     }
                 }
-                catch (Exception e) when (e is FatalProtocolException or HttpRequestException)
+                catch (Exception e) when (!cancellationToken.IsCancellationRequested)
                 {
+                    // Any failure moves on to the next source; only one of the source itself (not of this package,
+                    // e.g. a corrupt nupkg) keeps the source from being asked again.
                     var reason = $"{source.PackageSource.Name}: {e.Message}";
-                    _deadSources.TryAdd(source.PackageSource.Source, reason);
+                    if (e is NuGetProtocolException or HttpRequestException or TimeoutException or OperationCanceledException)
+                    {
+                        _deadSources.TryAdd(source.PackageSource.Source, reason);
+                    }
+
                     unreachable.Add(reason);
                 }
             }

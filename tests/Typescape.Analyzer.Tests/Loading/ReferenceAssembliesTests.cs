@@ -110,6 +110,30 @@ public sealed class ReferenceAssembliesTests : IDisposable
     }
 
     [Fact]
+    public async Task A_source_that_fails_for_the_package_is_passed_over_for_the_next()
+    {
+        var corrupt = Directory.CreateDirectory(Path.Combine(_directory, "corrupt")).FullName;
+        File.WriteAllText(Path.Combine(corrupt, $"{ReferenceAssemblies.PackageId("v4.8")}.{ReferenceAssemblies.PackageVersion}.nupkg"), "not a zip");
+        FakeReferenceAssemblies.NuGetConfig(_directory, "corrupt", "feed");
+        FakeReferenceAssemblies.Publish(_directory, "v4.8");
+
+        Assert.Empty(await FetchAsync("v4.8"));
+
+        Assert.True(Directory.Exists(Path.Combine(_cache.Root, ".NETFramework", "v4.8")));
+    }
+
+    [Fact]
+    public async Task A_broken_nuget_config_fails_every_version_with_the_reason()
+    {
+        File.WriteAllText(Path.Combine(_directory, "nuget.config"), "<configuration><packageSources>");
+
+        var failures = await FetchAsync("v4.7.2", "v4.8");
+
+        Assert.Equal(["v4.7.2", "v4.8"], failures.Keys.Order(StringComparer.Ordinal));
+        Assert.All(failures.Values, reason => Assert.Contains("nuget.config", reason, StringComparison.OrdinalIgnoreCase));
+    }
+
+    [Fact]
     public async Task Cancellation_stops_the_fetch_and_leaves_no_staging_folder()
     {
         FakeReferenceAssemblies.Publish(_directory, "v4.8");

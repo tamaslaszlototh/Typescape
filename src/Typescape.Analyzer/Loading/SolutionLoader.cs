@@ -49,27 +49,25 @@ internal static class SolutionLoader
         {
             (workspace, var solution, var progress) = await OpenAsync(solutionPath, properties, listed, counter, cancellationToken);
 
+            var projects = Projects(solution, progress, request.Framework, directory);
+            var diagnostics = workspace.Diagnostics.ToArray();
+
+            // Other warnings name .NET Framework versions too, e.g. a reference built against a newer one (MSB3274).
             IReadOnlyDictionary<string, string> failed = new Dictionary<string, string>();
-            var missing = referenceAssemblies.Missing(workspace.Diagnostics);
-            if (missing.Count > 0)
+            string[] missing = [.. referenceAssemblies.Missing(diagnostics).Where(version => Targeting(version, projects, diagnostics).Length > 0)];
+            if (missing.Length > 0)
             {
                 failed = await referenceAssemblies.FetchAsync(missing, directory, request.MaxParallelism, cancellationToken);
-                if (failed.Count < missing.Count)
+                if (failed.Count < missing.Length)
                 {
                     workspace.Dispose();
                     workspace = null;
                     counter.Restart();
                     (workspace, solution, progress) = await OpenAsync(solutionPath, properties, listed, counter, cancellationToken);
+                    projects = Projects(solution, progress, request.Framework, directory);
+                    diagnostics = [.. workspace.Diagnostics];
                 }
             }
-
-            // Projects outside the solution file that a listed one references are loaded too, and analyzed with it.
-            var projects = solution.Projects
-                .Where(project => project.Language == LanguageNames.CSharp && project.FilePath is not null)
-                .GroupBy(project => project.FilePath!, PathComparer)
-                .Select(file => Choose(file.Key, [.. file], Available(file.Key, [.. file], progress), request.Framework, directory))
-                .OrderBy(project => project.Key, StringComparer.Ordinal)
-                .ToArray();
 
             var opened = solution.Projects.Select(project => project.FilePath).OfType<string>().ToHashSet(PathComparer);
             var unopened = listed
@@ -78,7 +76,6 @@ internal static class SolutionLoader
                 .Order(StringComparer.Ordinal)
                 .ToArray();
 
-            var diagnostics = workspace.Diagnostics.ToArray();
             var failures = failed
                 .OrderBy(failure => failure.Key, StringComparer.Ordinal)
                 .Select(failure => new ReferenceAssemblyFailure(failure.Key, failure.Value, Targeting(failure.Key, projects, diagnostics)))
@@ -92,6 +89,16 @@ internal static class SolutionLoader
             throw;
         }
     }
+
+    // Projects outside the solution file that a listed one references are loaded too, and analyzed with it.
+    private static LoadedProject[] Projects(Solution solution, LoadProgress progress, string? requested, string directory) =>
+    [
+        .. solution.Projects
+            .Where(project => project.Language == LanguageNames.CSharp && project.FilePath is not null)
+            .GroupBy(project => project.FilePath!, PathComparer)
+            .Select(file => Choose(file.Key, [.. file], Available(file.Key, [.. file], progress), requested, directory))
+            .OrderBy(project => project.Key, StringComparer.Ordinal),
+    ];
 
     private static async Task<(MSBuildWorkspace Workspace, Solution Solution, LoadProgress Progress)> OpenAsync(
         string solutionPath,

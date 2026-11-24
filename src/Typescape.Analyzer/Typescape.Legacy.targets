@@ -1,13 +1,12 @@
 <Project>
-  <!-- The legacy compatibility kit's WPF part, imported from Typescape.targets.
-
-       The .NET SDK's Microsoft.Common.CurrentVersion.targets imports Microsoft.WinFX.targets only for Silverlight, so a
-       classic WPF project loaded by .NET SDK MSBuild (macOS, or Windows without Visual Studio) gets no markup compile:
-       no *.g.cs, no InitializeComponent, no x:Name fields. SDK-style projects get WPF from the WindowsDesktop SDK, and
-       Visual Studio MSBuild (MSBuildRuntimeType Full) imports WinFX itself, so both are left alone. -->
+  <!-- .NET SDK MSBuild imports WinFX only for Silverlight, so classic WPF projects get no markup compile. The framework
+       and version conditions are those of Visual Studio MSBuild's own import in Microsoft.NETFramework.CurrentVersion.targets. -->
   <PropertyGroup>
     <_TypescapeWinFXTargets>$(MSBuildExtensionsPath)/Sdks/Microsoft.NET.Sdk.WindowsDesktop/targets/Microsoft.WinFX.targets</_TypescapeWinFXTargets>
   </PropertyGroup>
   <Import Project="$(_TypescapeWinFXTargets)"
-          Condition="'$(UsingMicrosoftNETSdk)' != 'true' and '$(MSBuildRuntimeType)' == 'Core' and Exists('$(_TypescapeWinFXTargets)')" />
+          Condition="'$(UsingMicrosoftNETSdk)' != 'true' and '$(MSBuildRuntimeType)' == 'Core'
+                     and ('$(TargetFrameworkIdentifier)' == '' or '$(TargetFrameworkIdentifier)' == '.NETFramework') and '$(TargetRuntime)' == 'Managed'
+                     and '$(TargetFrameworkVersion)' != 'v2.0' and '$(TargetCompactFramework)' != 'true'
+                     and Exists('$(_TypescapeWinFXTargets)')" />
 </Project>

@@ -15,18 +15,21 @@ internal static class FakeReferenceAssemblies
     private static readonly Lazy<byte[]> Mscorlib = new(CompileMscorlib);
 
     /// <summary>
-    /// A <c>nuget.config</c> in <paramref name="directory"/> whose only source is <paramref name="source"/> and whose
-    /// global packages folder is <c>global</c>, so a test never touches the network or the user's caches.
+    /// A <c>nuget.config</c> in <paramref name="directory"/> whose sources are <paramref name="sources"/> (<c>feed</c>
+    /// when none), named <c>test</c>, <c>test2</c>, …, and whose global packages folder is <c>global</c>, so a test never
+    /// touches the network or the user's caches.
     /// </summary>
-    public static void NuGetConfig(string directory, string source = "feed")
+    public static void NuGetConfig(string directory, params string[] sources)
     {
         Directory.CreateDirectory(Path.Combine(directory, "feed"));
+        var added = (sources.Length == 0 ? ["feed"] : sources)
+            .Select((source, i) => $"""<add key="test{(i == 0 ? "" : $"{i + 1}")}" value="{source}" />""");
         File.WriteAllText(Path.Combine(directory, "nuget.config"), $"""
             <?xml version="1.0" encoding="utf-8"?>
             <configuration>
               <packageSources>
                 <clear />
-                <add key="test" value="{source}" />
+                {string.Join(Environment.NewLine, added)}
               </packageSources>
               <config>
                 <add key="globalPackagesFolder" value="global" />
@@ -70,9 +73,7 @@ internal static class FakeReferenceAssemblies
         static PhysicalPackageFile File(string path, byte[] content) => new(new MemoryStream(content)) { TargetPath = path };
     }
 
-    private static byte[] CompileMscorlib()
-    {
-        var source = """
+    private static byte[] CompileMscorlib() => Compile("mscorlib", """
             [assembly: System.Reflection.AssemblyVersion("4.0.0.0")]
             namespace System
             {
@@ -104,11 +105,14 @@ internal static class FakeReferenceAssemblies
                     public string FrameworkDisplayName { get; set; }
                 }
             }
-            """;
+            """);
+
+    private static byte[] Compile(string name, string source, params byte[][] references)
+    {
         var compilation = CSharpCompilation.Create(
-            "mscorlib",
+            name,
             [CSharpSyntaxTree.ParseText(source)],
-            [],
+            [.. references.Select(reference => MetadataReference.CreateFromImage(reference))],
             new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
         using var stream = new MemoryStream();

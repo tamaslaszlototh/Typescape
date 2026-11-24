@@ -138,6 +138,18 @@ public sealed class PackagesConfigRestoreTests : IDisposable
     }
 
     [Fact]
+    public async Task A_broken_nuget_config_warns()
+    {
+        File.WriteAllText(Path.Combine(_directory, "nuget.config"), "<configuration><packageSources>");
+        var solution = Solution(("App", PackagesConfig(("Typescape.Lib", "1.0.0"))));
+
+        var warning = await RestoreAsync(solution);
+
+        Assert.NotNull(warning);
+        Assert.Contains("The NuGet settings could not be read: ", warning);
+    }
+
+    [Fact]
     public async Task Cancellation_stops_the_restore()
     {
         Publish("Typescape.Lib", "1.0.0");

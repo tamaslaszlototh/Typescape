@@ -44,9 +44,19 @@ internal static class PackagesConfigRestore
         var unreadable = new List<string>();
         var packages = ReadPackages(configs, unreadable);
 
-        var settings = Settings.LoadDefaultSettings(solutionDirectory);
-        var packagesFolder = SettingsUtility.GetRepositoryPath(settings) ?? Path.Combine(solutionDirectory, "packages");
-        var resolver = new PackagePathResolver(packagesFolder, useSideBySidePaths: true);
+        ISettings settings;
+        PackagePathResolver resolver;
+        try
+        {
+            settings = Settings.LoadDefaultSettings(solutionDirectory);
+            var packagesFolder = SettingsUtility.GetRepositoryPath(settings) ?? Path.Combine(solutionDirectory, "packages");
+            resolver = new PackagePathResolver(packagesFolder, useSideBySidePaths: true);
+        }
+        catch (Exception e) when (e is not OperationCanceledException)
+        {
+            return Warning($"The NuGet settings could not be read: {e.Message}", []);
+        }
+
         var distinct = packages.DistinctBy(resolver.GetPackageDirectoryName, StringComparer.OrdinalIgnoreCase).ToArray();
         var missing = distinct.Where(package => resolver.GetInstalledPackageFilePath(package) is null).ToArray();
 
@@ -54,7 +64,16 @@ internal static class PackagesConfigRestore
 
         if (missing.Length > 0)
         {
-            var downloader = new PackageDownloader(settings, resolver);
+            PackageDownloader downloader;
+            try
+            {
+                downloader = new PackageDownloader(settings, resolver);
+            }
+            catch (Exception e) when (e is not OperationCanceledException)
+            {
+                return Warning($"The NuGet settings could not be read: {e.Message}", []);
+            }
+
             await Parallel.ForEachAsync(
                 missing,
                 new ParallelOptions { MaxDegreeOfParallelism = request.MaxParallelism, CancellationToken = cancellationToken },

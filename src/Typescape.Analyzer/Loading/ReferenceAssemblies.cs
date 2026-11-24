@@ -26,8 +26,9 @@ internal sealed partial class ReferenceAssemblies(string root)
     public string Root { get; } = Path.TrimEndingDirectorySeparator(Path.GetFullPath(root)) + Path.DirectorySeparatorChar;
 
     /// <summary>
-    /// The .NET Framework versions that MSBuild did not find in <see cref="Root"/> (MSB3644), e.g. <c>v4.7.2</c>, each
-    /// once, sorted.
+    /// The .NET Framework versions that the diagnostics name and <see cref="Root"/> lacks, e.g. <c>v4.7.2</c>, each once,
+    /// sorted. MSB3644 names the versions MSBuild did not find, but other warnings name versions too, so the caller
+    /// keeps only those a project targets.
     /// </summary>
     /// <remarks>
     /// MSB3644's text is localized and carries no code once it reaches the workspace, but the framework moniker in it
@@ -67,7 +68,7 @@ internal sealed partial class ReferenceAssemblies(string root)
         {
             settings = Settings.LoadDefaultSettings(solutionDirectory);
         }
-        catch (NuGetConfigurationException e)
+        catch (Exception e) when (e is not OperationCanceledException)
         {
             return versions.ToDictionary(version => version, _ => e.Message, StringComparer.Ordinal);
         }
@@ -77,7 +78,16 @@ internal sealed partial class ReferenceAssemblies(string root)
         try
         {
             var resolver = new PackagePathResolver(staging, useSideBySidePaths: true);
-            var downloader = new PackageDownloader(settings, resolver);
+            PackageDownloader downloader;
+            try
+            {
+                downloader = new PackageDownloader(settings, resolver);
+            }
+            catch (Exception e) when (e is not OperationCanceledException)
+            {
+                return versions.ToDictionary(version => version, _ => e.Message, StringComparer.Ordinal);
+            }
+
             await Parallel.ForEachAsync(
                 versions,
                 new ParallelOptions { MaxDegreeOfParallelism = maxParallelism, CancellationToken = cancellationToken },

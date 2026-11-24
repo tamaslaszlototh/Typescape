@@ -217,6 +217,50 @@ public sealed class SolutionLoaderTests : IDisposable
     }
 
     [Fact]
+    public async Task A_file_left_from_before_a_retarget_does_not_change_the_target_framework()
+    {
+        var cache = new ReferenceAssemblies(Path.Combine(_directory, "cache"));
+        FakeReferenceAssemblies.NuGetConfig(_directory);
+        FakeReferenceAssemblies.Publish(_directory, "v4.8");
+        LegacyProject("Legacy", "v4.8", compile: "**\\*.cs");
+        var stale = Path.Combine(_directory, "Legacy", "obj", "Debug", ".NETFramework,Version=v4.7.2.AssemblyAttributes.cs");
+        Directory.CreateDirectory(Path.GetDirectoryName(stale)!);
+        File.WriteAllText(stale, "");
+        File.SetLastWriteTimeUtc(stale, DateTime.UtcNow.AddDays(1));
+
+        using var solution = await LoadAsync(Solution("Legacy"), cache, new RecordingProgress());
+
+        var legacy = Assert.Single(solution.Projects);
+        Assert.Contains(legacy.Project.Documents, document => document.FilePath == stale);
+        Assert.Equal("net48", legacy.Tfm);
+        Assert.Equal(["net48"], legacy.AvailableTfms);
+    }
+
+    [Fact]
+    public async Task A_version_only_a_reference_was_built_against_is_not_fetched()
+    {
+        var cache = new ReferenceAssemblies(Path.Combine(_directory, "cache"));
+        FakeReferenceAssemblies.NuGetConfig(_directory);
+        FakeReferenceAssemblies.Publish(_directory, "v4.7.2");
+        Assert.Empty(await cache.FetchAsync(["v4.7.2"], _directory, maxParallelism: 1, TestContext.Current.CancellationToken));
+
+        // MSB3274's text, raised by the project itself, so no real assembly built against v4.8 is needed.
+        LegacyProject("Legacy", "v4.7.2", targets: """
+            <Target Name="WarnNewer" BeforeTargets="CoreCompile">
+              <Warning Code="MSB3274" Text="The primary reference &quot;Newer&quot; could not be resolved because it was built against the &quot;.NETFramework,Version=v4.8&quot; framework. This is a higher version than the currently targeted framework &quot;.NETFramework,Version=v4.7.2&quot;." />
+            </Target>
+            """);
+        var progress = new RecordingProgress();
+
+        using var solution = await LoadAsync(Solution("Legacy"), cache, progress);
+
+        Assert.Contains(solution.Diagnostics, d => d.Message.Contains(".NETFramework,Version=v4.8", StringComparison.Ordinal));
+        Assert.Equal("net472", Assert.Single(solution.Projects).Tfm);
+        Assert.Empty(solution.ReferenceAssemblyFailures);
+        Assert.Equal([Counted(0, 1), Counted(1, 1)], progress.Events);
+    }
+
+    [Fact]
     public async Task A_file_that_is_not_a_solution_fails_the_load()
     {
         var path = Path.Combine(_directory, "App.csproj");
@@ -271,7 +315,7 @@ public sealed class SolutionLoaderTests : IDisposable
     }
 
     /// <summary>A classic project, as Visual Studio writes it, with one source file.</summary>
-    private void LegacyProject(string name, string frameworkVersion)
+    private void LegacyProject(string name, string frameworkVersion, string? compile = null, string targets = "")
     {
         var directory = Path.Combine(_directory, name);
         Directory.CreateDirectory(directory);
@@ -283,9 +327,10 @@ public sealed class SolutionLoaderTests : IDisposable
                 <TargetFrameworkVersion>{frameworkVersion}</TargetFrameworkVersion>
               </PropertyGroup>
               <ItemGroup>
-                <Compile Include="{name}.cs" />
+                <Compile Include="{compile ?? $"{name}.cs"}" />
               </ItemGroup>
               <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+              {targets}
             </Project>
             """);
         File.WriteAllText(Path.Combine(directory, $"{name}.cs"), $"namespace {name} {{ public class {name}Type {{ }} }}");
