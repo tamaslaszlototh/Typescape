@@ -32,4 +32,19 @@ public class WalkTests
 
         Assert.Equal(RuleTest.Render(ProjectExtractor.Extract(compilation, RuleTest.Context, token)), RuleTest.Render(walked));
     }
+
+    [Fact]
+    public void Cancelling_the_declarations_walk_is_not_an_analyzer_error()
+    {
+        var compilation = RuleTest.Compile([(RuleTest.SnippetPath, "class A { }")]);
+        using var workspace = new AdhocWorkspace();
+        var project = new CompiledProject(
+            new LoadedProject(RuleTest.ProjectKey, workspace.AddProject("App", LanguageNames.CSharp), "net10.0", ["net10.0"]),
+            compilation,
+            RuleTest.Context);
+        using var cancellation = new CancellationTokenSource();
+        cancellation.Cancel();
+
+        Assert.ThrowsAny<OperationCanceledException>(() => new MSBuildStages().WalkDeclarations(project, cancellation.Token));
+    }
 }

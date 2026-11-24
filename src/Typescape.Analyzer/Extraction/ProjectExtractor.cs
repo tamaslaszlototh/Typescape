@@ -18,11 +18,8 @@ internal static class ProjectExtractor
     /// The part of <see cref="Extract"/> that runs once per project. Walk runs it and <see cref="ExtractDocument"/> as
     /// separate units, so the documents of a big project spread over all workers.
     /// </summary>
-    public static ProjectFacts ExtractDeclarations(Compilation compilation, ProjectContext context, CancellationToken cancellationToken)
-    {
-        cancellationToken.ThrowIfCancellationRequested();
-        return new ProjectFacts([], [.. OwnTypes.Extract(compilation, context, cancellationToken)]);
-    }
+    public static ProjectFacts ExtractDeclarations(Compilation compilation, ProjectContext context, CancellationToken cancellationToken) =>
+        OwnTypes.Extract(compilation, context, cancellationToken);
 
     /// <summary>The part of <see cref="Extract"/> that runs once per document of the compilation.</summary>
     public static ProjectFacts ExtractDocument(
@@ -32,6 +29,6 @@ internal static class ProjectExtractor
         CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
-        return new ProjectFacts([new DocumentFact(SolutionPaths.Key(document.FilePath, context.SolutionDirectory))], []);
+        return new ProjectFacts([new DocumentFact(SolutionPaths.Key(document.FilePath, context.SolutionDirectory))], [], []);
     }
 }

@@ -1,0 +1,61 @@
+{
+  "documents": [
+    {
+      "path": "App/Broken.cs"
+    },
+    {
+      "path": "App/Customer.cs"
+    }
+  ],
+  "types": [
+    {
+      "key": "App|T:Order",
+      "name": "Order",
+      "kind": "class",
+      "accessibility": "public",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": "",
+      "containingType": null,
+      "declarations": [
+        {
+          "document": "App/Broken.cs",
+          "lines": {
+            "start": 2,
+            "end": 2
+          }
+        }
+      ]
+    },
+    {
+      "key": "App|T:Customer",
+      "name": "Customer",
+      "kind": "class",
+      "accessibility": "public",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": "",
+      "containingType": null,
+      "declarations": [
+        {
+          "document": "App/Customer.cs",
+          "lines": {
+            "start": 1,
+            "end": 1
+          }
+        }
+      ]
+    }
+  ],
+  "analyzerErrors": [
+    {
+      "document": "App/Broken.cs",
+      "exceptionType": "System.IndexOutOfRangeException",
+      "frame": "Typescape.Analyzer.Extraction.OwnTypes.TopLevelStatements(CompilationUnitSyntax)"
+    }
+  ]
+}

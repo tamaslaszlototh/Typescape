@@ -6,13 +6,19 @@ namespace Typescape.Analyzer.Extraction;
 /// Facts extracted from a project, or from one part of it: its declarations or one of its documents. Key-based and
 /// unsorted, with no array indices; Assemble merges, sorts and indexes them.
 /// </summary>
-internal sealed record ProjectFacts(IReadOnlyList<DocumentFact> Documents, IReadOnlyList<TypeFact> Types)
+internal sealed record ProjectFacts(
+    IReadOnlyList<DocumentFact> Documents,
+    IReadOnlyList<TypeFact> Types,
+    IReadOnlyList<AnalyzerErrorFact> AnalyzerErrors)
 {
     /// <summary>The facts of all <paramref name="parts"/> together, in their order.</summary>
     public static ProjectFacts Combine(IEnumerable<ProjectFacts> parts)
     {
         var all = parts.ToArray();
-        return new([.. all.SelectMany(part => part.Documents)], [.. all.SelectMany(part => part.Types)]);
+        return new(
+            [.. all.SelectMany(part => part.Documents)],
+            [.. all.SelectMany(part => part.Types)],
+            [.. all.SelectMany(part => part.AnalyzerErrors)]);
     }
 }
 
@@ -44,3 +50,9 @@ internal sealed record TypeFact(
 /// <param name="Document">The document's key.</param>
 /// <param name="Lines">The physical lines the declaration spans, <c>#line</c> directives ignored.</param>
 internal sealed record TypeDeclarationFact(string Document, LineSpan Lines);
+
+/// <summary>An exception in Typescape's own walker, caught on one document.</summary>
+/// <param name="Document">The document's key.</param>
+/// <param name="ExceptionType">The exception's full type name, e.g. <c>System.InvalidCastException</c>.</param>
+/// <param name="Frame">The top stack frame as a method with its parameter types, never its file and line.</param>
+internal sealed record AnalyzerErrorFact(string Document, string ExceptionType, string Frame);

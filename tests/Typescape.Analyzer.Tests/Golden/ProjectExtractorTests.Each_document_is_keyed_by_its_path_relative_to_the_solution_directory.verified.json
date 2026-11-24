@@ -10,5 +10,6 @@
       "path": "../Shared/Link.cs"
     }
   ],
-  "types": []
+  "types": [],
+  "analyzerErrors": []
 }

@@ -38,10 +38,12 @@ internal static class RuleTest
         ProjectExtractor.Extract(compilation, Context, cancellationToken ?? TestContext.Current.CancellationToken);
 
     /// <param name="documents">Paths relative to the solution directory.</param>
-    /// <exception cref="InvalidOperationException">The documents do not compile.</exception>
+    /// <param name="allowedErrors">The compiler error codes the snippet may have, e.g. <c>CS0116</c>.</param>
+    /// <exception cref="InvalidOperationException">The documents have any other compile error.</exception>
     public static CSharpCompilation Compile(
         IEnumerable<(string Path, string Source)> documents,
-        OutputKind outputKind = OutputKind.DynamicallyLinkedLibrary)
+        OutputKind outputKind = OutputKind.DynamicallyLinkedLibrary,
+        IReadOnlyCollection<string>? allowedErrors = null)
     {
         var trees = documents.Select(document => CSharpSyntaxTree.ParseText(
             document.Source,
@@ -54,7 +56,9 @@ internal static class RuleTest
             new CSharpCompilationOptions(outputKind));
 
         // A typo in a snippet would otherwise surface as a puzzling golden diff.
-        var errors = compilation.GetDiagnostics().Where(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error).ToArray();
+        var errors = compilation.GetDiagnostics()
+            .Where(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error && allowedErrors?.Contains(diagnostic.Id) != true)
+            .ToArray();
         if (errors.Length > 0)
         {
             throw new InvalidOperationException($"The snippet does not compile:\n{string.Join('\n', errors)}");

@@ -10,32 +10,44 @@ namespace Typescape.Analyzer.Extraction;
 /// <summary>The project's own types: every named type its source declares, nested ones included.</summary>
 internal static class OwnTypes
 {
-    public static IEnumerable<TypeFact> Extract(Compilation compilation, ProjectContext context, CancellationToken cancellationToken)
+    public static ProjectFacts Extract(Compilation compilation, ProjectContext context, CancellationToken cancellationToken) =>
+        ProjectFacts.Combine(Declared(compilation.Assembly.GlobalNamespace).Select(type => Guarded(type, context, cancellationToken)));
+
+    // An exception on one type is pinned to the document of its first declaration, and the other types survive it.
+    private static ProjectFacts Guarded(INamedTypeSymbol type, ProjectContext context, CancellationToken cancellationToken)
     {
-        foreach (var type in Declared(compilation.Assembly.GlobalNamespace))
+        ProjectFacts Walk()
         {
             cancellationToken.ThrowIfCancellationRequested();
-
-            // C# 14 extension blocks are named types too, but not ones a reader would call a type.
-            if (Kind(type) is not { } kind)
-            {
-                continue;
-            }
-
-            var isClass = type.TypeKind == TypeKind.Class;
-            yield return new TypeFact(
-                Key(type),
-                type.Name,
-                kind,
-                Accessibility(type),
-                Abstract: isClass && type.IsAbstract,
-                Sealed: isClass && type.IsSealed,
-                Static: isClass && type.IsStatic,
-                type.Arity,
-                NamespaceName(type.ContainingNamespace),
-                type.ContainingType is { } containing ? Key(containing) : null,
-                [.. type.DeclaringSyntaxReferences.Select(reference => Declaration(reference, context, cancellationToken))]);
+            return Fact(type, context, cancellationToken) is { } fact ? new([], [fact], []) : new([], [], []);
         }
+
+        return type.DeclaringSyntaxReferences.FirstOrDefault() is { } first
+            ? AnalyzerErrors.Catch(SolutionPaths.Key(first.SyntaxTree.FilePath, context.SolutionDirectory), Walk, cancellationToken)
+            : Walk();
+    }
+
+    private static TypeFact? Fact(INamedTypeSymbol type, ProjectContext context, CancellationToken cancellationToken)
+    {
+        // C# 14 extension blocks are named types too, but not ones a reader would call a type.
+        if (Kind(type) is not { } kind)
+        {
+            return null;
+        }
+
+        var isClass = type.TypeKind == TypeKind.Class;
+        return new TypeFact(
+            Key(type),
+            type.Name,
+            kind,
+            Accessibility(type),
+            Abstract: isClass && type.IsAbstract,
+            Sealed: isClass && type.IsSealed,
+            Static: isClass && type.IsStatic,
+            type.Arity,
+            NamespaceName(type.ContainingNamespace),
+            type.ContainingType is { } containing ? Key(containing) : null,
+            [.. type.DeclaringSyntaxReferences.Select(reference => Declaration(reference, context, cancellationToken))]);
     }
 
     private static IEnumerable<INamedTypeSymbol> Declared(INamespaceSymbol container) =>
