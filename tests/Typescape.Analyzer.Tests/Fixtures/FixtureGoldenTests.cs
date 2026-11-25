@@ -16,6 +16,10 @@ public sealed class FixtureGoldenTests
     public async Task Modern_for_framework_net8_0() =>
         FixtureSolution.Match(await FixtureSolution.AnalyzeAsync("Modern", request => request with { Framework = "net8.0" }), "Modern.net8.0");
 
+    [Fact]
+    public async Task Legacy() =>
+        FixtureSolution.Match(FixtureSolution.WithoutMSBuildChoice(await FixtureSolution.AnalyzeAsync("Legacy")), "Legacy");
+
     private static async Task MatchAsync(string fixture) =>
         FixtureSolution.Match(await FixtureSolution.AnalyzeAsync(fixture), fixture);
 }

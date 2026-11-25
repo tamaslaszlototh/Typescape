@@ -1,0 +1,1528 @@
+{
+  "schemaVersion": "1.0",
+  "rulesVersion": 1,
+  "projects": [
+    {
+      "key": "LegacyLib/LegacyLib.csproj",
+      "name": "LegacyLib",
+      "assembly": "LegacyLib",
+      "style": "legacy",
+      "tfm": "net472",
+      "test": false,
+      "testReason": null,
+      "references": [
+        3
+      ]
+    },
+    {
+      "key": "SdkNet48/SdkNet48.csproj",
+      "name": "SdkNet48",
+      "assembly": "SdkNet48",
+      "style": "sdk",
+      "tfm": "net48",
+      "test": false,
+      "testReason": null,
+      "references": [
+        0,
+        2,
+        3
+      ]
+    },
+    {
+      "key": "WebApp/WebApp.csproj",
+      "name": "WebApp",
+      "assembly": "WebApp",
+      "style": "legacy",
+      "tfm": "net472",
+      "test": false,
+      "testReason": null,
+      "references": []
+    },
+    {
+      "key": "WpfApp/WpfApp.csproj",
+      "name": "WpfApp",
+      "assembly": "WpfApp",
+      "style": "legacy",
+      "tfm": "net48",
+      "test": false,
+      "testReason": null,
+      "references": []
+    }
+  ],
+  "namespaces": [
+    {
+      "project": 0,
+      "name": "LegacyLib"
+    },
+    {
+      "project": 0,
+      "name": "LegacyLib.Properties"
+    },
+    {
+      "project": 1,
+      "name": "SdkNet48"
+    },
+    {
+      "project": 2,
+      "name": "WebApp"
+    },
+    {
+      "project": 3,
+      "name": "WpfApp"
+    }
+  ],
+  "documents": [
+    {
+      "path": "LegacyLib/Class1.cs",
+      "project": 0,
+      "generated": false,
+      "generatedReason": null
+    },
+    {
+      "path": "LegacyLib/Properties/AssemblyInfo.cs",
+      "project": 0,
+      "generated": false,
+      "generatedReason": null
+    },
+    {
+      "path": "LegacyLib/Properties/Resources.Designer.cs",
+      "project": 0,
+      "generated": true,
+      "generatedReason": "convention"
+    },
+    {
+      "path": "LegacyLib/obj/Debug/.NETFramework,Version=v4.7.2.AssemblyAttributes.cs",
+      "project": 0,
+      "generated": true,
+      "generatedReason": "convention"
+    },
+    {
+      "path": "SdkNet48/Use.cs",
+      "project": 1,
+      "generated": false,
+      "generatedReason": null
+    },
+    {
+      "path": "SdkNet48/obj/Debug/net48/.NETFramework,Version=v4.8.AssemblyAttributes.cs",
+      "project": 1,
+      "generated": true,
+      "generatedReason": "convention"
+    },
+    {
+      "path": "SdkNet48/obj/Debug/net48/SdkNet48.AssemblyInfo.cs",
+      "project": 1,
+      "generated": true,
+      "generatedReason": "convention"
+    },
+    {
+      "path": "WebApp/Global.asax.cs",
+      "project": 2,
+      "generated": false,
+      "generatedReason": null
+    },
+    {
+      "path": "WebApp/obj/Debug/.NETFramework,Version=v4.7.2.AssemblyAttributes.cs",
+      "project": 2,
+      "generated": true,
+      "generatedReason": "convention"
+    },
+    {
+      "path": "WpfApp/MainWindow.xaml.cs",
+      "project": 3,
+      "generated": false,
+      "generatedReason": null
+    },
+    {
+      "path": "WpfApp/obj/Debug/.NETFramework,Version=v4.8.AssemblyAttributes.cs",
+      "project": 3,
+      "generated": true,
+      "generatedReason": "convention"
+    },
+    {
+      "path": "WpfApp/obj/Debug/MainWindow.g.cs",
+      "project": 3,
+      "generated": true,
+      "generatedReason": "convention"
+    }
+  ],
+  "types": [
+    {
+      "key": "LegacyLib|T:LegacyLib.Class1",
+      "name": "Class1",
+      "kind": "class",
+      "accessibility": "public",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": 0,
+      "containingType": null,
+      "declarations": [
+        {
+          "document": 0,
+          "lines": {
+            "start": 8,
+            "end": 18
+          },
+          "loc": 8,
+          "generated": false
+        }
+      ],
+      "loc": 8
+    },
+    {
+      "key": "LegacyLib|T:LegacyLib.Properties.Resources",
+      "name": "Resources",
+      "kind": "class",
+      "accessibility": "internal",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": 1,
+      "containingType": null,
+      "declarations": [
+        {
+          "document": 2,
+          "lines": {
+            "start": 3,
+            "end": 6
+          },
+          "loc": 4,
+          "generated": true
+        }
+      ],
+      "loc": 4
+    },
+    {
+      "key": "SdkNet48|T:SdkNet48.Use",
+      "name": "Use",
+      "kind": "class",
+      "accessibility": "public",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": 2,
+      "containingType": null,
+      "declarations": [
+        {
+          "document": 4,
+          "lines": {
+            "start": 3,
+            "end": 12
+          },
+          "loc": 7,
+          "generated": false
+        }
+      ],
+      "loc": 7
+    },
+    {
+      "key": "WebApp|T:WebApp.Global",
+      "name": "Global",
+      "kind": "class",
+      "accessibility": "public",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": 3,
+      "containingType": null,
+      "declarations": [
+        {
+          "document": 7,
+          "lines": {
+            "start": 3,
+            "end": 6
+          },
+          "loc": 4,
+          "generated": false
+        }
+      ],
+      "loc": 4
+    },
+    {
+      "key": "WpfApp|T:WpfApp.MainWindow",
+      "name": "MainWindow",
+      "kind": "class",
+      "accessibility": "public",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": 4,
+      "containingType": null,
+      "declarations": [
+        {
+          "document": 9,
+          "lines": {
+            "start": 5,
+            "end": 12
+          },
+          "loc": 8,
+          "generated": false
+        },
+        {
+          "document": 11,
+          "lines": {
+            "start": 39,
+            "end": 88
+          },
+          "loc": 30,
+          "generated": true
+        }
+      ],
+      "loc": 38
+    }
+  ],
+  "externalTypes": [
+    {
+      "key": "Newtonsoft.Json|T:Newtonsoft.Json.JsonConvert",
+      "name": "JsonConvert",
+      "assembly": "Newtonsoft.Json",
+      "namespace": "Newtonsoft.Json",
+      "kind": "class"
+    },
+    {
+      "key": "PresentationFramework|T:System.Windows.Application",
+      "name": "Application",
+      "assembly": "PresentationFramework",
+      "namespace": "System.Windows",
+      "kind": "class"
+    },
+    {
+      "key": "PresentationFramework|T:System.Windows.Controls.Button",
+      "name": "Button",
+      "assembly": "PresentationFramework",
+      "namespace": "System.Windows.Controls",
+      "kind": "class"
+    },
+    {
+      "key": "PresentationFramework|T:System.Windows.Controls.ContentControl",
+      "name": "ContentControl",
+      "assembly": "PresentationFramework",
+      "namespace": "System.Windows.Controls",
+      "kind": "class"
+    },
+    {
+      "key": "PresentationFramework|T:System.Windows.Window",
+      "name": "Window",
+      "assembly": "PresentationFramework",
+      "namespace": "System.Windows",
+      "kind": "class"
+    },
+    {
+      "key": "System.Core|T:System.Linq.Enumerable",
+      "name": "Enumerable",
+      "assembly": "System.Core",
+      "namespace": "System.Linq",
+      "kind": "class"
+    },
+    {
+      "key": "System.Net.Http|T:System.Net.Http.HttpClient",
+      "name": "HttpClient",
+      "assembly": "System.Net.Http",
+      "namespace": "System.Net.Http",
+      "kind": "class"
+    },
+    {
+      "key": "System.Web|T:System.Web.HttpApplication",
+      "name": "HttpApplication",
+      "assembly": "System.Web",
+      "namespace": "System.Web",
+      "kind": "class"
+    },
+    {
+      "key": "System.Web|T:System.Web.HttpUtility",
+      "name": "HttpUtility",
+      "assembly": "System.Web",
+      "namespace": "System.Web",
+      "kind": "class"
+    },
+    {
+      "key": "System.Windows.Forms|T:System.Windows.Forms.Form",
+      "name": "Form",
+      "assembly": "System.Windows.Forms",
+      "namespace": "System.Windows.Forms",
+      "kind": "class"
+    },
+    {
+      "key": "System.Xaml|T:System.Windows.Markup.IComponentConnector",
+      "name": "IComponentConnector",
+      "assembly": "System.Xaml",
+      "namespace": "System.Windows.Markup",
+      "kind": "interface"
+    },
+    {
+      "key": "System|T:System.CodeDom.Compiler.GeneratedCodeAttribute",
+      "name": "GeneratedCodeAttribute",
+      "assembly": "System",
+      "namespace": "System.CodeDom.Compiler",
+      "kind": "class"
+    },
+    {
+      "key": "System|T:System.ComponentModel.EditorBrowsableAttribute",
+      "name": "EditorBrowsableAttribute",
+      "assembly": "System",
+      "namespace": "System.ComponentModel",
+      "kind": "class"
+    },
+    {
+      "key": "System|T:System.ComponentModel.EditorBrowsableState",
+      "name": "EditorBrowsableState",
+      "assembly": "System",
+      "namespace": "System.ComponentModel",
+      "kind": "enum"
+    },
+    {
+      "key": "System|T:System.Uri",
+      "name": "Uri",
+      "assembly": "System",
+      "namespace": "System",
+      "kind": "class"
+    },
+    {
+      "key": "System|T:System.UriKind",
+      "name": "UriKind",
+      "assembly": "System",
+      "namespace": "System",
+      "kind": "enum"
+    },
+    {
+      "key": "mscorlib|T:System.Boolean",
+      "name": "Boolean",
+      "assembly": "mscorlib",
+      "namespace": "System",
+      "kind": "struct"
+    },
+    {
+      "key": "mscorlib|T:System.Diagnostics.CodeAnalysis.SuppressMessageAttribute",
+      "name": "SuppressMessageAttribute",
+      "assembly": "mscorlib",
+      "namespace": "System.Diagnostics.CodeAnalysis",
+      "kind": "class"
+    },
+    {
+      "key": "mscorlib|T:System.Diagnostics.DebuggerNonUserCodeAttribute",
+      "name": "DebuggerNonUserCodeAttribute",
+      "assembly": "mscorlib",
+      "namespace": "System.Diagnostics",
+      "kind": "class"
+    },
+    {
+      "key": "mscorlib|T:System.Int32",
+      "name": "Int32",
+      "assembly": "mscorlib",
+      "namespace": "System",
+      "kind": "struct"
+    },
+    {
+      "key": "mscorlib|T:System.Object",
+      "name": "Object",
+      "assembly": "mscorlib",
+      "namespace": "System",
+      "kind": "class"
+    },
+    {
+      "key": "mscorlib|T:System.Reflection.Assembly",
+      "name": "Assembly",
+      "assembly": "mscorlib",
+      "namespace": "System.Reflection",
+      "kind": "class"
+    },
+    {
+      "key": "mscorlib|T:System.Reflection.AssemblyName",
+      "name": "AssemblyName",
+      "assembly": "mscorlib",
+      "namespace": "System.Reflection",
+      "kind": "class"
+    },
+    {
+      "key": "mscorlib|T:System.String",
+      "name": "String",
+      "assembly": "mscorlib",
+      "namespace": "System",
+      "kind": "class"
+    },
+    {
+      "key": "mscorlib|T:System.Type",
+      "name": "Type",
+      "assembly": "mscorlib",
+      "namespace": "System",
+      "kind": "class"
+    }
+  ],
+  "executableMembers": [
+    {
+      "key": "LegacyLib|T:LegacyLib.Class1|M:LegacyLib.Class1.Encode(System.String)",
+      "type": 0,
+      "declaration": 0,
+      "signature": "Encode(string)",
+      "kind": "method",
+      "accessibility": "public",
+      "document": 0,
+      "lines": {
+        "start": 10,
+        "end": 11
+      },
+      "loc": 2,
+      "cyclomatic": 1,
+      "cognitive": 0,
+      "generated": false
+    },
+    {
+      "key": "LegacyLib|T:LegacyLib.Class1|M:LegacyLib.Class1.get_Caption",
+      "type": 0,
+      "declaration": 0,
+      "signature": "Caption.get",
+      "kind": "accessor",
+      "accessibility": "public",
+      "document": 0,
+      "lines": {
+        "start": 17,
+        "end": 17
+      },
+      "loc": 1,
+      "cyclomatic": 1,
+      "cognitive": 0,
+      "generated": false
+    },
+    {
+      "key": "LegacyLib|T:LegacyLib.Properties.Resources|M:LegacyLib.Properties.Resources.get_Greeting",
+      "type": 1,
+      "declaration": 0,
+      "signature": "Greeting.get",
+      "kind": "accessor",
+      "accessibility": "internal",
+      "document": 2,
+      "lines": {
+        "start": 5,
+        "end": 5
+      },
+      "loc": 1,
+      "cyclomatic": 1,
+      "cognitive": 0,
+      "generated": true
+    },
+    {
+      "key": "SdkNet48|T:SdkNet48.Use|M:SdkNet48.Use.get_Name",
+      "type": 2,
+      "declaration": 0,
+      "signature": "Name.get",
+      "kind": "accessor",
+      "accessibility": "public",
+      "document": 4,
+      "lines": {
+        "start": 9,
+        "end": 9
+      },
+      "loc": 1,
+      "cyclomatic": 1,
+      "cognitive": 0,
+      "generated": false
+    },
+    {
+      "key": "SdkNet48|T:SdkNet48.Use|M:SdkNet48.Use.get_Window",
+      "type": 2,
+      "declaration": 0,
+      "signature": "Window.get",
+      "kind": "accessor",
+      "accessibility": "public",
+      "document": 4,
+      "lines": {
+        "start": 11,
+        "end": 11
+      },
+      "loc": 1,
+      "cyclomatic": 1,
+      "cognitive": 0,
+      "generated": false
+    },
+    {
+      "key": "WebApp|T:WebApp.Global|M:WebApp.Global.Application_Start",
+      "type": 3,
+      "declaration": 0,
+      "signature": "Application_Start()",
+      "kind": "method",
+      "accessibility": "protected",
+      "document": 7,
+      "lines": {
+        "start": 5,
+        "end": 5
+      },
+      "loc": 1,
+      "cyclomatic": 1,
+      "cognitive": 0,
+      "generated": false
+    },
+    {
+      "key": "WpfApp|T:WpfApp.MainWindow|M:WpfApp.MainWindow.#ctor",
+      "type": 4,
+      "declaration": 0,
+      "signature": "MainWindow()",
+      "kind": "constructor",
+      "accessibility": "public",
+      "document": 9,
+      "lines": {
+        "start": 7,
+        "end": 11
+      },
+      "loc": 5,
+      "cyclomatic": 1,
+      "cognitive": 0,
+      "generated": false
+    },
+    {
+      "key": "WpfApp|T:WpfApp.MainWindow|M:WpfApp.MainWindow.InitializeComponent",
+      "type": 4,
+      "declaration": 1,
+      "signature": "InitializeComponent()",
+      "kind": "method",
+      "accessibility": "public",
+      "document": 11,
+      "lines": {
+        "start": 57,
+        "end": 71
+      },
+      "loc": 10,
+      "cyclomatic": 2,
+      "cognitive": 1,
+      "generated": true
+    },
+    {
+      "key": "WpfApp|T:WpfApp.MainWindow|M:WpfApp.MainWindow.System#Windows#Markup#IComponentConnector#Connect(System.Int32,System.Object)",
+      "type": 4,
+      "declaration": 1,
+      "signature": "IComponentConnector.Connect(int, object)",
+      "kind": "method",
+      "accessibility": "private",
+      "document": 11,
+      "lines": {
+        "start": 73,
+        "end": 87
+      },
+      "loc": 15,
+      "cyclomatic": 2,
+      "cognitive": 1,
+      "generated": true
+    }
+  ],
+  "externalMembers": [
+    {
+      "key": "M:Newtonsoft.Json.JsonConvert.SerializeObject(System.Object)",
+      "type": 0,
+      "name": "JsonConvert.SerializeObject(object)"
+    },
+    {
+      "key": "M:System.Windows.Application.LoadComponent(System.Object,System.Uri)",
+      "type": 1,
+      "name": "Application.LoadComponent(object, Uri)"
+    },
+    {
+      "key": "P:System.Windows.Controls.ContentControl.Content",
+      "type": 3,
+      "name": "ContentControl.Content"
+    },
+    {
+      "key": "M:System.Linq.Enumerable.Select``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})",
+      "type": 5,
+      "name": "Enumerable.Select<TSource, TResult>(IEnumerable<TSource>, Func<TSource, TResult>)"
+    },
+    {
+      "key": "M:System.Net.Http.HttpClient.#ctor",
+      "type": 6,
+      "name": "HttpClient.HttpClient()"
+    },
+    {
+      "key": "M:System.Web.HttpUtility.HtmlEncode(System.String)",
+      "type": 8,
+      "name": "HttpUtility.HtmlEncode(string)"
+    },
+    {
+      "key": "M:System.CodeDom.Compiler.GeneratedCodeAttribute.#ctor(System.String,System.String)",
+      "type": 11,
+      "name": "GeneratedCodeAttribute.GeneratedCodeAttribute(string, string)"
+    },
+    {
+      "key": "M:System.ComponentModel.EditorBrowsableAttribute.#ctor(System.ComponentModel.EditorBrowsableState)",
+      "type": 12,
+      "name": "EditorBrowsableAttribute.EditorBrowsableAttribute(EditorBrowsableState)"
+    },
+    {
+      "key": "F:System.ComponentModel.EditorBrowsableState.Never",
+      "type": 13,
+      "name": "EditorBrowsableState.Never"
+    },
+    {
+      "key": "M:System.Uri.#ctor(System.String,System.UriKind)",
+      "type": 14,
+      "name": "Uri.Uri(string, UriKind)"
+    },
+    {
+      "key": "F:System.UriKind.Relative",
+      "type": 15,
+      "name": "UriKind.Relative"
+    },
+    {
+      "key": "M:System.Diagnostics.CodeAnalysis.SuppressMessageAttribute.#ctor(System.String,System.String)",
+      "type": 17,
+      "name": "SuppressMessageAttribute.SuppressMessageAttribute(string, string)"
+    },
+    {
+      "key": "M:System.Diagnostics.DebuggerNonUserCodeAttribute.#ctor",
+      "type": 18,
+      "name": "DebuggerNonUserCodeAttribute.DebuggerNonUserCodeAttribute()"
+    },
+    {
+      "key": "M:System.Reflection.Assembly.GetName",
+      "type": 21,
+      "name": "Assembly.GetName()"
+    },
+    {
+      "key": "P:System.Reflection.AssemblyName.Name",
+      "type": 22,
+      "name": "AssemblyName.Name"
+    },
+    {
+      "key": "P:System.Type.Assembly",
+      "type": 24,
+      "name": "Type.Assembly"
+    }
+  ],
+  "nonExecutableMembers": [
+    {
+      "key": "LegacyLib|T:LegacyLib.Class1|M:LegacyLib.Class1.#ctor",
+      "type": 0,
+      "name": "Class1.Class1()"
+    },
+    {
+      "key": "LegacyLib|T:LegacyLib.Class1|P:LegacyLib.Class1.Window",
+      "type": 0,
+      "name": "Class1.Window"
+    },
+    {
+      "key": "WebApp|T:WebApp.Global|M:WebApp.Global.#ctor",
+      "type": 3,
+      "name": "Global.Global()"
+    },
+    {
+      "key": "WpfApp|T:WpfApp.MainWindow|F:WpfApp.MainWindow.OkButton",
+      "type": 4,
+      "name": "MainWindow.OkButton"
+    }
+  ],
+  "dependencies": [
+    {
+      "source": 0,
+      "target": 1,
+      "external": false,
+      "kind": "member-access",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 0,
+      "external": true,
+      "kind": "call",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "external": true,
+      "kind": "member-access",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "external": true,
+      "kind": "call",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 6,
+      "external": true,
+      "kind": "member-type",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 6,
+      "external": true,
+      "kind": "new",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 8,
+      "external": true,
+      "kind": "call",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 9,
+      "external": true,
+      "kind": "inherits",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "external": false,
+      "kind": "member-type",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "external": false,
+      "kind": "member-access",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 20,
+      "external": true,
+      "kind": "member-type",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 23,
+      "external": true,
+      "kind": "signature",
+      "count": 2,
+      "generatedCount": 0
+    },
+    {
+      "source": 1,
+      "target": 23,
+      "external": true,
+      "kind": "member-type",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 2,
+      "target": 0,
+      "external": false,
+      "kind": "member-type",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 2,
+      "target": 0,
+      "external": false,
+      "kind": "new",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 2,
+      "target": 0,
+      "external": false,
+      "kind": "member-access",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "external": false,
+      "kind": "member-type",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "external": false,
+      "kind": "new",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "external": false,
+      "kind": "member-type",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 2,
+      "target": 20,
+      "external": true,
+      "kind": "type-usage",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 2,
+      "target": 21,
+      "external": true,
+      "kind": "call",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 2,
+      "target": 22,
+      "external": true,
+      "kind": "member-access",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 2,
+      "target": 23,
+      "external": true,
+      "kind": "member-type",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 2,
+      "target": 24,
+      "external": true,
+      "kind": "member-access",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "external": true,
+      "kind": "inherits",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 4,
+      "target": 1,
+      "external": true,
+      "kind": "call",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 4,
+      "target": 2,
+      "external": true,
+      "kind": "member-type",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 4,
+      "target": 2,
+      "external": true,
+      "kind": "type-usage",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 4,
+      "target": 3,
+      "external": true,
+      "kind": "member-access",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 4,
+      "target": 4,
+      "external": true,
+      "kind": "inherits",
+      "count": 2,
+      "generatedCount": 1
+    },
+    {
+      "source": 4,
+      "target": 10,
+      "external": true,
+      "kind": "implements",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 4,
+      "target": 10,
+      "external": true,
+      "kind": "signature",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 4,
+      "target": 11,
+      "external": true,
+      "kind": "attribute",
+      "count": 2,
+      "generatedCount": 2
+    },
+    {
+      "source": 4,
+      "target": 12,
+      "external": true,
+      "kind": "attribute",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 4,
+      "target": 13,
+      "external": true,
+      "kind": "member-access",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 4,
+      "target": 14,
+      "external": true,
+      "kind": "new",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 4,
+      "target": 14,
+      "external": true,
+      "kind": "type-usage",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 4,
+      "target": 15,
+      "external": true,
+      "kind": "member-access",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 4,
+      "target": 16,
+      "external": true,
+      "kind": "member-type",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 4,
+      "target": 17,
+      "external": true,
+      "kind": "attribute",
+      "count": 4,
+      "generatedCount": 4
+    },
+    {
+      "source": 4,
+      "target": 18,
+      "external": true,
+      "kind": "attribute",
+      "count": 2,
+      "generatedCount": 2
+    },
+    {
+      "source": 4,
+      "target": 19,
+      "external": true,
+      "kind": "signature",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 4,
+      "target": 20,
+      "external": true,
+      "kind": "signature",
+      "count": 1,
+      "generatedCount": 1
+    }
+  ],
+  "loadHealth": {
+    "projects": [
+      {
+        "project": 0,
+        "status": "ok",
+        "availableTfms": [
+          "net472"
+        ],
+        "metadataReferences": 12,
+        "objectResolves": true,
+        "compileErrors": {
+          "count": 0,
+          "top": []
+        },
+        "unresolvedTypes": {
+          "count": 0,
+          "top": []
+        },
+        "workspaceDiagnostics": [],
+        "sdkFallback": false,
+        "projectReferenceMismatch": false,
+        "analyzerErrors": []
+      },
+      {
+        "project": 1,
+        "status": "ok",
+        "availableTfms": [
+          "net48"
+        ],
+        "metadataReferences": 10,
+        "objectResolves": true,
+        "compileErrors": {
+          "count": 0,
+          "top": []
+        },
+        "unresolvedTypes": {
+          "count": 0,
+          "top": []
+        },
+        "workspaceDiagnostics": [],
+        "sdkFallback": false,
+        "projectReferenceMismatch": false,
+        "analyzerErrors": []
+      },
+      {
+        "project": 2,
+        "status": "ok",
+        "availableTfms": [
+          "net472"
+        ],
+        "metadataReferences": 4,
+        "objectResolves": true,
+        "compileErrors": {
+          "count": 0,
+          "top": []
+        },
+        "unresolvedTypes": {
+          "count": 0,
+          "top": []
+        },
+        "workspaceDiagnostics": [],
+        "sdkFallback": false,
+        "projectReferenceMismatch": false,
+        "analyzerErrors": []
+      },
+      {
+        "project": 3,
+        "status": "ok",
+        "availableTfms": [
+          "net48"
+        ],
+        "metadataReferences": 7,
+        "objectResolves": true,
+        "compileErrors": {
+          "count": 0,
+          "top": []
+        },
+        "unresolvedTypes": {
+          "count": 0,
+          "top": []
+        },
+        "workspaceDiagnostics": [],
+        "sdkFallback": false,
+        "projectReferenceMismatch": false,
+        "analyzerErrors": []
+      }
+    ],
+    "solutionDiagnostics": []
+  },
+  "provenance": {
+    "tool": {
+      "version": "0.0.0",
+      "commit": null
+    },
+    "timestamp": "1970-01-01T00:00:00+00:00",
+    "solution": {
+      "fileName": "Legacy.sln",
+      "format": "sln"
+    },
+    "sdkVersion": "0.0.0",
+    "os": "scrubbed",
+    "git": null,
+    "framework": null,
+    "configuration": "Debug",
+    "properties": {},
+    "phaseSeconds": {
+      "restore": 0,
+      "load": 0,
+      "compile": 0,
+      "diagnostics": 0,
+      "walk": 0,
+      "assemble": 0
+    },
+    "peakMemoryBytes": 0
+  },
+  "occurrences": [
+    [
+      0,
+      0,
+      2,
+      0,
+      11
+    ],
+    [
+      1,
+      0,
+      0,
+      0,
+      11
+    ],
+    [
+      2,
+      1,
+      2,
+      0,
+      17
+    ],
+    [
+      3,
+      0,
+      3,
+      0,
+      11
+    ],
+    [
+      4,
+      null,
+      null,
+      0,
+      13
+    ],
+    [
+      5,
+      null,
+      4,
+      0,
+      13
+    ],
+    [
+      6,
+      0,
+      5,
+      0,
+      11
+    ],
+    [
+      7,
+      null,
+      null,
+      0,
+      8
+    ],
+    [
+      8,
+      null,
+      null,
+      0,
+      15
+    ],
+    [
+      9,
+      1,
+      -4,
+      0,
+      17
+    ],
+    [
+      10,
+      null,
+      null,
+      0,
+      17
+    ],
+    [
+      11,
+      0,
+      null,
+      0,
+      10
+    ],
+    [
+      11,
+      0,
+      null,
+      0,
+      10
+    ],
+    [
+      12,
+      null,
+      null,
+      2,
+      5
+    ],
+    [
+      13,
+      null,
+      null,
+      4,
+      5
+    ],
+    [
+      14,
+      null,
+      -1,
+      4,
+      5
+    ],
+    [
+      15,
+      4,
+      -2,
+      4,
+      11
+    ],
+    [
+      16,
+      null,
+      null,
+      4,
+      7
+    ],
+    [
+      17,
+      null,
+      -3,
+      4,
+      7
+    ],
+    [
+      18,
+      null,
+      null,
+      4,
+      11
+    ],
+    [
+      19,
+      3,
+      null,
+      4,
+      9
+    ],
+    [
+      20,
+      3,
+      13,
+      4,
+      9
+    ],
+    [
+      21,
+      3,
+      14,
+      4,
+      9
+    ],
+    [
+      22,
+      null,
+      null,
+      4,
+      9
+    ],
+    [
+      23,
+      3,
+      15,
+      4,
+      9
+    ],
+    [
+      24,
+      null,
+      null,
+      7,
+      3
+    ],
+    [
+      25,
+      7,
+      1,
+      11,
+      67
+    ],
+    [
+      26,
+      null,
+      null,
+      11,
+      47
+    ],
+    [
+      27,
+      8,
+      null,
+      11,
+      83
+    ],
+    [
+      28,
+      6,
+      2,
+      9,
+      10
+    ],
+    [
+      29,
+      null,
+      null,
+      9,
+      5
+    ],
+    [
+      29,
+      null,
+      null,
+      11,
+      39
+    ],
+    [
+      30,
+      null,
+      null,
+      11,
+      39
+    ],
+    [
+      31,
+      8,
+      null,
+      11,
+      79
+    ],
+    [
+      32,
+      7,
+      6,
+      11,
+      58
+    ],
+    [
+      32,
+      8,
+      6,
+      11,
+      74
+    ],
+    [
+      33,
+      8,
+      7,
+      11,
+      75
+    ],
+    [
+      34,
+      8,
+      8,
+      11,
+      75
+    ],
+    [
+      35,
+      7,
+      9,
+      11,
+      64
+    ],
+    [
+      36,
+      7,
+      null,
+      11,
+      64
+    ],
+    [
+      37,
+      7,
+      10,
+      11,
+      64
+    ],
+    [
+      38,
+      null,
+      null,
+      11,
+      52
+    ],
+    [
+      39,
+      null,
+      11,
+      11,
+      46
+    ],
+    [
+      39,
+      8,
+      11,
+      11,
+      76
+    ],
+    [
+      39,
+      8,
+      11,
+      11,
+      77
+    ],
+    [
+      39,
+      8,
+      11,
+      11,
+      78
+    ],
+    [
+      40,
+      7,
+      12,
+      11,
+      57
+    ],
+    [
+      40,
+      8,
+      12,
+      11,
+      73
+    ],
+    [
+      41,
+      8,
+      null,
+      11,
+      79
+    ],
+    [
+      42,
+      8,
+      null,
+      11,
+      79
+    ]
+  ]
+}

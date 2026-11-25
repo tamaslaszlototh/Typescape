@@ -58,6 +58,34 @@ internal static class FixtureSolution
     public static void Match(SnapshotRecord snapshot, string goldenName) =>
         Golden.Match(Render(Write(snapshot)), $"Fixture.{goldenName}", "json");
 
+    /// <summary>
+    /// <paramref name="snapshot"/> without the Load Health evidence of which MSBuild loaded each project: the one
+    /// documented platform exception (spec §10.1). Classic projects go to Visual Studio MSBuild on Windows with Visual
+    /// Studio and fall back to .NET SDK MSBuild elsewhere; that choice alone sets
+    /// <see cref="ProjectHealthRecord.SdkFallback"/>, words the fallback warning, and decides which project references
+    /// the workspace reports as kept (<see cref="WorkspaceDiagnosticKind.Info"/>).
+    /// </summary>
+    public static SnapshotRecord WithoutMSBuildChoice(SnapshotRecord snapshot) =>
+        snapshot with
+        {
+            LoadHealth = snapshot.LoadHealth with
+            {
+                Projects =
+                [
+                    .. snapshot.LoadHealth.Projects.Select(project => project with
+                    {
+                        SdkFallback = false,
+                        WorkspaceDiagnostics =
+                        [
+                            .. project.WorkspaceDiagnostics.Where(diagnostic =>
+                                diagnostic.Kind != WorkspaceDiagnosticKind.Info
+                                && !diagnostic.Message.Contains("will be loaded with the .NET Core SDK", StringComparison.Ordinal)),
+                        ],
+                    }),
+                ],
+            },
+        };
+
     /// <summary>The Snapshot file's bytes, with the Provenance that depends on the clock, machine or run scrubbed.</summary>
     public static byte[] Write(SnapshotRecord snapshot)
     {

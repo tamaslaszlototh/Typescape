@@ -8,6 +8,7 @@ public sealed class DeterminismTests
 
     [Theory]
     [InlineData("Modern")]
+    [InlineData("Legacy")]
     public async Task The_Snapshot_is_byte_identical_under_max_parallelism_1_and_N(string fixture)
     {
         var serial = FixtureSolution.Write(await FixtureSolution.AnalyzeAsync(fixture, request => request with { MaxParallelism = 1 }));
