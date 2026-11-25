@@ -3,12 +3,15 @@ name: ci
 on:
   pull_request:
     branches: [main]
+  workflow_dispatch:
+  workflow_call: # from the release workflow
 
 permissions:
   contents: read
 
+# Not github.workflow: in a called workflow it names the caller, whose own group would then collide with this one.
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ci-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -62,5 +65,105 @@ jobs:
         with:
           name: coverage-${{ matrix.name }}
           path: TestResults/coverage/**/*.cobertura.xml
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Upload received golden files
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: received-${{ matrix.name }}
+          path: tests/**/*.received.*
+          if-no-files-found: ignore
+          retention-days: 14
+
+  # Decides whether windows-no-vs runs. Outside a PR (manual, release) it always runs.
+  changes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      legacy: ${{ steps.diff.outputs.legacy }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        if: github.event_name == 'pull_request'
+        with:
+          persist-credentials: false
+          fetch-depth: 2 # the PR's merge commit and its base
+
+      - name: Detect legacy loading changes
+        id: diff
+        shell: bash
+        env:
+          EVENT: ${{ github.event_name }}
+          # Legacy loading code, the Legacy fixture and its golden, the fixture harness, packages, SDK and this workflow.
+          PATTERN: >-
+            ^(src/Typescape\.Analyzer/(MSBuild|Loading|Restore|Packages)/
+            |src/Typescape\.Analyzer/Pipeline/MSBuildStages\.cs$
+            |src/Typescape\.Analyzer/Typescape\.Analyzer\.csproj$
+            |tests/fixtures/Legacy/
+            |tests/Typescape\.Analyzer\.Tests/Fixtures/
+            |tests/Typescape\.Analyzer\.Tests/Golden/Fixture\.Legacy\.
+            |Directory\.Packages\.props$
+            |global\.json$
+            |\.github/workflows/ci\.yml$)
+        run: |
+          if [ "$EVENT" != pull_request ]; then
+            echo "legacy=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          changed=$(git diff --name-only HEAD^1 HEAD)
+          # >- folds the pattern's lines with spaces; no path here contains one.
+          matches=$(grep -E "${PATTERN// /}" <<< "$changed" || true)
+          echo "Changed legacy loading paths:"
+          echo "${matches:-  (none)}"
+          echo "legacy=$([ -n "$matches" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+
+  # The only proof of the Windows-without-VS path: classic projects fall back to .NET SDK MSBuild, as on macOS.
+  # docker run, because container: is not supported on Windows runners. A skipped job counts as passing.
+  windows-no-vs:
+    needs: changes
+    # Fails open: if changes broke, legacy is empty and this runs rather than passing by being skipped.
+    if: ${{ !cancelled() && needs.changes.outputs.legacy != 'false' }}
+    runs-on: windows-2022 # an ltsc2022 image needs a Server 2022 host for process isolation
+    timeout-minutes: 60
+    env:
+      IMAGE: mcr.microsoft.com/dotnet/sdk:10.0-windowsservercore-ltsc2022
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Cache NuGet packages
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ runner.temp }}/nuget
+          key: nuget-windows-no-vs-${{ hashFiles('global.json', '**/Directory.Packages.props', '**/Directory.Build.props', '**/*.csproj') }}
+          restore-keys: nuget-windows-no-vs-
+
+      - name: Pull the SDK image
+        shell: pwsh
+        run: docker pull $env:IMAGE
+
+      - name: Legacy golden test
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force "$env:RUNNER_TEMP\nuget" | Out-Null
+          docker run --rm `
+            -v "${env:GITHUB_WORKSPACE}:C:\repo" `
+            -v "${env:RUNNER_TEMP}\nuget:C:\nuget" `
+            -w C:\repo `
+            -e NUGET_PACKAGES=C:\nuget `
+            -e DOTNET_NOLOGO=true `
+            -e DOTNET_CLI_TELEMETRY_OPTOUT=true `
+            $env:IMAGE `
+            dotnet test --project tests/Typescape.Analyzer.Tests/Typescape.Analyzer.Tests.csproj --filter-method "*.FixtureGoldenTests.Legacy"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Upload received golden files
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: received-windows-no-vs
+          path: tests/**/*.received.*
           if-no-files-found: ignore
           retention-days: 14
