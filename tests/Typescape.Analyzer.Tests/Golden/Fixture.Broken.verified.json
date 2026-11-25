@@ -1,0 +1,519 @@
+{
+  "schemaVersion": "1.0",
+  "rulesVersion": 1,
+  "projects": [
+    {
+      "key": "Billing/Billing.csproj",
+      "name": "Billing",
+      "assembly": "Billing",
+      "style": "sdk",
+      "tfm": "net10.0",
+      "test": false,
+      "testReason": null,
+      "references": [
+        1
+      ]
+    },
+    {
+      "key": "Ledger/Ledger.csproj",
+      "name": "Ledger",
+      "assembly": "Ledger",
+      "style": "sdk",
+      "tfm": "net10.0",
+      "test": false,
+      "testReason": null,
+      "references": []
+    },
+    {
+      "key": "Reports/Reports.csproj",
+      "name": "Reports",
+      "assembly": null,
+      "style": null,
+      "tfm": null,
+      "test": false,
+      "testReason": null,
+      "references": []
+    }
+  ],
+  "namespaces": [
+    {
+      "project": 0,
+      "name": "Billing"
+    },
+    {
+      "project": 1,
+      "name": "Ledger"
+    }
+  ],
+  "documents": [
+    {
+      "path": "Billing/Invoice.cs",
+      "project": 0,
+      "generated": false,
+      "generatedReason": null
+    },
+    {
+      "path": "Billing/obj/Debug/net10.0/.NETCoreApp,Version=v10.0.AssemblyAttributes.cs",
+      "project": 0,
+      "generated": true,
+      "generatedReason": "convention"
+    },
+    {
+      "path": "Billing/obj/Debug/net10.0/Billing.AssemblyInfo.cs",
+      "project": 0,
+      "generated": true,
+      "generatedReason": "convention"
+    },
+    {
+      "path": "Billing/obj/Debug/net10.0/Billing.GlobalUsings.g.cs",
+      "project": 0,
+      "generated": true,
+      "generatedReason": "convention"
+    },
+    {
+      "path": "Ledger/Entry.cs",
+      "project": 1,
+      "generated": false,
+      "generatedReason": null
+    },
+    {
+      "path": "Ledger/obj/Debug/net10.0/.NETCoreApp,Version=v10.0.AssemblyAttributes.cs",
+      "project": 1,
+      "generated": true,
+      "generatedReason": "convention"
+    },
+    {
+      "path": "Ledger/obj/Debug/net10.0/Ledger.AssemblyInfo.cs",
+      "project": 1,
+      "generated": true,
+      "generatedReason": "convention"
+    },
+    {
+      "path": "Ledger/obj/Debug/net10.0/Ledger.GlobalUsings.g.cs",
+      "project": 1,
+      "generated": true,
+      "generatedReason": "convention"
+    }
+  ],
+  "types": [
+    {
+      "key": "Billing|T:Billing.Invoice",
+      "name": "Invoice",
+      "kind": "class",
+      "accessibility": "public",
+      "abstract": false,
+      "sealed": true,
+      "static": false,
+      "arity": 0,
+      "namespace": 0,
+      "containingType": null,
+      "declarations": [
+        {
+          "document": 0,
+          "lines": {
+            "start": 6,
+            "end": 18
+          },
+          "loc": 11,
+          "generated": false
+        }
+      ],
+      "loc": 11
+    },
+    {
+      "key": "Ledger|T:Ledger.Entry",
+      "name": "Entry",
+      "kind": "record",
+      "accessibility": "public",
+      "abstract": false,
+      "sealed": true,
+      "static": false,
+      "arity": 0,
+      "namespace": 1,
+      "containingType": null,
+      "declarations": [
+        {
+          "document": 4,
+          "lines": {
+            "start": 3,
+            "end": 3
+          },
+          "loc": 1,
+          "generated": false
+        }
+      ],
+      "loc": 1
+    }
+  ],
+  "externalTypes": [
+    {
+      "key": "System.Collections|T:System.Collections.Generic.List`1",
+      "name": "List<T>",
+      "assembly": "System.Collections",
+      "namespace": "System.Collections.Generic",
+      "kind": "class"
+    },
+    {
+      "key": "System.Linq|T:System.Linq.Enumerable",
+      "name": "Enumerable",
+      "assembly": "System.Linq",
+      "namespace": "System.Linq",
+      "kind": "class"
+    },
+    {
+      "key": "System.Runtime|T:System.Decimal",
+      "name": "Decimal",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "struct"
+    },
+    {
+      "key": "System.Runtime|T:System.String",
+      "name": "String",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "class"
+    }
+  ],
+  "executableMembers": [
+    {
+      "key": "Billing|T:Billing.Invoice|M:Billing.Invoice.Add(Ledger.Entry)",
+      "type": 0,
+      "declaration": 0,
+      "signature": "Add(Entry)",
+      "kind": "method",
+      "accessibility": "public",
+      "document": 0,
+      "lines": {
+        "start": 10,
+        "end": 10
+      },
+      "loc": 1,
+      "cyclomatic": 1,
+      "cognitive": 0,
+      "generated": false
+    },
+    {
+      "key": "Billing|T:Billing.Invoice|M:Billing.Invoice.Total",
+      "type": 0,
+      "declaration": 0,
+      "signature": "Total()",
+      "kind": "method",
+      "accessibility": "public",
+      "document": 0,
+      "lines": {
+        "start": 12,
+        "end": 17
+      },
+      "loc": 6,
+      "cyclomatic": 1,
+      "cognitive": 0,
+      "generated": false
+    }
+  ],
+  "externalMembers": [
+    {
+      "key": "M:System.Collections.Generic.List`1.Add(`0)",
+      "type": 0,
+      "name": "List<T>.Add(T)"
+    },
+    {
+      "key": "M:System.Linq.Enumerable.Sum``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Decimal})",
+      "type": 1,
+      "name": "Enumerable.Sum<TSource>(IEnumerable<TSource>, Func<TSource, decimal>)"
+    }
+  ],
+  "nonExecutableMembers": [
+    {
+      "key": "Ledger|T:Ledger.Entry|P:Ledger.Entry.Amount",
+      "type": 1,
+      "name": "Entry.Amount"
+    }
+  ],
+  "dependencies": [
+    {
+      "source": 0,
+      "target": 1,
+      "external": false,
+      "kind": "signature",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 1,
+      "external": false,
+      "kind": "generic-arg",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 1,
+      "external": false,
+      "kind": "member-access",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 0,
+      "external": true,
+      "kind": "member-type",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 0,
+      "external": true,
+      "kind": "call",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 1,
+      "external": true,
+      "kind": "call",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "external": true,
+      "kind": "signature",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "external": true,
+      "kind": "member-type",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "external": true,
+      "kind": "signature",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "external": true,
+      "kind": "member-type",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "external": true,
+      "kind": "signature",
+      "count": 1,
+      "generatedCount": 0
+    }
+  ],
+  "loadHealth": {
+    "projects": [
+      {
+        "project": 0,
+        "status": "degraded",
+        "availableTfms": [
+          "net10.0"
+        ],
+        "metadataReferences": 167,
+        "objectResolves": true,
+        "compileErrors": {
+          "count": 3,
+          "top": [
+            {
+              "code": "CS0246",
+              "count": 3,
+              "sample": "The type or namespace name 'Vendor' could not be found (are you missing a using directive or an assembly reference?)"
+            }
+          ]
+        },
+        "unresolvedTypes": {
+          "count": 2,
+          "top": [
+            {
+              "name": "TaxRate",
+              "count": 1
+            },
+            {
+              "name": "TaxTable",
+              "count": 1
+            }
+          ]
+        },
+        "workspaceDiagnostics": [
+          {
+            "kind": "failure",
+            "message": "Msbuild failed when processing the file 'Billing/Billing.csproj' with message: Could not resolve this reference. Could not locate the assembly \"Vendor.Tax\". Check to make sure the assembly exists on disk. If this reference is required by your code, you may get compilation errors."
+          }
+        ],
+        "sdkFallback": false,
+        "projectReferenceMismatch": false,
+        "analyzerErrors": []
+      },
+      {
+        "project": 1,
+        "status": "ok",
+        "availableTfms": [
+          "net10.0"
+        ],
+        "metadataReferences": 167,
+        "objectResolves": true,
+        "compileErrors": {
+          "count": 0,
+          "top": []
+        },
+        "unresolvedTypes": {
+          "count": 0,
+          "top": []
+        },
+        "workspaceDiagnostics": [],
+        "sdkFallback": false,
+        "projectReferenceMismatch": false,
+        "analyzerErrors": []
+      },
+      {
+        "project": 2,
+        "status": "failed",
+        "availableTfms": [],
+        "metadataReferences": 0,
+        "objectResolves": false,
+        "compileErrors": {
+          "count": 0,
+          "top": []
+        },
+        "unresolvedTypes": {
+          "count": 0,
+          "top": []
+        },
+        "workspaceDiagnostics": [
+          {
+            "kind": "failure",
+            "message": "Project file not found: 'Reports/Reports.csproj'"
+          }
+        ],
+        "sdkFallback": false,
+        "projectReferenceMismatch": false,
+        "analyzerErrors": []
+      }
+    ],
+    "solutionDiagnostics": []
+  },
+  "provenance": {
+    "tool": {
+      "version": "0.0.0",
+      "commit": null
+    },
+    "timestamp": "1970-01-01T00:00:00+00:00",
+    "solution": {
+      "fileName": "Broken.slnx",
+      "format": "slnx"
+    },
+    "sdkVersion": "0.0.0",
+    "os": "scrubbed",
+    "git": null,
+    "framework": null,
+    "configuration": "Debug",
+    "properties": {},
+    "phaseSeconds": {
+      "restore": 0,
+      "load": 0,
+      "compile": 0,
+      "diagnostics": 0,
+      "walk": 0,
+      "assemble": 0
+    },
+    "peakMemoryBytes": 0
+  },
+  "occurrences": [
+    [
+      0,
+      0,
+      null,
+      0,
+      10
+    ],
+    [
+      1,
+      null,
+      null,
+      0,
+      8
+    ],
+    [
+      2,
+      1,
+      -1,
+      0,
+      14
+    ],
+    [
+      3,
+      null,
+      null,
+      0,
+      8
+    ],
+    [
+      4,
+      0,
+      0,
+      0,
+      10
+    ],
+    [
+      5,
+      1,
+      1,
+      0,
+      14
+    ],
+    [
+      6,
+      1,
+      null,
+      0,
+      12
+    ],
+    [
+      7,
+      null,
+      null,
+      4,
+      3
+    ],
+    [
+      8,
+      null,
+      null,
+      4,
+      3
+    ],
+    [
+      9,
+      null,
+      null,
+      4,
+      3
+    ],
+    [
+      10,
+      null,
+      null,
+      4,
+      3
+    ]
+  ]
+}

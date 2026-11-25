@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Billing/Billing.csproj" />
+  <Project Path="Ledger/Ledger.csproj" />
+  <!-- Not checked in: the project that cannot be loaded. -->
+  <Project Path="Reports/Reports.csproj" />
+</Solution>

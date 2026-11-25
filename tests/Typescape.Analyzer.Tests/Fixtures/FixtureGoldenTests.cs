@@ -20,6 +20,9 @@ public sealed class FixtureGoldenTests
     public async Task Legacy() =>
         FixtureSolution.Match(FixtureSolution.WithoutMSBuildChoice(await FixtureSolution.AnalyzeAsync("Legacy")), "Legacy");
 
+    [Fact]
+    public Task Broken() => MatchAsync("Broken");
+
     private static async Task MatchAsync(string fixture) =>
         FixtureSolution.Match(await FixtureSolution.AnalyzeAsync(fixture), fixture);
 }

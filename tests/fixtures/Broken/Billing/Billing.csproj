@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../Ledger/Ledger.csproj" />
+  </ItemGroup>
+
+  <!-- The DLL is not checked in: MSBuild drops the reference silently, unless ResolveAssemblyReferencesSilent is false. -->
+  <ItemGroup>
+    <Reference Include="Vendor.Tax">
+      <HintPath>../lib/Vendor.Tax.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>
