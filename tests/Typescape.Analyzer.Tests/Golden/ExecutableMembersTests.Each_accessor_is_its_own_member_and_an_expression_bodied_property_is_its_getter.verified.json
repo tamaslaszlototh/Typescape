@@ -11,6 +11,7 @@
         "start": 9,
         "end": 9
       },
+      "cognitive": 0,
       "generated": false
     },
     {
@@ -24,6 +25,7 @@
         "start": 10,
         "end": 10
       },
+      "cognitive": 0,
       "generated": false
     },
     {
@@ -37,6 +39,7 @@
         "start": 13,
         "end": 14
       },
+      "cognitive": 0,
       "generated": false
     },
     {
@@ -50,6 +53,7 @@
         "start": 16,
         "end": 16
       },
+      "cognitive": 0,
       "generated": false
     },
     {
@@ -63,6 +67,7 @@
         "start": 16,
         "end": 16
       },
+      "cognitive": 0,
       "generated": false
     },
     {
@@ -76,6 +81,7 @@
         "start": 18,
         "end": 18
       },
+      "cognitive": 0,
       "generated": false
     },
     {
@@ -89,6 +95,7 @@
         "start": 22,
         "end": 22
       },
+      "cognitive": 0,
       "generated": false
     },
     {
@@ -102,6 +109,7 @@
         "start": 23,
         "end": 23
       },
+      "cognitive": 0,
       "generated": false
     }
   ]

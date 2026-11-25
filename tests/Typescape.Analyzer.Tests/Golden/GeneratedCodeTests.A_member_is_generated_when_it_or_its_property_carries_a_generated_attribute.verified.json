@@ -35,6 +35,7 @@
         "start": 9,
         "end": 10
       },
+      "cognitive": 0,
       "generated": true
     },
     {
@@ -48,6 +49,7 @@
         "start": 12,
         "end": 13
       },
+      "cognitive": 0,
       "generated": true
     },
     {
@@ -61,6 +63,7 @@
         "start": 15,
         "end": 15
       },
+      "cognitive": 0,
       "generated": false
     },
     {
@@ -74,6 +77,7 @@
         "start": 20,
         "end": 20
       },
+      "cognitive": 0,
       "generated": true
     },
     {
@@ -87,6 +91,7 @@
         "start": 21,
         "end": 21
       },
+      "cognitive": 0,
       "generated": true
     },
     {
@@ -100,6 +105,7 @@
         "start": 26,
         "end": 27
       },
+      "cognitive": 0,
       "generated": true
     },
     {
@@ -113,6 +119,7 @@
         "start": 28,
         "end": 28
       },
+      "cognitive": 0,
       "generated": false
     },
     {
@@ -126,6 +133,7 @@
         "start": 34,
         "end": 34
       },
+      "cognitive": 0,
       "generated": true
     },
     {
@@ -139,6 +147,7 @@
         "start": 35,
         "end": 35
       },
+      "cognitive": 0,
       "generated": true
     }
   ]

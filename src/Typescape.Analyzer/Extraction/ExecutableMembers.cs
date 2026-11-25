@@ -21,14 +21,15 @@ internal static class ExecutableMembers
         parameterOptions: SymbolDisplayParameterOptions.IncludeType | SymbolDisplayParameterOptions.IncludeParamsRefOut,
         miscellaneousOptions: SymbolDisplayMiscellaneousOptions.UseSpecialTypes | SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers);
 
-    public static IEnumerable<ExecutableMemberFact> Of(INamedTypeSymbol type, string typeKey, ProjectScope scope)
+    /// <param name="models">The semantic model of a document, one per document.</param>
+    public static IEnumerable<ExecutableMemberFact> Of(INamedTypeSymbol type, string typeKey, ProjectScope scope, Func<SyntaxTree, SemanticModel> models)
     {
         // A C# 14 extension block is no type of its own, so its members belong to the static class around it.
         var extensionMembers = type.GetTypeMembers().Where(nested => nested.IsExtension).SelectMany(block => block.GetMembers());
         foreach (var method in type.GetMembers().Concat(extensionMembers).OfType<IMethodSymbol>())
         {
             scope.CancellationToken.ThrowIfCancellationRequested();
-            if (Fact(type, method, typeKey, scope) is { } fact)
+            if (Fact(type, method, typeKey, scope, models) is { } fact)
             {
                 yield return fact;
             }
@@ -43,7 +44,12 @@ internal static class ExecutableMembers
     public static string? Key(IMethodSymbol method, string typeKey, CancellationToken cancellationToken) =>
         Body(method, cancellationToken) is { } found ? BodyKey(found.WithBody, typeKey) : null;
 
-    private static ExecutableMemberFact? Fact(INamedTypeSymbol type, IMethodSymbol method, string typeKey, ProjectScope scope)
+    private static ExecutableMemberFact? Fact(
+        INamedTypeSymbol type,
+        IMethodSymbol method,
+        string typeKey,
+        ProjectScope scope,
+        Func<SyntaxTree, SemanticModel> models)
     {
         if (Body(method, scope.CancellationToken) is not { } found)
         {
@@ -61,6 +67,7 @@ internal static class ExecutableMembers
             Symbols.Accessibility(withBody),
             Source.Document(body.SyntaxTree, scope.Context),
             Source.Lines(body.SyntaxTree, entryPoint is null ? Span(body) : Source.TopLevelStatements(entryPoint), scope.CancellationToken),
+            MemberMetrics.Of(withBody, body, models(body.SyntaxTree), scope.CancellationToken).Cognitive,
             scope.Generated.MemberIsGenerated(type, withBody, body));
     }
 

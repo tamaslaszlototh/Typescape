@@ -10,17 +10,21 @@ internal static class OwnTypes
     public static ProjectFacts Extract(Compilation compilation, ProjectContext context, CancellationToken cancellationToken)
     {
         var scope = ProjectScope.Create(compilation, context, cancellationToken);
-        return ProjectFacts.Combine(Declared(compilation.Assembly.GlobalNamespace).Select(type => Guarded(type, scope)));
+        var models = new Dictionary<SyntaxTree, SemanticModel>();
+        SemanticModel Model(SyntaxTree tree) =>
+            models.TryGetValue(tree, out var model) ? model : models[tree] = compilation.GetSemanticModel(tree);
+
+        return ProjectFacts.Combine(Declared(compilation.Assembly.GlobalNamespace).Select(type => Guarded(type, scope, Model)));
     }
 
     // An exception on one type is pinned to the document of its first declaration, and the other types survive it.
-    private static ProjectFacts Guarded(INamedTypeSymbol type, ProjectScope scope)
+    private static ProjectFacts Guarded(INamedTypeSymbol type, ProjectScope scope, Func<SyntaxTree, SemanticModel> models)
     {
         ProjectFacts Walk()
         {
             scope.CancellationToken.ThrowIfCancellationRequested();
             return Fact(type, scope) is { } fact
-                ? ProjectFacts.Empty with { Types = [fact], ExecutableMembers = [.. ExecutableMembers.Of(type, fact.Key, scope)] }
+                ? ProjectFacts.Empty with { Types = [fact], ExecutableMembers = [.. ExecutableMembers.Of(type, fact.Key, scope, models)] }
                 : ProjectFacts.Empty;
         }
 

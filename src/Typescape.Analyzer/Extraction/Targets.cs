@@ -1,6 +1,4 @@
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Typescape.Snapshot;
 
 namespace Typescape.Analyzer.Extraction;
@@ -56,7 +54,7 @@ internal sealed class Targets(ProjectScope scope)
     /// </summary>
     public string? Member(ISymbol used, TargetType target, SyntaxNode at)
     {
-        var definition = used is IMethodSymbol { ReducedFrom: { } unreduced } ? unreduced.OriginalDefinition : used.OriginalDefinition;
+        var definition = Usage.Definition(used);
         if (!SymbolEqualityComparer.Default.Equals(Symbols.Owner(definition)?.OriginalDefinition, target.Symbol))
         {
             return null;
@@ -76,7 +74,7 @@ internal sealed class Targets(ProjectScope scope)
             return id;
         }
 
-        if (Accessor(definition, at) is { } method && ExecutableMembers.Key(method, target.Key, scope.CancellationToken) is { } executableKey)
+        if (Usage.Method(definition, at) is { } method && ExecutableMembers.Key(method, target.Key, scope.CancellationToken) is { } executableKey)
         {
             return executableKey;
         }
@@ -84,37 +82,6 @@ internal sealed class Targets(ProjectScope scope)
         var key = StableKeys.Member(target.Key, id);
         nonExecutableMembers.TryAdd(key, new NonExecutableMemberFact(key, target.Key, name));
         return key;
-    }
-
-    private static IMethodSymbol? Accessor(ISymbol member, SyntaxNode at) => member switch
-    {
-        IMethodSymbol method => method,
-        IPropertySymbol property => IsWritten(at) ? property.SetMethod ?? property.GetMethod : property.GetMethod ?? property.SetMethod,
-        IEventSymbol @event => Assignment(at)?.Kind() switch
-        {
-            SyntaxKind.AddAssignmentExpression => @event.AddMethod,
-            SyntaxKind.SubtractAssignmentExpression => @event.RemoveMethod,
-            _ => null,
-        },
-        _ => null,
-    };
-
-    // Only a simple assignment or an attribute's named argument writes: `x.P += 1` and `x.P++` read first, and so does
-    // `P = { … }` in an initializer.
-    private static bool IsWritten(SyntaxNode at) =>
-        at.Parent is NameEqualsSyntax { Parent: AttributeArgumentSyntax }
-        || Assignment(at) is { Right: not InitializerExpressionSyntax } assignment && assignment.IsKind(SyntaxKind.SimpleAssignmentExpression);
-
-    // The assignment whose left side is the access at the place, a deconstruction's tuple included.
-    private static AssignmentExpressionSyntax? Assignment(SyntaxNode at)
-    {
-        var access = at.Parent is MemberAccessExpressionSyntax memberAccess && memberAccess.Name == at || at.Parent is MemberBindingExpressionSyntax ? at.Parent : at;
-        while (access.Parent is ArgumentSyntax { Parent: TupleExpressionSyntax tuple })
-        {
-            access = tuple;
-        }
-
-        return access.Parent is AssignmentExpressionSyntax assignment && assignment.Left == access ? assignment : null;
     }
 }
 

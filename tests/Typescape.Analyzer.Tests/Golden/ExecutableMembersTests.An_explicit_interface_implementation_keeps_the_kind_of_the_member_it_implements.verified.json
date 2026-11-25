@@ -11,6 +11,7 @@
         "start": 6,
         "end": 6
       },
+      "cognitive": 0,
       "generated": false
     },
     {
@@ -24,6 +25,7 @@
         "start": 12,
         "end": 12
       },
+      "cognitive": 0,
       "generated": false
     },
     {
@@ -37,6 +39,7 @@
         "start": 13,
         "end": 13
       },
+      "cognitive": 0,
       "generated": false
     },
     {
@@ -50,6 +53,7 @@
         "start": 14,
         "end": 14
       },
+      "cognitive": 0,
       "generated": false
     },
     {
@@ -63,6 +67,7 @@
         "start": 15,
         "end": 15
       },
+      "cognitive": 0,
       "generated": false
     }
   ]

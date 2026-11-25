@@ -11,6 +11,7 @@
         "start": 6,
         "end": 10
       },
+      "cognitive": 0,
       "generated": false
     },
     {
@@ -24,6 +25,7 @@
         "start": 14,
         "end": 14
       },
+      "cognitive": 0,
       "generated": false
     }
   ]

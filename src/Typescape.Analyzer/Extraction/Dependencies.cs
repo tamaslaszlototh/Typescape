@@ -258,10 +258,11 @@ internal sealed class Dependencies : CSharpSyntaxWalker
             return;
         }
 
-        // A call that fails overload resolution still names its type among the candidates, but no one member.
+        // A call that fails overload resolution still names its type among the candidates, but no one member. The place
+        // is the method's name: a call chain's receiver may start lines earlier.
         if (called is IMethodSymbol method)
         {
-            Record(Symbols.Owner(method), DependencyKind.Call, InvokedName(node.Expression), info.Symbol);
+            Record(Symbols.Owner(method), DependencyKind.Call, Usage.InvokedName(node.Expression), info.Symbol);
         }
 
         base.VisitInvocationExpression(node);
@@ -633,21 +634,8 @@ internal sealed class Dependencies : CSharpSyntaxWalker
         return false;
     }
 
-    private static bool IsInvoked(SimpleNameSyntax name)
-    {
-        SyntaxNode expression = name.Parent is MemberAccessExpressionSyntax access && access.Name == name || name.Parent is MemberBindingExpressionSyntax
-            ? name.Parent
-            : name;
-        return expression.Parent is InvocationExpressionSyntax invocation && invocation.Expression == expression;
-    }
-
-    // The line of the method's name, not of the receiver a call chain starts with.
-    private static SyntaxNode InvokedName(ExpressionSyntax expression) => expression switch
-    {
-        MemberAccessExpressionSyntax access => access.Name,
-        MemberBindingExpressionSyntax binding => binding.Name,
-        _ => expression,
-    };
+    private static bool IsInvoked(SimpleNameSyntax name) =>
+        Usage.Access(name) is var expression && expression.Parent is InvocationExpressionSyntax invocation && invocation.Expression == expression;
 
     private DependencyKind BaseKind(INamedTypeSymbol type, TypeSyntax baseType) =>
         type.TypeKind != TypeKind.Interface && model.GetTypeInfo(baseType, scope.CancellationToken).Type is { TypeKind: TypeKind.Interface }
