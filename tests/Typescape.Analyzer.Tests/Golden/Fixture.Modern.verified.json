@@ -3,6 +3,18 @@
   "rulesVersion": 1,
   "projects": [
     {
+      "key": "Gallery.Tests/Gallery.Tests.csproj",
+      "name": "Gallery.Tests",
+      "assembly": "Gallery.Tests",
+      "style": "sdk",
+      "tfm": "net10.0",
+      "test": true,
+      "testReason": "framework:xunit",
+      "references": [
+        1
+      ]
+    },
+    {
       "key": "Gallery/Gallery.csproj",
       "name": "Gallery",
       "assembly": "Gallery",
@@ -11,8 +23,19 @@
       "test": false,
       "testReason": null,
       "references": [
-        1
+        2,
+        3
       ]
+    },
+    {
+      "key": "Measures/Measures.csproj",
+      "name": "Measures",
+      "assembly": "Measures",
+      "style": "sdk",
+      "tfm": "net10.0",
+      "test": false,
+      "testReason": null,
+      "references": []
     },
     {
       "key": "Shapes/Shapes.csproj",
@@ -22,70 +45,309 @@
       "tfm": "net10.0",
       "test": false,
       "testReason": null,
-      "references": []
+      "references": [
+        2
+      ]
     }
   ],
   "namespaces": [
     {
       "project": 0,
-      "name": "Gallery"
+      "name": "Gallery.Tests"
+    },
+    {
+      "project": 0,
+      "name": "Microsoft.CodeAnalysis"
     },
     {
       "project": 1,
+      "name": "Gallery"
+    },
+    {
+      "project": 2,
+      "name": "Measures"
+    },
+    {
+      "project": 3,
       "name": "Shapes"
     }
   ],
   "documents": [
     {
-      "path": "Gallery/Exhibit.cs",
+      "path": "Gallery.Tests/ExhibitTests.cs",
       "project": 0,
       "generated": false,
       "generatedReason": null
     },
     {
-      "path": "Gallery/obj/Debug/net10.0/.NETCoreApp,Version=v10.0.AssemblyAttributes.cs",
+      "path": "Gallery.Tests/Program.cs",
       "project": 0,
+      "generated": false,
+      "generatedReason": null
+    },
+    {
+      "path": "Gallery.Tests/obj/Debug/net10.0/.NETCoreApp,Version=v10.0.AssemblyAttributes.cs",
+      "project": 0,
+      "generated": true,
+      "generatedReason": "convention"
+    },
+    {
+      "path": "Gallery.Tests/obj/Debug/net10.0/Gallery.Tests.AssemblyInfo.cs",
+      "project": 0,
+      "generated": true,
+      "generatedReason": "convention"
+    },
+    {
+      "path": "Gallery.Tests/obj/Debug/net10.0/Gallery.Tests.GlobalUsings.g.cs",
+      "project": 0,
+      "generated": true,
+      "generatedReason": "convention"
+    },
+    {
+      "path": "Gallery.Tests/obj/Debug/net10.0/SelfRegisteredExtensions.cs",
+      "project": 0,
+      "generated": true,
+      "generatedReason": "convention"
+    },
+    {
+      "path": "Gallery/Curator.cs",
+      "project": 1,
+      "generated": false,
+      "generatedReason": null
+    },
+    {
+      "path": "Gallery/Exhibit.cs",
+      "project": 1,
+      "generated": false,
+      "generatedReason": null
+    },
+    {
+      "path": "Gallery/Strings.Designer.cs",
+      "project": 1,
+      "generated": true,
+      "generatedReason": "convention"
+    },
+    {
+      "path": "Gallery/obj/Debug/net10.0/.NETCoreApp,Version=v10.0.AssemblyAttributes.cs",
+      "project": 1,
       "generated": true,
       "generatedReason": "convention"
     },
     {
       "path": "Gallery/obj/Debug/net10.0/Gallery.AssemblyInfo.cs",
-      "project": 0,
+      "project": 1,
       "generated": true,
       "generatedReason": "convention"
     },
     {
       "path": "Gallery/obj/Debug/net10.0/Gallery.GlobalUsings.g.cs",
-      "project": 0,
+      "project": 1,
+      "generated": true,
+      "generatedReason": "convention"
+    },
+    {
+      "path": "Gallery/obj/Debug/net10.0/Microsoft.Extensions.Logging.Generators/Microsoft.Extensions.Logging.Generators.LoggerMessageGenerator/LoggerMessage.g.cs",
+      "project": 1,
+      "generated": true,
+      "generatedReason": "generator"
+    },
+    {
+      "path": "Measures/Length.cs",
+      "project": 2,
+      "generated": false,
+      "generatedReason": null
+    },
+    {
+      "path": "Measures/Ruler.cs",
+      "project": 2,
+      "generated": false,
+      "generatedReason": null
+    },
+    {
+      "path": "Measures/obj/Debug/net10.0/.NETCoreApp,Version=v10.0.AssemblyAttributes.cs",
+      "project": 2,
+      "generated": true,
+      "generatedReason": "convention"
+    },
+    {
+      "path": "Measures/obj/Debug/net10.0/Measures.AssemblyInfo.cs",
+      "project": 2,
+      "generated": true,
+      "generatedReason": "convention"
+    },
+    {
+      "path": "Measures/obj/Debug/net10.0/Measures.GlobalUsings.g.cs",
+      "project": 2,
+      "generated": true,
+      "generatedReason": "convention"
+    },
+    {
+      "path": "Shapes/Palette.cs",
+      "project": 3,
+      "generated": false,
+      "generatedReason": null
+    },
+    {
+      "path": "Shapes/Palette.g.cs",
+      "project": 3,
       "generated": true,
       "generatedReason": "convention"
     },
     {
       "path": "Shapes/Shape.cs",
-      "project": 1,
+      "project": 3,
       "generated": false,
       "generatedReason": null
     },
     {
       "path": "Shapes/obj/Debug/net10.0/.NETCoreApp,Version=v10.0.AssemblyAttributes.cs",
-      "project": 1,
+      "project": 3,
       "generated": true,
       "generatedReason": "convention"
     },
     {
       "path": "Shapes/obj/Debug/net10.0/Shapes.AssemblyInfo.cs",
-      "project": 1,
+      "project": 3,
       "generated": true,
       "generatedReason": "convention"
     },
     {
       "path": "Shapes/obj/Debug/net10.0/Shapes.GlobalUsings.g.cs",
-      "project": 1,
+      "project": 3,
       "generated": true,
       "generatedReason": "convention"
     }
   ],
   "types": [
+    {
+      "key": "Gallery.Tests|T:Gallery.Tests.ExhibitTests",
+      "name": "ExhibitTests",
+      "kind": "class",
+      "accessibility": "public",
+      "abstract": false,
+      "sealed": true,
+      "static": false,
+      "arity": 0,
+      "namespace": 0,
+      "containingType": null,
+      "declarations": [
+        {
+          "document": 0,
+          "lines": {
+            "start": 5,
+            "end": 20
+          },
+          "loc": 14,
+          "generated": false
+        }
+      ],
+      "loc": 14
+    },
+    {
+      "key": "Gallery.Tests|T:Gallery.Tests.Program",
+      "name": "Program",
+      "kind": "class",
+      "accessibility": "internal",
+      "abstract": false,
+      "sealed": false,
+      "static": true,
+      "arity": 0,
+      "namespace": 0,
+      "containingType": null,
+      "declarations": [
+        {
+          "document": 1,
+          "lines": {
+            "start": 3,
+            "end": 9
+          },
+          "loc": 7,
+          "generated": false
+        }
+      ],
+      "loc": 7
+    },
+    {
+      "key": "Gallery.Tests|T:Gallery.Tests.SelfRegisteredExtensions",
+      "name": "SelfRegisteredExtensions",
+      "kind": "class",
+      "accessibility": "internal",
+      "abstract": false,
+      "sealed": false,
+      "static": true,
+      "arity": 0,
+      "namespace": 0,
+      "containingType": null,
+      "declarations": [
+        {
+          "document": 5,
+          "lines": {
+            "start": 9,
+            "end": 18
+          },
+          "loc": 10,
+          "generated": true
+        }
+      ],
+      "loc": 10
+    },
+    {
+      "key": "Gallery.Tests|T:Microsoft.CodeAnalysis.EmbeddedAttribute",
+      "name": "EmbeddedAttribute",
+      "kind": "class",
+      "accessibility": "internal",
+      "abstract": false,
+      "sealed": true,
+      "static": false,
+      "arity": 0,
+      "namespace": 1,
+      "containingType": null,
+      "declarations": [
+        {
+          "document": 5,
+          "lines": {
+            "start": 23,
+            "end": 25
+          },
+          "loc": 3,
+          "generated": true
+        }
+      ],
+      "loc": 3
+    },
+    {
+      "key": "Gallery|T:Gallery.Curator",
+      "name": "Curator",
+      "kind": "class",
+      "accessibility": "public",
+      "abstract": false,
+      "sealed": true,
+      "static": false,
+      "arity": 0,
+      "namespace": 2,
+      "containingType": null,
+      "declarations": [
+        {
+          "document": 6,
+          "lines": {
+            "start": 5,
+            "end": 17
+          },
+          "loc": 12,
+          "generated": false
+        },
+        {
+          "document": 12,
+          "lines": {
+            "start": 6,
+            "end": 20
+          },
+          "loc": 14,
+          "generated": true
+        }
+      ],
+      "loc": 26
+    },
     {
       "key": "Gallery|T:Gallery.Exhibit",
       "name": "Exhibit",
@@ -95,20 +357,92 @@
       "sealed": false,
       "static": true,
       "arity": 0,
-      "namespace": 0,
+      "namespace": 2,
       "containingType": null,
       "declarations": [
         {
-          "document": 0,
+          "document": 7,
           "lines": {
-            "start": 5,
-            "end": 19
+            "start": 6,
+            "end": 29
           },
-          "loc": 13,
+          "loc": 21,
           "generated": false
         }
       ],
-      "loc": 13
+      "loc": 21
+    },
+    {
+      "key": "Gallery|T:Gallery.Strings",
+      "name": "Strings",
+      "kind": "class",
+      "accessibility": "internal",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": 2,
+      "containingType": null,
+      "declarations": [
+        {
+          "document": 8,
+          "lines": {
+            "start": 14,
+            "end": 53
+          },
+          "loc": 34,
+          "generated": true
+        }
+      ],
+      "loc": 34
+    },
+    {
+      "key": "Measures|T:Measures.Length",
+      "name": "Length",
+      "kind": "record-struct",
+      "accessibility": "public",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": 3,
+      "containingType": null,
+      "declarations": [
+        {
+          "document": 13,
+          "lines": {
+            "start": 3,
+            "end": 10
+          },
+          "loc": 6,
+          "generated": false
+        }
+      ],
+      "loc": 6
+    },
+    {
+      "key": "Measures|T:Measures.Ruler",
+      "name": "Ruler",
+      "kind": "class",
+      "accessibility": "public",
+      "abstract": false,
+      "sealed": true,
+      "static": false,
+      "arity": 0,
+      "namespace": 3,
+      "containingType": null,
+      "declarations": [
+        {
+          "document": 14,
+          "lines": {
+            "start": 3,
+            "end": 27
+          },
+          "loc": 19,
+          "generated": false
+        }
+      ],
+      "loc": 19
     },
     {
       "key": "Shapes|T:Shapes.Circle",
@@ -119,20 +453,68 @@
       "sealed": true,
       "static": false,
       "arity": 0,
-      "namespace": 1,
+      "namespace": 4,
       "containingType": null,
       "declarations": [
         {
-          "document": 4,
+          "document": 20,
           "lines": {
-            "start": 8,
-            "end": 13
+            "start": 24,
+            "end": 31
           },
-          "loc": 5,
+          "loc": 6,
           "generated": false
         }
       ],
-      "loc": 5
+      "loc": 6
+    },
+    {
+      "key": "Shapes|T:Shapes.Colour",
+      "name": "Colour",
+      "kind": "enum",
+      "accessibility": "public",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": 4,
+      "containingType": null,
+      "declarations": [
+        {
+          "document": 18,
+          "lines": {
+            "start": 3,
+            "end": 9
+          },
+          "loc": 7,
+          "generated": false
+        }
+      ],
+      "loc": 7
+    },
+    {
+      "key": "Shapes|T:Shapes.IMeasurable",
+      "name": "IMeasurable",
+      "kind": "interface",
+      "accessibility": "public",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": 4,
+      "containingType": null,
+      "declarations": [
+        {
+          "document": 20,
+          "lines": {
+            "start": 5,
+            "end": 8
+          },
+          "loc": 4,
+          "generated": false
+        }
+      ],
+      "loc": 4
     },
     {
       "key": "Shapes|T:Shapes.IShape",
@@ -143,20 +525,101 @@
       "sealed": false,
       "static": false,
       "arity": 0,
-      "namespace": 1,
+      "namespace": 4,
       "containingType": null,
       "declarations": [
         {
-          "document": 4,
+          "document": 20,
           "lines": {
-            "start": 3,
-            "end": 6
+            "start": 10,
+            "end": 13
           },
           "loc": 4,
           "generated": false
         }
       ],
       "loc": 4
+    },
+    {
+      "key": "Shapes|T:Shapes.Palette",
+      "name": "Palette",
+      "kind": "class",
+      "accessibility": "public",
+      "abstract": false,
+      "sealed": false,
+      "static": true,
+      "arity": 0,
+      "namespace": 4,
+      "containingType": null,
+      "declarations": [
+        {
+          "document": 18,
+          "lines": {
+            "start": 11,
+            "end": 16
+          },
+          "loc": 5,
+          "generated": false
+        },
+        {
+          "document": 19,
+          "lines": {
+            "start": 5,
+            "end": 16
+          },
+          "loc": 11,
+          "generated": true
+        }
+      ],
+      "loc": 16
+    },
+    {
+      "key": "Shapes|T:Shapes.Shape",
+      "name": "Shape",
+      "kind": "class",
+      "accessibility": "public",
+      "abstract": true,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": 4,
+      "containingType": null,
+      "declarations": [
+        {
+          "document": 20,
+          "lines": {
+            "start": 15,
+            "end": 22
+          },
+          "loc": 6,
+          "generated": false
+        }
+      ],
+      "loc": 6
+    },
+    {
+      "key": "Shapes|T:Shapes.ShapeInfoAttribute",
+      "name": "ShapeInfoAttribute",
+      "kind": "class",
+      "accessibility": "public",
+      "abstract": false,
+      "sealed": true,
+      "static": false,
+      "arity": 0,
+      "namespace": 4,
+      "containingType": null,
+      "declarations": [
+        {
+          "document": 20,
+          "lines": {
+            "start": 40,
+            "end": 44
+          },
+          "loc": 5,
+          "generated": false
+        }
+      ],
+      "loc": 5
     },
     {
       "key": "Shapes|T:Shapes.Square",
@@ -167,23 +630,93 @@
       "sealed": true,
       "static": false,
       "arity": 0,
-      "namespace": 1,
+      "namespace": 4,
       "containingType": null,
       "declarations": [
         {
-          "document": 4,
+          "document": 20,
           "lines": {
-            "start": 15,
-            "end": 18
+            "start": 33,
+            "end": 38
           },
-          "loc": 4,
+          "loc": 5,
           "generated": false
         }
       ],
-      "loc": 4
+      "loc": 5
     }
   ],
   "externalTypes": [
+    {
+      "key": "Microsoft.Extensions.Logging.Abstractions|T:Microsoft.Extensions.Logging.EventId",
+      "name": "EventId",
+      "assembly": "Microsoft.Extensions.Logging.Abstractions",
+      "namespace": "Microsoft.Extensions.Logging",
+      "kind": "struct"
+    },
+    {
+      "key": "Microsoft.Extensions.Logging.Abstractions|T:Microsoft.Extensions.Logging.ILogger",
+      "name": "ILogger",
+      "assembly": "Microsoft.Extensions.Logging.Abstractions",
+      "namespace": "Microsoft.Extensions.Logging",
+      "kind": "interface"
+    },
+    {
+      "key": "Microsoft.Extensions.Logging.Abstractions|T:Microsoft.Extensions.Logging.ILogger`1",
+      "name": "ILogger<TCategoryName>",
+      "assembly": "Microsoft.Extensions.Logging.Abstractions",
+      "namespace": "Microsoft.Extensions.Logging",
+      "kind": "interface"
+    },
+    {
+      "key": "Microsoft.Extensions.Logging.Abstractions|T:Microsoft.Extensions.Logging.LogDefineOptions",
+      "name": "LogDefineOptions",
+      "assembly": "Microsoft.Extensions.Logging.Abstractions",
+      "namespace": "Microsoft.Extensions.Logging",
+      "kind": "class"
+    },
+    {
+      "key": "Microsoft.Extensions.Logging.Abstractions|T:Microsoft.Extensions.Logging.LogLevel",
+      "name": "LogLevel",
+      "assembly": "Microsoft.Extensions.Logging.Abstractions",
+      "namespace": "Microsoft.Extensions.Logging",
+      "kind": "enum"
+    },
+    {
+      "key": "Microsoft.Extensions.Logging.Abstractions|T:Microsoft.Extensions.Logging.LoggerMessage",
+      "name": "LoggerMessage",
+      "assembly": "Microsoft.Extensions.Logging.Abstractions",
+      "namespace": "Microsoft.Extensions.Logging",
+      "kind": "class"
+    },
+    {
+      "key": "Microsoft.Extensions.Logging.Abstractions|T:Microsoft.Extensions.Logging.LoggerMessageAttribute",
+      "name": "LoggerMessageAttribute",
+      "assembly": "Microsoft.Extensions.Logging.Abstractions",
+      "namespace": "Microsoft.Extensions.Logging",
+      "kind": "class"
+    },
+    {
+      "key": "Microsoft.Testing.Extensions.MSBuild|T:Microsoft.Testing.Platform.MSBuild.TestingPlatformBuilderHook",
+      "name": "TestingPlatformBuilderHook",
+      "assembly": "Microsoft.Testing.Extensions.MSBuild",
+      "namespace": "Microsoft.Testing.Platform.MSBuild",
+      "kind": "class"
+    },
+    {
+      "key": "Microsoft.Testing.Extensions.Telemetry|T:Microsoft.Testing.Extensions.Telemetry.TestingPlatformBuilderHook",
+      "name": "TestingPlatformBuilderHook",
+      "assembly": "Microsoft.Testing.Extensions.Telemetry",
+      "namespace": "Microsoft.Testing.Extensions.Telemetry",
+      "kind": "class"
+    },
+    {
+      "key": "Microsoft.Testing.Platform|T:Microsoft.Testing.Platform.Builder.ITestApplicationBuilder",
+      "name": "ITestApplicationBuilder",
+      "assembly": "Microsoft.Testing.Platform",
+      "namespace": "Microsoft.Testing.Platform.Builder",
+      "kind": "interface"
+    },
     {
       "key": "System.Collections|T:System.Collections.Generic.List`1",
       "name": "List<T>",
@@ -199,8 +732,64 @@
       "kind": "class"
     },
     {
+      "key": "System.Runtime|T:System.Action`4",
+      "name": "Action<T1, T2, T3, T4>",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "delegate"
+    },
+    {
+      "key": "System.Runtime|T:System.Array",
+      "name": "Array",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "class"
+    },
+    {
+      "key": "System.Runtime|T:System.Attribute",
+      "name": "Attribute",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "class"
+    },
+    {
+      "key": "System.Runtime|T:System.AttributeTargets",
+      "name": "AttributeTargets",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "enum"
+    },
+    {
+      "key": "System.Runtime|T:System.AttributeUsageAttribute",
+      "name": "AttributeUsageAttribute",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "class"
+    },
+    {
+      "key": "System.Runtime|T:System.Boolean",
+      "name": "Boolean",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "struct"
+    },
+    {
+      "key": "System.Runtime|T:System.CodeDom.Compiler.GeneratedCodeAttribute",
+      "name": "GeneratedCodeAttribute",
+      "assembly": "System.Runtime",
+      "namespace": "System.CodeDom.Compiler",
+      "kind": "class"
+    },
+    {
       "key": "System.Runtime|T:System.Collections.Generic.IEnumerable`1",
       "name": "IEnumerable<T>",
+      "assembly": "System.Runtime",
+      "namespace": "System.Collections.Generic",
+      "kind": "interface"
+    },
+    {
+      "key": "System.Runtime|T:System.Collections.Generic.IReadOnlyCollection`1",
+      "name": "IReadOnlyCollection<T>",
       "assembly": "System.Runtime",
       "namespace": "System.Collections.Generic",
       "kind": "interface"
@@ -213,11 +802,60 @@
       "kind": "interface"
     },
     {
+      "key": "System.Runtime|T:System.ComponentModel.EditorBrowsableAttribute",
+      "name": "EditorBrowsableAttribute",
+      "assembly": "System.Runtime",
+      "namespace": "System.ComponentModel",
+      "kind": "class"
+    },
+    {
+      "key": "System.Runtime|T:System.ComponentModel.EditorBrowsableState",
+      "name": "EditorBrowsableState",
+      "assembly": "System.Runtime",
+      "namespace": "System.ComponentModel",
+      "kind": "enum"
+    },
+    {
+      "key": "System.Runtime|T:System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute",
+      "name": "ExcludeFromCodeCoverageAttribute",
+      "assembly": "System.Runtime",
+      "namespace": "System.Diagnostics.CodeAnalysis",
+      "kind": "class"
+    },
+    {
+      "key": "System.Runtime|T:System.Diagnostics.CodeAnalysis.SuppressMessageAttribute",
+      "name": "SuppressMessageAttribute",
+      "assembly": "System.Runtime",
+      "namespace": "System.Diagnostics.CodeAnalysis",
+      "kind": "class"
+    },
+    {
+      "key": "System.Runtime|T:System.Diagnostics.DebuggerNonUserCodeAttribute",
+      "name": "DebuggerNonUserCodeAttribute",
+      "assembly": "System.Runtime",
+      "namespace": "System.Diagnostics",
+      "kind": "class"
+    },
+    {
       "key": "System.Runtime|T:System.Double",
       "name": "Double",
       "assembly": "System.Runtime",
       "namespace": "System",
       "kind": "struct"
+    },
+    {
+      "key": "System.Runtime|T:System.Exception",
+      "name": "Exception",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "class"
+    },
+    {
+      "key": "System.Runtime|T:System.Globalization.CultureInfo",
+      "name": "CultureInfo",
+      "assembly": "System.Runtime",
+      "namespace": "System.Globalization",
+      "kind": "class"
     },
     {
       "key": "System.Runtime|T:System.Int32",
@@ -232,37 +870,261 @@
       "assembly": "System.Runtime",
       "namespace": "System",
       "kind": "class"
+    },
+    {
+      "key": "System.Runtime|T:System.Object",
+      "name": "Object",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "class"
+    },
+    {
+      "key": "System.Runtime|T:System.Reflection.MemberInfo",
+      "name": "MemberInfo",
+      "assembly": "System.Runtime",
+      "namespace": "System.Reflection",
+      "kind": "class"
+    },
+    {
+      "key": "System.Runtime|T:System.Resources.ResourceManager",
+      "name": "ResourceManager",
+      "assembly": "System.Runtime",
+      "namespace": "System.Resources",
+      "kind": "class"
+    },
+    {
+      "key": "System.Runtime|T:System.Runtime.CompilerServices.CompilerGeneratedAttribute",
+      "name": "CompilerGeneratedAttribute",
+      "assembly": "System.Runtime",
+      "namespace": "System.Runtime.CompilerServices",
+      "kind": "class"
+    },
+    {
+      "key": "System.Runtime|T:System.Runtime.CompilerServices.TaskAwaiter`1",
+      "name": "TaskAwaiter<TResult>",
+      "assembly": "System.Runtime",
+      "namespace": "System.Runtime.CompilerServices",
+      "kind": "struct"
+    },
+    {
+      "key": "System.Runtime|T:System.String",
+      "name": "String",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "class"
+    },
+    {
+      "key": "System.Runtime|T:System.Threading.Lock",
+      "name": "Lock",
+      "assembly": "System.Runtime",
+      "namespace": "System.Threading",
+      "kind": "class"
+    },
+    {
+      "key": "System.Runtime|T:System.Threading.Tasks.Task`1",
+      "name": "Task<TResult>",
+      "assembly": "System.Runtime",
+      "namespace": "System.Threading.Tasks",
+      "kind": "class"
+    },
+    {
+      "key": "System.Runtime|T:System.Type",
+      "name": "Type",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "class"
+    },
+    {
+      "key": "xunit.v3.assert|T:Xunit.Assert",
+      "name": "Assert",
+      "assembly": "xunit.v3.assert",
+      "namespace": "Xunit",
+      "kind": "class"
+    },
+    {
+      "key": "xunit.v3.core|T:Xunit.FactAttribute",
+      "name": "FactAttribute",
+      "assembly": "xunit.v3.core",
+      "namespace": "Xunit",
+      "kind": "class"
+    },
+    {
+      "key": "xunit.v3.core|T:Xunit.InlineDataAttribute",
+      "name": "InlineDataAttribute",
+      "assembly": "xunit.v3.core",
+      "namespace": "Xunit",
+      "kind": "class"
+    },
+    {
+      "key": "xunit.v3.core|T:Xunit.TheoryAttribute",
+      "name": "TheoryAttribute",
+      "assembly": "xunit.v3.core",
+      "namespace": "Xunit",
+      "kind": "class"
+    },
+    {
+      "key": "xunit.v3.mtp-v2|T:Xunit.MicrosoftTestingPlatform.TestPlatformTestFramework",
+      "name": "TestPlatformTestFramework",
+      "assembly": "xunit.v3.mtp-v2",
+      "namespace": "Xunit.MicrosoftTestingPlatform",
+      "kind": "class"
+    },
+    {
+      "key": "xunit.v3.runner.inproc.console|T:Xunit.Runner.InProc.SystemConsole.ConsoleRunner",
+      "name": "ConsoleRunner",
+      "assembly": "xunit.v3.runner.inproc.console",
+      "namespace": "Xunit.Runner.InProc.SystemConsole",
+      "kind": "class"
     }
   ],
   "executableMembers": [
     {
-      "key": "Gallery|T:Gallery.Exhibit|M:Gallery.Exhibit.Build(System.Int32)",
+      "key": "Gallery.Tests|T:Gallery.Tests.ExhibitTests|M:Gallery.Tests.ExhibitTests.Build_alternates_circles_and_squares",
       "type": 0,
       "declaration": 0,
-      "signature": "Build(int)",
+      "signature": "Build_alternates_circles_and_squares()",
       "kind": "method",
       "accessibility": "public",
       "document": 0,
       "lines": {
         "start": 7,
-        "end": 16
+        "end": 14
       },
-      "loc": 9,
+      "loc": 7,
+      "cyclomatic": 1,
+      "cognitive": 0,
+      "generated": false
+    },
+    {
+      "key": "Gallery.Tests|T:Gallery.Tests.ExhibitTests|M:Gallery.Tests.ExhibitTests.Total_area_is_positive(System.Int32)",
+      "type": 0,
+      "declaration": 0,
+      "signature": "Total_area_is_positive(int)",
+      "kind": "method",
+      "accessibility": "public",
+      "document": 0,
+      "lines": {
+        "start": 16,
+        "end": 19
+      },
+      "loc": 4,
+      "cyclomatic": 1,
+      "cognitive": 0,
+      "generated": false
+    },
+    {
+      "key": "Gallery.Tests|T:Gallery.Tests.Program|M:Gallery.Tests.Program.Main(System.String[])",
+      "type": 1,
+      "declaration": 0,
+      "signature": "Main(string[])",
+      "kind": "method",
+      "accessibility": "public",
+      "document": 1,
+      "lines": {
+        "start": 5,
+        "end": 8
+      },
+      "loc": 4,
+      "cyclomatic": 3,
+      "cognitive": 2,
+      "generated": false
+    },
+    {
+      "key": "Gallery.Tests|T:Gallery.Tests.SelfRegisteredExtensions|M:Gallery.Tests.SelfRegisteredExtensions.AddSelfRegisteredExtensions(Microsoft.Testing.Platform.Builder.ITestApplicationBuilder,System.String[])",
+      "type": 2,
+      "declaration": 0,
+      "signature": "AddSelfRegisteredExtensions(ITestApplicationBuilder, string[])",
+      "kind": "method",
+      "accessibility": "public",
+      "document": 5,
+      "lines": {
+        "start": 13,
+        "end": 17
+      },
+      "loc": 5,
+      "cyclomatic": 1,
+      "cognitive": 0,
+      "generated": true
+    },
+    {
+      "key": "Gallery|T:Gallery.Curator|M:Gallery.Curator.LogOpened(System.Int32,System.Double)",
+      "type": 4,
+      "declaration": 1,
+      "signature": "LogOpened(int, double)",
+      "kind": "method",
+      "accessibility": "private",
+      "document": 12,
+      "lines": {
+        "start": 12,
+        "end": 19
+      },
+      "loc": 8,
+      "cyclomatic": 2,
+      "cognitive": 1,
+      "generated": true
+    },
+    {
+      "key": "Gallery|T:Gallery.Curator|M:Gallery.Curator.Open(System.Int32)",
+      "type": 4,
+      "declaration": 0,
+      "signature": "Open(int)",
+      "kind": "method",
+      "accessibility": "public",
+      "document": 6,
+      "lines": {
+        "start": 7,
+        "end": 13
+      },
+      "loc": 7,
+      "cyclomatic": 1,
+      "cognitive": 0,
+      "generated": false
+    },
+    {
+      "key": "Gallery|T:Gallery.Exhibit|M:Gallery.Exhibit.Build(System.Int32)",
+      "type": 5,
+      "declaration": 0,
+      "signature": "Build(int)",
+      "kind": "method",
+      "accessibility": "public",
+      "document": 7,
+      "lines": {
+        "start": 9,
+        "end": 19
+      },
+      "loc": 10,
       "cyclomatic": 3,
       "cognitive": 3,
       "generated": false
     },
     {
+      "key": "Gallery|T:Gallery.Exhibit|M:Gallery.Exhibit.Describe(Shapes.IShape)",
+      "type": 5,
+      "declaration": 0,
+      "signature": "Describe(IShape)",
+      "kind": "method",
+      "accessibility": "public",
+      "document": 7,
+      "lines": {
+        "start": 23,
+        "end": 28
+      },
+      "loc": 6,
+      "cyclomatic": 3,
+      "cognitive": 1,
+      "generated": false
+    },
+    {
       "key": "Gallery|T:Gallery.Exhibit|M:Gallery.Exhibit.TotalArea(System.Collections.Generic.IEnumerable{Shapes.IShape})",
-      "type": 0,
+      "type": 5,
       "declaration": 0,
       "signature": "TotalArea(IEnumerable<IShape>)",
       "kind": "method",
       "accessibility": "public",
-      "document": 0,
+      "document": 7,
       "lines": {
-        "start": 18,
-        "end": 18
+        "start": 21,
+        "end": 21
       },
       "loc": 1,
       "cyclomatic": 1,
@@ -270,16 +1132,254 @@
       "generated": false
     },
     {
+      "key": "Gallery|T:Gallery.Strings|M:Gallery.Strings.#ctor",
+      "type": 6,
+      "declaration": 0,
+      "signature": "Strings()",
+      "kind": "constructor",
+      "accessibility": "internal",
+      "document": 8,
+      "lines": {
+        "start": 23,
+        "end": 25
+      },
+      "loc": 3,
+      "cyclomatic": 1,
+      "cognitive": 0,
+      "generated": true
+    },
+    {
+      "key": "Gallery|T:Gallery.Strings|M:Gallery.Strings.get_Culture",
+      "type": 6,
+      "declaration": 0,
+      "signature": "Culture.get",
+      "kind": "accessor",
+      "accessibility": "internal",
+      "document": 8,
+      "lines": {
+        "start": 40,
+        "end": 42
+      },
+      "loc": 3,
+      "cyclomatic": 1,
+      "cognitive": 0,
+      "generated": true
+    },
+    {
+      "key": "Gallery|T:Gallery.Strings|M:Gallery.Strings.get_ResourceManager",
+      "type": 6,
+      "declaration": 0,
+      "signature": "ResourceManager.get",
+      "kind": "accessor",
+      "accessibility": "internal",
+      "document": 8,
+      "lines": {
+        "start": 29,
+        "end": 35
+      },
+      "loc": 7,
+      "cyclomatic": 2,
+      "cognitive": 1,
+      "generated": true
+    },
+    {
+      "key": "Gallery|T:Gallery.Strings|M:Gallery.Strings.get_SquareLabel",
+      "type": 6,
+      "declaration": 0,
+      "signature": "SquareLabel.get",
+      "kind": "accessor",
+      "accessibility": "internal",
+      "document": 8,
+      "lines": {
+        "start": 49,
+        "end": 51
+      },
+      "loc": 3,
+      "cyclomatic": 1,
+      "cognitive": 0,
+      "generated": true
+    },
+    {
+      "key": "Gallery|T:Gallery.Strings|M:Gallery.Strings.set_Culture(System.Globalization.CultureInfo)",
+      "type": 6,
+      "declaration": 0,
+      "signature": "Culture.set",
+      "kind": "accessor",
+      "accessibility": "internal",
+      "document": 8,
+      "lines": {
+        "start": 43,
+        "end": 45
+      },
+      "loc": 3,
+      "cyclomatic": 1,
+      "cognitive": 0,
+      "generated": true
+    },
+    {
+      "key": "Measures|T:Measures.Length|M:Measures.Length.FromCentimetres(System.Double)",
+      "type": 7,
+      "declaration": 0,
+      "signature": "FromCentimetres(double)",
+      "kind": "method",
+      "accessibility": "public",
+      "document": 13,
+      "lines": {
+        "start": 5,
+        "end": 5
+      },
+      "loc": 1,
+      "cyclomatic": 1,
+      "cognitive": 0,
+      "generated": false
+    },
+    {
+      "key": "Measures|T:Measures.Length|M:Measures.Length.ToString",
+      "type": 7,
+      "declaration": 0,
+      "signature": "ToString()",
+      "kind": "method",
+      "accessibility": "public",
+      "document": 13,
+      "lines": {
+        "start": 9,
+        "end": 9
+      },
+      "loc": 1,
+      "cyclomatic": 1,
+      "cognitive": 0,
+      "generated": false
+    },
+    {
+      "key": "Measures|T:Measures.Length|M:Measures.Length.op_Multiply(Measures.Length,System.Double)",
+      "type": 7,
+      "declaration": 0,
+      "signature": "operator *(Length, double)",
+      "kind": "operator",
+      "accessibility": "public",
+      "document": 13,
+      "lines": {
+        "start": 7,
+        "end": 7
+      },
+      "loc": 1,
+      "cyclomatic": 1,
+      "cognitive": 0,
+      "generated": false
+    },
+    {
+      "key": "Measures|T:Measures.Ruler|M:Measures.Ruler.Longest",
+      "type": 8,
+      "declaration": 0,
+      "signature": "Longest()",
+      "kind": "method",
+      "accessibility": "public",
+      "document": 14,
+      "lines": {
+        "start": 20,
+        "end": 26
+      },
+      "loc": 7,
+      "cyclomatic": 2,
+      "cognitive": 1,
+      "generated": false
+    },
+    {
+      "key": "Measures|T:Measures.Ruler|M:Measures.Ruler.Record(Measures.Length)",
+      "type": 8,
+      "declaration": 0,
+      "signature": "Record(Length)",
+      "kind": "method",
+      "accessibility": "public",
+      "document": 14,
+      "lines": {
+        "start": 12,
+        "end": 18
+      },
+      "loc": 7,
+      "cyclomatic": 1,
+      "cognitive": 0,
+      "generated": false
+    },
+    {
       "key": "Shapes|T:Shapes.Circle|M:Shapes.Circle.Area",
-      "type": 1,
+      "type": 9,
       "declaration": 0,
       "signature": "Area()",
       "kind": "method",
       "accessibility": "public",
-      "document": 4,
+      "document": 20,
       "lines": {
-        "start": 12,
-        "end": 12
+        "start": 28,
+        "end": 28
+      },
+      "loc": 1,
+      "cyclomatic": 1,
+      "cognitive": 0,
+      "generated": false
+    },
+    {
+      "key": "Shapes|T:Shapes.Circle|M:Shapes.Circle.Perimeter",
+      "type": 9,
+      "declaration": 0,
+      "signature": "Perimeter()",
+      "kind": "method",
+      "accessibility": "public",
+      "document": 20,
+      "lines": {
+        "start": 30,
+        "end": 30
+      },
+      "loc": 1,
+      "cyclomatic": 1,
+      "cognitive": 0,
+      "generated": false
+    },
+    {
+      "key": "Shapes|T:Shapes.Palette|M:Shapes.Palette.IsPrimary(Shapes.Colour)",
+      "type": 13,
+      "declaration": 0,
+      "signature": "IsPrimary(Colour)",
+      "kind": "method",
+      "accessibility": "public",
+      "document": 18,
+      "lines": {
+        "start": 15,
+        "end": 15
+      },
+      "loc": 1,
+      "cyclomatic": 1,
+      "cognitive": 0,
+      "generated": false
+    },
+    {
+      "key": "Shapes|T:Shapes.Palette|M:Shapes.Palette.Parse(System.String)",
+      "type": 13,
+      "declaration": 1,
+      "signature": "Parse(string)",
+      "kind": "method",
+      "accessibility": "public",
+      "document": 19,
+      "lines": {
+        "start": 9,
+        "end": 15
+      },
+      "loc": 7,
+      "cyclomatic": 4,
+      "cognitive": 1,
+      "generated": true
+    },
+    {
+      "key": "Shapes|T:Shapes.Palette|M:Shapes.Palette.get_Default",
+      "type": 13,
+      "declaration": 0,
+      "signature": "Default.get",
+      "kind": "accessor",
+      "accessibility": "public",
+      "document": 18,
+      "lines": {
+        "start": 13,
+        "end": 13
       },
       "loc": 1,
       "cyclomatic": 1,
@@ -288,15 +1388,32 @@
     },
     {
       "key": "Shapes|T:Shapes.Square|M:Shapes.Square.Area",
-      "type": 3,
+      "type": 16,
       "declaration": 0,
       "signature": "Area()",
       "kind": "method",
       "accessibility": "public",
-      "document": 4,
+      "document": 20,
       "lines": {
-        "start": 17,
-        "end": 17
+        "start": 35,
+        "end": 35
+      },
+      "loc": 1,
+      "cyclomatic": 1,
+      "cognitive": 0,
+      "generated": false
+    },
+    {
+      "key": "Shapes|T:Shapes.Square|M:Shapes.Square.Perimeter",
+      "type": 16,
+      "declaration": 0,
+      "signature": "Perimeter()",
+      "kind": "method",
+      "accessibility": "public",
+      "document": 20,
+      "lines": {
+        "start": 37,
+        "end": 37
       },
       "loc": 1,
       "cyclomatic": 1,
@@ -306,186 +1423,1273 @@
   ],
   "externalMembers": [
     {
-      "key": "M:System.Collections.Generic.List`1.#ctor",
+      "key": "M:Microsoft.Extensions.Logging.EventId.#ctor(System.Int32,System.String)",
       "type": 0,
+      "name": "EventId.EventId(int, string)"
+    },
+    {
+      "key": "M:Microsoft.Extensions.Logging.ILogger.IsEnabled(Microsoft.Extensions.Logging.LogLevel)",
+      "type": 1,
+      "name": "ILogger.IsEnabled(LogLevel)"
+    },
+    {
+      "key": "M:Microsoft.Extensions.Logging.LogDefineOptions.#ctor",
+      "type": 3,
+      "name": "LogDefineOptions.LogDefineOptions()"
+    },
+    {
+      "key": "P:Microsoft.Extensions.Logging.LogDefineOptions.SkipEnabledCheck",
+      "type": 3,
+      "name": "LogDefineOptions.SkipEnabledCheck"
+    },
+    {
+      "key": "F:Microsoft.Extensions.Logging.LogLevel.Information",
+      "type": 4,
+      "name": "LogLevel.Information"
+    },
+    {
+      "key": "M:Microsoft.Extensions.Logging.LoggerMessage.Define``2(Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,System.String,Microsoft.Extensions.Logging.LogDefineOptions)",
+      "type": 5,
+      "name": "LoggerMessage.Define<T1, T2>(LogLevel, EventId, string, LogDefineOptions)"
+    },
+    {
+      "key": "M:Microsoft.Extensions.Logging.LoggerMessageAttribute.#ctor",
+      "type": 6,
+      "name": "LoggerMessageAttribute.LoggerMessageAttribute()"
+    },
+    {
+      "key": "P:Microsoft.Extensions.Logging.LoggerMessageAttribute.Level",
+      "type": 6,
+      "name": "LoggerMessageAttribute.Level"
+    },
+    {
+      "key": "P:Microsoft.Extensions.Logging.LoggerMessageAttribute.Message",
+      "type": 6,
+      "name": "LoggerMessageAttribute.Message"
+    },
+    {
+      "key": "M:Microsoft.Testing.Platform.MSBuild.TestingPlatformBuilderHook.AddExtensions(Microsoft.Testing.Platform.Builder.ITestApplicationBuilder,System.String[])",
+      "type": 7,
+      "name": "TestingPlatformBuilderHook.AddExtensions(ITestApplicationBuilder, string[])"
+    },
+    {
+      "key": "M:Microsoft.Testing.Extensions.Telemetry.TestingPlatformBuilderHook.AddExtensions(Microsoft.Testing.Platform.Builder.ITestApplicationBuilder,System.String[])",
+      "type": 8,
+      "name": "TestingPlatformBuilderHook.AddExtensions(ITestApplicationBuilder, string[])"
+    },
+    {
+      "key": "M:System.Collections.Generic.List`1.#ctor",
+      "type": 10,
       "name": "List<T>.List()"
     },
     {
       "key": "M:System.Collections.Generic.List`1.Add(`0)",
-      "type": 0,
+      "type": 10,
       "name": "List<T>.Add(T)"
     },
     {
+      "key": "P:System.Collections.Generic.List`1.Count",
+      "type": 10,
+      "name": "List<T>.Count"
+    },
+    {
+      "key": "M:System.Linq.Enumerable.Any``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})",
+      "type": 11,
+      "name": "Enumerable.Any<TSource>(IEnumerable<TSource>, Func<TSource, bool>)"
+    },
+    {
+      "key": "M:System.Linq.Enumerable.MaxBy``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})",
+      "type": 11,
+      "name": "Enumerable.MaxBy<TSource, TKey>(IEnumerable<TSource>, Func<TSource, TKey>)"
+    },
+    {
       "key": "M:System.Linq.Enumerable.Sum``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Double})",
-      "type": 1,
+      "type": 11,
       "name": "Enumerable.Sum<TSource>(IEnumerable<TSource>, Func<TSource, double>)"
     },
     {
+      "key": "M:System.Action`4.Invoke(`0,`1,`2,`3)",
+      "type": 12,
+      "name": "Action<T1, T2, T3, T4>.Invoke(T1, T2, T3, T4)"
+    },
+    {
+      "key": "M:System.Array.IndexOf``1(``0[],``0)",
+      "type": 13,
+      "name": "Array.IndexOf<T>(T[], T)"
+    },
+    {
+      "key": "F:System.AttributeTargets.Class",
+      "type": 15,
+      "name": "AttributeTargets.Class"
+    },
+    {
+      "key": "M:System.AttributeUsageAttribute.#ctor(System.AttributeTargets)",
+      "type": 16,
+      "name": "AttributeUsageAttribute.AttributeUsageAttribute(AttributeTargets)"
+    },
+    {
+      "key": "M:System.CodeDom.Compiler.GeneratedCodeAttribute.#ctor(System.String,System.String)",
+      "type": 18,
+      "name": "GeneratedCodeAttribute.GeneratedCodeAttribute(string, string)"
+    },
+    {
+      "key": "P:System.Collections.Generic.IReadOnlyCollection`1.Count",
+      "type": 20,
+      "name": "IReadOnlyCollection<T>.Count"
+    },
+    {
+      "key": "P:System.Collections.Generic.IReadOnlyList`1.Item(System.Int32)",
+      "type": 21,
+      "name": "IReadOnlyList<T>.this[int]"
+    },
+    {
+      "key": "M:System.ComponentModel.EditorBrowsableAttribute.#ctor(System.ComponentModel.EditorBrowsableState)",
+      "type": 22,
+      "name": "EditorBrowsableAttribute.EditorBrowsableAttribute(EditorBrowsableState)"
+    },
+    {
+      "key": "F:System.ComponentModel.EditorBrowsableState.Advanced",
+      "type": 23,
+      "name": "EditorBrowsableState.Advanced"
+    },
+    {
+      "key": "M:System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute.#ctor",
+      "type": 24,
+      "name": "ExcludeFromCodeCoverageAttribute.ExcludeFromCodeCoverageAttribute()"
+    },
+    {
+      "key": "M:System.Diagnostics.CodeAnalysis.SuppressMessageAttribute.#ctor(System.String,System.String)",
+      "type": 25,
+      "name": "SuppressMessageAttribute.SuppressMessageAttribute(string, string)"
+    },
+    {
+      "key": "M:System.Diagnostics.DebuggerNonUserCodeAttribute.#ctor",
+      "type": 26,
+      "name": "DebuggerNonUserCodeAttribute.DebuggerNonUserCodeAttribute()"
+    },
+    {
       "key": "F:System.Math.PI",
-      "type": 6,
+      "type": 31,
       "name": "Math.PI"
+    },
+    {
+      "key": "M:System.Object.ReferenceEquals(System.Object,System.Object)",
+      "type": 32,
+      "name": "Object.ReferenceEquals(object, object)"
+    },
+    {
+      "key": "P:System.Reflection.MemberInfo.Name",
+      "type": 33,
+      "name": "MemberInfo.Name"
+    },
+    {
+      "key": "M:System.Resources.ResourceManager.#ctor(System.String,System.Reflection.Assembly)",
+      "type": 34,
+      "name": "ResourceManager.ResourceManager(string, Assembly)"
+    },
+    {
+      "key": "M:System.Resources.ResourceManager.GetString(System.String,System.Globalization.CultureInfo)",
+      "type": 34,
+      "name": "ResourceManager.GetString(string, CultureInfo)"
+    },
+    {
+      "key": "M:System.Runtime.CompilerServices.CompilerGeneratedAttribute.#ctor",
+      "type": 35,
+      "name": "CompilerGeneratedAttribute.CompilerGeneratedAttribute()"
+    },
+    {
+      "key": "M:System.Runtime.CompilerServices.TaskAwaiter`1.GetResult",
+      "type": 36,
+      "name": "TaskAwaiter<TResult>.GetResult()"
+    },
+    {
+      "key": "M:System.Threading.Lock.#ctor",
+      "type": 38,
+      "name": "Lock.Lock()"
+    },
+    {
+      "key": "M:System.Threading.Tasks.Task`1.GetAwaiter",
+      "type": 39,
+      "name": "Task<TResult>.GetAwaiter()"
+    },
+    {
+      "key": "P:System.Type.Assembly",
+      "type": 40,
+      "name": "Type.Assembly"
+    },
+    {
+      "key": "M:Xunit.Assert.IsType``1(System.Object)",
+      "type": 41,
+      "name": "Assert.IsType<T>(object)"
+    },
+    {
+      "key": "M:Xunit.Assert.True(System.Boolean)",
+      "type": 41,
+      "name": "Assert.True(bool)"
+    },
+    {
+      "key": "M:Xunit.FactAttribute.#ctor(System.String,System.Int32)",
+      "type": 42,
+      "name": "FactAttribute.FactAttribute(string, int)"
+    },
+    {
+      "key": "M:Xunit.InlineDataAttribute.#ctor(System.Object[])",
+      "type": 43,
+      "name": "InlineDataAttribute.InlineDataAttribute(params object[])"
+    },
+    {
+      "key": "M:Xunit.TheoryAttribute.#ctor(System.String,System.Int32)",
+      "type": 44,
+      "name": "TheoryAttribute.TheoryAttribute(string, int)"
+    },
+    {
+      "key": "M:Xunit.MicrosoftTestingPlatform.TestPlatformTestFramework.RunAsync(System.String[],System.Action{Microsoft.Testing.Platform.Builder.ITestApplicationBuilder,System.String[]})",
+      "type": 45,
+      "name": "TestPlatformTestFramework.RunAsync(string[], Action<ITestApplicationBuilder, string[]>)"
+    },
+    {
+      "key": "M:Xunit.Runner.InProc.SystemConsole.ConsoleRunner.Run(System.String[])",
+      "type": 46,
+      "name": "ConsoleRunner.Run(string[])"
     }
   ],
   "nonExecutableMembers": [
     {
-      "key": "Shapes|T:Shapes.Circle|M:Shapes.Circle.#ctor(System.Double)",
-      "type": 1,
-      "name": "Circle.Circle(double)"
+      "key": "Gallery.Tests|T:Microsoft.CodeAnalysis.EmbeddedAttribute|M:Microsoft.CodeAnalysis.EmbeddedAttribute.#ctor",
+      "type": 3,
+      "name": "EmbeddedAttribute.EmbeddedAttribute()"
+    },
+    {
+      "key": "Measures|T:Measures.Length|P:Measures.Length.Metres",
+      "type": 7,
+      "name": "Length.Metres"
+    },
+    {
+      "key": "Shapes|T:Shapes.Circle|M:Shapes.Circle.#ctor(Measures.Length)",
+      "type": 9,
+      "name": "Circle.Circle(Length)"
+    },
+    {
+      "key": "Shapes|T:Shapes.Circle|P:Shapes.Circle.Radius",
+      "type": 9,
+      "name": "Circle.Radius"
+    },
+    {
+      "key": "Shapes|T:Shapes.Colour|F:Shapes.Colour.Black",
+      "type": 10,
+      "name": "Colour.Black"
+    },
+    {
+      "key": "Shapes|T:Shapes.Colour|F:Shapes.Colour.Blue",
+      "type": 10,
+      "name": "Colour.Blue"
+    },
+    {
+      "key": "Shapes|T:Shapes.Colour|F:Shapes.Colour.Green",
+      "type": 10,
+      "name": "Colour.Green"
+    },
+    {
+      "key": "Shapes|T:Shapes.Colour|F:Shapes.Colour.Red",
+      "type": 10,
+      "name": "Colour.Red"
     },
     {
       "key": "Shapes|T:Shapes.IShape|M:Shapes.IShape.Area",
-      "type": 2,
+      "type": 12,
       "name": "IShape.Area()"
     },
     {
-      "key": "Shapes|T:Shapes.Square|M:Shapes.Square.#ctor(System.Double)",
-      "type": 3,
-      "name": "Square.Square(double)"
+      "key": "Shapes|T:Shapes.ShapeInfoAttribute|M:Shapes.ShapeInfoAttribute.#ctor(System.String)",
+      "type": 15,
+      "name": "ShapeInfoAttribute.ShapeInfoAttribute(string)"
+    },
+    {
+      "key": "Shapes|T:Shapes.Shape|P:Shapes.Shape.Fill",
+      "type": 14,
+      "name": "Shape.Fill"
+    },
+    {
+      "key": "Shapes|T:Shapes.Square|M:Shapes.Square.#ctor(Measures.Length)",
+      "type": 16,
+      "name": "Square.Square(Length)"
     }
   ],
   "dependencies": [
     {
       "source": 0,
-      "target": 1,
-      "external": false,
-      "kind": "new",
-      "count": 1,
-      "generatedCount": 0
-    },
-    {
-      "source": 0,
-      "target": 2,
+      "target": 5,
       "external": false,
       "kind": "call",
-      "count": 1,
-      "generatedCount": 0
-    },
-    {
-      "source": 0,
-      "target": 2,
-      "external": false,
-      "kind": "generic-arg",
       "count": 3,
       "generatedCount": 0
     },
     {
       "source": 0,
-      "target": 3,
+      "target": 9,
       "external": false,
-      "kind": "new",
+      "kind": "generic-arg",
       "count": 1,
       "generatedCount": 0
     },
     {
       "source": 0,
-      "target": 0,
+      "target": 16,
+      "external": false,
+      "kind": "generic-arg",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 21,
       "external": true,
-      "kind": "new",
+      "kind": "member-access",
+      "count": 2,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 30,
+      "external": true,
+      "kind": "signature",
       "count": 1,
       "generatedCount": 0
     },
     {
       "source": 0,
-      "target": 0,
+      "target": 41,
+      "external": true,
+      "kind": "call",
+      "count": 3,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 42,
+      "external": true,
+      "kind": "attribute",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 43,
+      "external": true,
+      "kind": "attribute",
+      "count": 2,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 44,
+      "external": true,
+      "kind": "attribute",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "external": false,
+      "kind": "member-access",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 1,
+      "target": 11,
       "external": true,
       "kind": "call",
       "count": 1,
       "generatedCount": 0
     },
     {
-      "source": 0,
-      "target": 1,
+      "source": 1,
+      "target": 30,
+      "external": true,
+      "kind": "signature",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 1,
+      "target": 36,
       "external": true,
       "kind": "call",
-      "count": 1,
-      "generatedCount": 0
-    },
-    {
-      "source": 0,
-      "target": 2,
-      "external": true,
-      "kind": "signature",
-      "count": 1,
-      "generatedCount": 0
-    },
-    {
-      "source": 0,
-      "target": 3,
-      "external": true,
-      "kind": "signature",
-      "count": 1,
-      "generatedCount": 0
-    },
-    {
-      "source": 0,
-      "target": 4,
-      "external": true,
-      "kind": "signature",
-      "count": 1,
-      "generatedCount": 0
-    },
-    {
-      "source": 0,
-      "target": 5,
-      "external": true,
-      "kind": "signature",
-      "count": 1,
-      "generatedCount": 0
-    },
-    {
-      "source": 1,
-      "target": 2,
-      "external": false,
-      "kind": "implements",
-      "count": 1,
-      "generatedCount": 0
-    },
-    {
-      "source": 1,
-      "target": 4,
-      "external": true,
-      "kind": "member-type",
-      "count": 1,
-      "generatedCount": 0
-    },
-    {
-      "source": 1,
-      "target": 4,
-      "external": true,
-      "kind": "signature",
       "count": 2,
       "generatedCount": 0
     },
     {
       "source": 1,
+      "target": 37,
+      "external": true,
+      "kind": "signature",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 1,
+      "target": 39,
+      "external": true,
+      "kind": "call",
+      "count": 2,
+      "generatedCount": 0
+    },
+    {
+      "source": 1,
+      "target": 45,
+      "external": true,
+      "kind": "call",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 1,
+      "target": 46,
+      "external": true,
+      "kind": "call",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "external": false,
+      "kind": "attribute",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 2,
+      "target": 7,
+      "external": true,
+      "kind": "call",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 2,
+      "target": 8,
+      "external": true,
+      "kind": "call",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 2,
+      "target": 9,
+      "external": true,
+      "kind": "signature",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 2,
+      "target": 24,
+      "external": true,
+      "kind": "attribute",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 2,
+      "target": 37,
+      "external": true,
+      "kind": "signature",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 3,
+      "target": 14,
+      "external": true,
+      "kind": "inherits",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "external": false,
+      "kind": "call",
+      "count": 2,
+      "generatedCount": 0
+    },
+    {
+      "source": 4,
+      "target": 0,
+      "external": true,
+      "kind": "new",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 4,
+      "target": 1,
+      "external": true,
+      "kind": "call",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 4,
+      "target": 1,
+      "external": true,
+      "kind": "generic-arg",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 4,
+      "target": 2,
+      "external": true,
+      "kind": "signature",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 4,
+      "target": 3,
+      "external": true,
+      "kind": "new",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 4,
+      "target": 3,
+      "external": true,
+      "kind": "member-access",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 4,
+      "target": 4,
+      "external": true,
+      "kind": "member-access",
+      "count": 3,
+      "generatedCount": 3
+    },
+    {
+      "source": 4,
+      "target": 5,
+      "external": true,
+      "kind": "call",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 4,
       "target": 6,
+      "external": true,
+      "kind": "attribute",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 4,
+      "target": 6,
+      "external": true,
+      "kind": "member-access",
+      "count": 2,
+      "generatedCount": 2
+    },
+    {
+      "source": 4,
+      "target": 12,
+      "external": true,
+      "kind": "member-type",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 4,
+      "target": 12,
+      "external": true,
+      "kind": "call",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 4,
+      "target": 18,
+      "external": true,
+      "kind": "attribute",
+      "count": 2,
+      "generatedCount": 2
+    },
+    {
+      "source": 4,
+      "target": 20,
       "external": true,
       "kind": "member-access",
       "count": 1,
       "generatedCount": 0
     },
     {
-      "source": 2,
-      "target": 4,
+      "source": 4,
+      "target": 27,
+      "external": true,
+      "kind": "signature",
+      "count": 3,
+      "generatedCount": 2
+    },
+    {
+      "source": 4,
+      "target": 27,
+      "external": true,
+      "kind": "generic-arg",
+      "count": 2,
+      "generatedCount": 2
+    },
+    {
+      "source": 4,
+      "target": 28,
+      "external": true,
+      "kind": "generic-arg",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 4,
+      "target": 30,
+      "external": true,
+      "kind": "signature",
+      "count": 3,
+      "generatedCount": 2
+    },
+    {
+      "source": 4,
+      "target": 30,
+      "external": true,
+      "kind": "generic-arg",
+      "count": 2,
+      "generatedCount": 2
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "external": false,
+      "kind": "member-access",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 5,
+      "target": 7,
+      "external": false,
+      "kind": "call",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 5,
+      "target": 9,
+      "external": false,
+      "kind": "new",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 5,
+      "target": 9,
+      "external": false,
+      "kind": "member-access",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 5,
+      "target": 9,
+      "external": false,
+      "kind": "type-usage",
+      "count": 2,
+      "generatedCount": 0
+    },
+    {
+      "source": 5,
+      "target": 12,
+      "external": false,
+      "kind": "signature",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 5,
+      "target": 12,
+      "external": false,
+      "kind": "call",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 5,
+      "target": 12,
+      "external": false,
+      "kind": "generic-arg",
+      "count": 3,
+      "generatedCount": 0
+    },
+    {
+      "source": 5,
+      "target": 12,
+      "external": false,
+      "kind": "type-usage",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 5,
+      "target": 13,
+      "external": false,
+      "kind": "call",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 5,
+      "target": 14,
+      "external": false,
+      "kind": "member-access",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 5,
+      "target": 15,
+      "external": false,
+      "kind": "attribute",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 5,
+      "target": 16,
+      "external": false,
+      "kind": "new",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 5,
+      "target": 16,
+      "external": false,
+      "kind": "type-usage",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 5,
+      "target": 10,
+      "external": true,
+      "kind": "new",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 5,
+      "target": 10,
+      "external": true,
+      "kind": "call",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 5,
+      "target": 11,
+      "external": true,
+      "kind": "call",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 5,
+      "target": 19,
       "external": true,
       "kind": "signature",
       "count": 1,
       "generatedCount": 0
     },
     {
-      "source": 3,
-      "target": 2,
+      "source": 5,
+      "target": 21,
+      "external": true,
+      "kind": "signature",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 5,
+      "target": 27,
+      "external": true,
+      "kind": "signature",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 5,
+      "target": 30,
+      "external": true,
+      "kind": "signature",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 5,
+      "target": 33,
+      "external": true,
+      "kind": "member-access",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 5,
+      "target": 37,
+      "external": true,
+      "kind": "signature",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 6,
+      "target": 18,
+      "external": true,
+      "kind": "attribute",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 6,
+      "target": 22,
+      "external": true,
+      "kind": "attribute",
+      "count": 2,
+      "generatedCount": 2
+    },
+    {
+      "source": 6,
+      "target": 23,
+      "external": true,
+      "kind": "member-access",
+      "count": 2,
+      "generatedCount": 2
+    },
+    {
+      "source": 6,
+      "target": 25,
+      "external": true,
+      "kind": "attribute",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 6,
+      "target": 26,
+      "external": true,
+      "kind": "attribute",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 6,
+      "target": 29,
+      "external": true,
+      "kind": "member-type",
+      "count": 2,
+      "generatedCount": 2
+    },
+    {
+      "source": 6,
+      "target": 32,
+      "external": true,
+      "kind": "call",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 6,
+      "target": 34,
+      "external": true,
+      "kind": "member-type",
+      "count": 2,
+      "generatedCount": 2
+    },
+    {
+      "source": 6,
+      "target": 34,
+      "external": true,
+      "kind": "new",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 6,
+      "target": 34,
+      "external": true,
+      "kind": "call",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 6,
+      "target": 34,
+      "external": true,
+      "kind": "type-usage",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 6,
+      "target": 35,
+      "external": true,
+      "kind": "attribute",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 6,
+      "target": 37,
+      "external": true,
+      "kind": "member-type",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 6,
+      "target": 40,
+      "external": true,
+      "kind": "member-access",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 7,
+      "target": 27,
+      "external": true,
+      "kind": "member-type",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 7,
+      "target": 27,
+      "external": true,
+      "kind": "signature",
+      "count": 3,
+      "generatedCount": 0
+    },
+    {
+      "source": 7,
+      "target": 37,
+      "external": true,
+      "kind": "signature",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 8,
+      "target": 7,
+      "external": false,
+      "kind": "signature",
+      "count": 2,
+      "generatedCount": 0
+    },
+    {
+      "source": 8,
+      "target": 7,
+      "external": false,
+      "kind": "generic-arg",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 8,
+      "target": 7,
+      "external": false,
+      "kind": "member-access",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 8,
+      "target": 10,
+      "external": true,
+      "kind": "member-type",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 8,
+      "target": 10,
+      "external": true,
+      "kind": "call",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 8,
+      "target": 10,
+      "external": true,
+      "kind": "member-access",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 8,
+      "target": 11,
+      "external": true,
+      "kind": "call",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 8,
+      "target": 38,
+      "external": true,
+      "kind": "member-type",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 8,
+      "target": 38,
+      "external": true,
+      "kind": "new",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 9,
+      "target": 7,
+      "external": false,
+      "kind": "member-type",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 9,
+      "target": 7,
+      "external": false,
+      "kind": "signature",
+      "count": 2,
+      "generatedCount": 0
+    },
+    {
+      "source": 9,
+      "target": 7,
+      "external": false,
+      "kind": "member-access",
+      "count": 2,
+      "generatedCount": 0
+    },
+    {
+      "source": 9,
+      "target": 14,
+      "external": false,
+      "kind": "inherits",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 9,
+      "target": 27,
+      "external": true,
+      "kind": "signature",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 9,
+      "target": 31,
+      "external": true,
+      "kind": "member-access",
+      "count": 2,
+      "generatedCount": 0
+    },
+    {
+      "source": 11,
+      "target": 7,
+      "external": false,
+      "kind": "signature",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 12,
+      "target": 11,
+      "external": false,
+      "kind": "inherits",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 12,
+      "target": 27,
+      "external": true,
+      "kind": "signature",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 13,
+      "target": 10,
+      "external": false,
+      "kind": "member-type",
+      "count": 2,
+      "generatedCount": 1
+    },
+    {
+      "source": 13,
+      "target": 10,
+      "external": false,
+      "kind": "signature",
+      "count": 2,
+      "generatedCount": 1
+    },
+    {
+      "source": 13,
+      "target": 10,
+      "external": false,
+      "kind": "member-access",
+      "count": 8,
+      "generatedCount": 7
+    },
+    {
+      "source": 13,
+      "target": 13,
+      "external": true,
+      "kind": "call",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 13,
+      "target": 17,
+      "external": true,
+      "kind": "signature",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 13,
+      "target": 37,
+      "external": true,
+      "kind": "signature",
+      "count": 1,
+      "generatedCount": 1
+    },
+    {
+      "source": 14,
+      "target": 7,
+      "external": false,
+      "kind": "signature",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 14,
+      "target": 10,
+      "external": false,
+      "kind": "member-type",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 14,
+      "target": 12,
       "external": false,
       "kind": "implements",
       "count": 1,
       "generatedCount": 0
     },
     {
-      "source": 3,
-      "target": 4,
+      "source": 14,
+      "target": 13,
+      "external": false,
+      "kind": "member-access",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 14,
+      "target": 27,
       "external": true,
       "kind": "signature",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 15,
+      "target": 14,
+      "external": true,
+      "kind": "inherits",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 15,
+      "target": 15,
+      "external": true,
+      "kind": "member-access",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 15,
+      "target": 16,
+      "external": true,
+      "kind": "attribute",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 15,
+      "target": 37,
+      "external": true,
+      "kind": "member-type",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 15,
+      "target": 37,
+      "external": true,
+      "kind": "signature",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 16,
+      "target": 7,
+      "external": false,
+      "kind": "signature",
       "count": 2,
+      "generatedCount": 0
+    },
+    {
+      "source": 16,
+      "target": 7,
+      "external": false,
+      "kind": "member-access",
+      "count": 2,
+      "generatedCount": 0
+    },
+    {
+      "source": 16,
+      "target": 14,
+      "external": false,
+      "kind": "inherits",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 16,
+      "target": 27,
+      "external": true,
+      "kind": "signature",
+      "count": 1,
       "generatedCount": 0
     }
   ],
@@ -496,6 +2700,49 @@
         "status": "ok",
         "availableTfms": [
           "net10.0"
+        ],
+        "metadataReferences": 181,
+        "objectResolves": true,
+        "compileErrors": {
+          "count": 0,
+          "top": []
+        },
+        "unresolvedTypes": {
+          "count": 0,
+          "top": []
+        },
+        "workspaceDiagnostics": [],
+        "sdkFallback": false,
+        "projectReferenceMismatch": false,
+        "analyzerErrors": []
+      },
+      {
+        "project": 1,
+        "status": "ok",
+        "availableTfms": [
+          "net10.0"
+        ],
+        "metadataReferences": 169,
+        "objectResolves": true,
+        "compileErrors": {
+          "count": 0,
+          "top": []
+        },
+        "unresolvedTypes": {
+          "count": 0,
+          "top": []
+        },
+        "workspaceDiagnostics": [],
+        "sdkFallback": false,
+        "projectReferenceMismatch": false,
+        "analyzerErrors": []
+      },
+      {
+        "project": 2,
+        "status": "ok",
+        "availableTfms": [
+          "net10.0",
+          "net8.0"
         ],
         "metadataReferences": 167,
         "objectResolves": true,
@@ -513,7 +2760,7 @@
         "analyzerErrors": []
       },
       {
-        "project": 1,
+        "project": 3,
         "status": "ok",
         "availableTfms": [
           "net10.0"
@@ -566,156 +2813,1157 @@
     [
       0,
       0,
-      -1,
+      6,
+      0,
+      10
+    ],
+    [
+      0,
+      1,
+      6,
+      0,
+      19
+    ],
+    [
+      0,
+      1,
+      8,
+      0,
+      19
+    ],
+    [
+      1,
+      0,
+      null,
       0,
       12
     ],
     [
-      1,
-      1,
-      -2,
-      0,
-      18
-    ],
-    [
       2,
       0,
       null,
       0,
-      7
-    ],
-    [
-      2,
-      0,
-      null,
-      0,
-      9
-    ],
-    [
-      2,
-      1,
-      null,
-      0,
-      18
+      13
     ],
     [
       3,
       0,
-      -3,
+      23,
       0,
       12
     ],
     [
+      3,
+      0,
+      23,
+      0,
+      13
+    ],
+    [
       4,
+      1,
+      null,
       0,
-      0,
-      0,
-      9
+      19
     ],
     [
       5,
       0,
-      1,
+      39,
       0,
       12
     ],
     [
-      6,
-      1,
-      2,
+      5,
       0,
-      18
+      39,
+      0,
+      13
+    ],
+    [
+      5,
+      1,
+      40,
+      0,
+      19
+    ],
+    [
+      6,
+      0,
+      41,
+      0,
+      7
     ],
     [
       7,
       1,
-      null,
+      42,
+      0,
+      17
+    ],
+    [
+      7,
+      1,
+      42,
       0,
       18
     ],
     [
       8,
+      1,
+      43,
       0,
-      null,
-      0,
-      7
+      16
     ],
     [
       9,
+      2,
+      3,
       1,
-      null,
-      0,
-      18
-    ],
-    [
-      10,
-      0,
-      null,
-      0,
       7
     ],
     [
+      10,
+      2,
+      14,
+      1,
+      6
+    ],
+    [
       11,
+      2,
       null,
-      null,
-      4,
-      8
+      1,
+      5
     ],
     [
       12,
-      null,
-      null,
-      4,
-      10
+      2,
+      35,
+      1,
+      7
     ],
     [
-      13,
-      null,
-      null,
-      4,
+      12,
+      2,
+      35,
+      1,
       8
     ],
     [
       13,
       2,
       null,
-      4,
-      12
+      1,
+      5
     ],
     [
       14,
       2,
-      3,
-      4,
-      12
+      37,
+      1,
+      7
+    ],
+    [
+      14,
+      2,
+      37,
+      1,
+      8
     ],
     [
       15,
-      null,
-      null,
-      4,
-      5
+      2,
+      44,
+      1,
+      7
     ],
     [
       16,
-      null,
-      null,
-      4,
-      15
+      2,
+      45,
+      1,
+      8
     ],
     [
       17,
       null,
-      null,
-      4,
+      -1,
+      5,
+      10
+    ],
+    [
+      18,
+      3,
+      9,
+      5,
       15
     ],
     [
-      17,
+      19,
+      3,
+      10,
+      5,
+      16
+    ],
+    [
+      20,
       3,
       null,
+      5,
+      13
+    ],
+    [
+      21,
+      null,
+      26,
+      5,
+      9
+    ],
+    [
+      22,
+      3,
+      null,
+      5,
+      13
+    ],
+    [
+      23,
+      null,
+      null,
+      5,
+      23
+    ],
+    [
+      24,
+      5,
+      6,
+      6,
+      9
+    ],
+    [
+      24,
+      5,
+      8,
+      6,
+      10
+    ],
+    [
+      25,
+      null,
+      0,
+      12,
+      10
+    ],
+    [
+      26,
       4,
+      1,
+      12,
+      15
+    ],
+    [
+      27,
+      null,
+      null,
+      12,
+      9
+    ],
+    [
+      28,
+      null,
+      null,
+      6,
+      5
+    ],
+    [
+      29,
+      null,
+      2,
+      12,
+      10
+    ],
+    [
+      30,
+      null,
+      3,
+      12,
+      10
+    ],
+    [
+      31,
+      4,
+      4,
+      6,
+      15
+    ],
+    [
+      31,
+      null,
+      4,
+      12,
+      10
+    ],
+    [
+      31,
+      4,
+      4,
+      12,
+      15
+    ],
+    [
+      32,
+      null,
+      5,
+      12,
+      10
+    ],
+    [
+      33,
+      4,
+      6,
+      6,
+      15
+    ],
+    [
+      34,
+      4,
+      7,
+      6,
+      15
+    ],
+    [
+      34,
+      4,
+      8,
+      6,
+      15
+    ],
+    [
+      35,
+      null,
+      null,
+      12,
+      9
+    ],
+    [
+      36,
+      4,
+      17,
+      12,
       17
+    ],
+    [
+      37,
+      null,
+      21,
+      12,
+      8
+    ],
+    [
+      37,
+      4,
+      21,
+      12,
+      12
+    ],
+    [
+      38,
+      5,
+      22,
+      6,
+      11
+    ],
+    [
+      39,
+      5,
+      null,
+      6,
+      7
+    ],
+    [
+      39,
+      4,
+      null,
+      6,
+      16
+    ],
+    [
+      39,
+      4,
+      null,
+      12,
+      13
+    ],
+    [
+      40,
+      null,
+      null,
+      12,
+      9
+    ],
+    [
+      40,
+      null,
+      null,
+      12,
+      10
+    ],
+    [
+      41,
+      null,
+      null,
+      12,
+      9
+    ],
+    [
+      42,
+      5,
+      null,
+      6,
+      7
+    ],
+    [
+      42,
+      4,
+      null,
+      6,
+      16
+    ],
+    [
+      42,
+      4,
+      null,
+      12,
+      13
+    ],
+    [
+      43,
+      null,
+      null,
+      12,
+      9
+    ],
+    [
+      43,
+      null,
+      null,
+      12,
+      10
+    ],
+    [
+      44,
+      7,
+      12,
+      7,
+      26
+    ],
+    [
+      45,
+      6,
+      14,
+      7,
+      14
+    ],
+    [
+      46,
+      6,
+      -3,
+      7,
+      15
+    ],
+    [
+      47,
+      7,
+      -4,
+      7,
+      25
+    ],
+    [
+      48,
+      7,
+      null,
+      7,
+      25
+    ],
+    [
+      48,
+      7,
+      null,
+      7,
+      25
+    ],
+    [
+      49,
+      7,
+      null,
+      7,
+      23
+    ],
+    [
+      50,
+      8,
+      -9,
+      7,
+      21
+    ],
+    [
+      51,
+      6,
+      null,
+      7,
+      9
+    ],
+    [
+      51,
+      6,
+      null,
+      7,
+      11
+    ],
+    [
+      51,
+      8,
+      null,
+      7,
+      21
+    ],
+    [
+      52,
+      7,
+      null,
+      7,
+      27
+    ],
+    [
+      53,
+      6,
+      22,
+      7,
+      15
+    ],
+    [
+      54,
+      6,
+      -11,
+      7,
+      15
+    ],
+    [
+      55,
+      null,
+      -10,
+      7,
+      6
+    ],
+    [
+      56,
+      6,
+      -12,
+      7,
+      15
+    ],
+    [
+      57,
+      7,
+      null,
+      7,
+      26
+    ],
+    [
+      58,
+      6,
+      11,
+      7,
+      11
+    ],
+    [
+      59,
+      6,
+      12,
+      7,
+      15
+    ],
+    [
+      60,
+      8,
+      16,
+      7,
+      21
+    ],
+    [
+      61,
+      8,
+      null,
+      7,
+      21
+    ],
+    [
+      62,
+      6,
+      null,
+      7,
+      9
+    ],
+    [
+      63,
+      8,
+      null,
+      7,
+      21
+    ],
+    [
+      64,
+      6,
+      null,
+      7,
+      9
+    ],
+    [
+      65,
+      7,
+      31,
+      7,
+      27
+    ],
+    [
+      66,
+      7,
+      null,
+      7,
+      23
+    ],
+    [
+      67,
+      null,
+      21,
+      8,
+      14
+    ],
+    [
+      68,
+      null,
+      24,
+      8,
+      27
+    ],
+    [
+      68,
+      null,
+      24,
+      8,
+      38
+    ],
+    [
+      69,
+      null,
+      25,
+      8,
+      27
+    ],
+    [
+      69,
+      null,
+      25,
+      8,
+      38
+    ],
+    [
+      70,
+      9,
+      27,
+      8,
+      23
+    ],
+    [
+      71,
+      null,
+      28,
+      8,
+      15
+    ],
+    [
+      72,
+      null,
+      null,
+      8,
+      21
+    ],
+    [
+      72,
+      null,
+      null,
+      8,
+      39
+    ],
+    [
+      73,
+      11,
+      30,
+      8,
+      30
+    ],
+    [
+      74,
+      null,
+      null,
+      8,
+      19
+    ],
+    [
+      74,
+      null,
+      null,
+      8,
+      28
+    ],
+    [
+      75,
+      11,
+      32,
+      8,
+      31
+    ],
+    [
+      76,
+      12,
+      33,
+      8,
+      50
+    ],
+    [
+      77,
+      11,
+      null,
+      8,
+      31
+    ],
+    [
+      78,
+      null,
+      34,
+      8,
+      16
+    ],
+    [
+      79,
+      null,
+      null,
+      8,
+      48
+    ],
+    [
+      80,
+      11,
+      38,
+      8,
+      31
+    ],
+    [
+      81,
+      null,
+      null,
+      13,
+      3
+    ],
+    [
+      82,
+      null,
+      null,
+      13,
+      3
+    ],
+    [
+      82,
+      14,
+      null,
+      13,
+      5
+    ],
+    [
+      82,
+      16,
+      null,
+      13,
+      7
+    ],
+    [
+      83,
+      15,
+      null,
+      13,
+      9
+    ],
+    [
+      84,
+      18,
+      null,
+      14,
+      12
+    ],
+    [
+      84,
+      17,
+      null,
+      14,
+      20
+    ],
+    [
+      85,
+      null,
+      null,
+      14,
+      10
+    ],
+    [
+      86,
+      17,
+      -2,
+      14,
+      24
+    ],
+    [
+      87,
+      null,
+      null,
+      14,
+      10
+    ],
+    [
+      88,
+      18,
+      12,
+      14,
+      16
+    ],
+    [
+      89,
+      17,
+      13,
+      14,
+      24
+    ],
+    [
+      90,
+      17,
+      15,
+      14,
+      24
+    ],
+    [
+      91,
+      null,
+      null,
+      14,
+      6
+    ],
+    [
+      92,
+      null,
+      36,
+      14,
+      6
+    ],
+    [
+      93,
+      null,
+      null,
+      20,
+      26
+    ],
+    [
+      94,
+      null,
+      null,
+      20,
+      24
+    ],
+    [
+      94,
+      20,
+      null,
+      20,
+      30
+    ],
+    [
+      95,
+      19,
+      -2,
+      20,
+      28
+    ],
+    [
+      95,
+      19,
+      -2,
+      20,
+      28
+    ],
+    [
+      96,
+      null,
+      null,
+      20,
+      24
+    ],
+    [
+      97,
+      19,
+      null,
+      20,
+      28
+    ],
+    [
+      98,
+      19,
+      29,
+      20,
+      28
+    ],
+    [
+      98,
+      20,
+      29,
+      20,
+      30
+    ],
+    [
+      99,
+      null,
+      null,
+      20,
+      7
+    ],
+    [
+      100,
+      null,
+      null,
+      20,
+      10
+    ],
+    [
+      101,
+      null,
+      null,
+      20,
+      12
+    ],
+    [
+      102,
+      null,
+      null,
+      18,
+      13
+    ],
+    [
+      102,
+      null,
+      null,
+      19,
+      7
+    ],
+    [
+      103,
+      21,
+      null,
+      18,
+      15
+    ],
+    [
+      103,
+      22,
+      null,
+      19,
+      9
+    ],
+    [
+      104,
+      23,
+      -5,
+      18,
+      13
+    ],
+    [
+      104,
+      null,
+      -8,
+      19,
+      7
+    ],
+    [
+      104,
+      null,
+      -7,
+      19,
+      7
+    ],
+    [
+      104,
+      null,
+      -6,
+      19,
+      7
+    ],
+    [
+      104,
+      22,
+      -8,
+      19,
+      11
+    ],
+    [
+      104,
+      22,
+      -7,
+      19,
+      12
+    ],
+    [
+      104,
+      22,
+      -6,
+      19,
+      13
+    ],
+    [
+      104,
+      22,
+      -5,
+      19,
+      14
+    ],
+    [
+      105,
+      21,
+      18,
+      18,
+      15
+    ],
+    [
+      106,
+      21,
+      null,
+      18,
+      15
+    ],
+    [
+      107,
+      22,
+      null,
+      19,
+      9
+    ],
+    [
+      108,
+      null,
+      null,
+      20,
+      21
+    ],
+    [
+      109,
+      null,
+      null,
+      20,
+      17
+    ],
+    [
+      110,
+      null,
+      null,
+      20,
+      15
+    ],
+    [
+      111,
+      null,
+      23,
+      20,
+      17
+    ],
+    [
+      112,
+      null,
+      null,
+      20,
+      19
+    ],
+    [
+      113,
+      null,
+      null,
+      20,
+      41
+    ],
+    [
+      114,
+      null,
+      19,
+      20,
+      40
+    ],
+    [
+      115,
+      null,
+      20,
+      20,
+      40
+    ],
+    [
+      116,
+      null,
+      null,
+      20,
+      43
+    ],
+    [
+      117,
+      null,
+      null,
+      20,
+      41
+    ],
+    [
+      118,
+      null,
+      null,
+      20,
+      33
+    ],
+    [
+      118,
+      25,
+      null,
+      20,
+      37
+    ],
+    [
+      119,
+      24,
+      -2,
+      20,
+      35
+    ],
+    [
+      119,
+      24,
+      -2,
+      20,
+      35
+    ],
+    [
+      120,
+      null,
+      null,
+      20,
+      33
+    ],
+    [
+      121,
+      24,
+      null,
+      20,
+      35
     ]
   ]
 }

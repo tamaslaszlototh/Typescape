@@ -1,4 +1,6 @@
 <Solution>
+  <Project Path="Gallery.Tests/Gallery.Tests.csproj" />
   <Project Path="Gallery/Gallery.csproj" />
+  <Project Path="Measures/Measures.csproj" />
   <Project Path="Shapes/Shapes.csproj" />
 </Solution>

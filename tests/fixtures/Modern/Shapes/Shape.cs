@@ -1,18 +1,44 @@
+using Measures;
+
 namespace Shapes;
 
-public interface IShape
+public interface IMeasurable
+{
+    Length Perimeter();
+}
+
+public interface IShape : IMeasurable
 {
     double Area();
 }
 
-public sealed class Circle(double radius) : IShape
+public abstract class Shape : IShape
 {
-    public double Radius { get; } = radius;
+    public Colour Fill { get; init; } = Palette.Default;
 
-    public double Area() => Math.PI * Radius * Radius;
+    public abstract double Area();
+
+    public abstract Length Perimeter();
 }
 
-public sealed class Square(double side) : IShape
+public sealed class Circle(Length radius) : Shape
 {
-    public double Area() => side * side;
+    public Length Radius { get; } = radius;
+
+    public override double Area() => Math.PI * Radius.Metres * Radius.Metres;
+
+    public override Length Perimeter() => Radius * (2 * Math.PI);
+}
+
+public sealed class Square(Length side) : Shape
+{
+    public override double Area() => side.Metres * side.Metres;
+
+    public override Length Perimeter() => side * 4;
+}
+
+[AttributeUsage(AttributeTargets.Class)]
+public sealed class ShapeInfoAttribute(string label) : Attribute
+{
+    public string Label { get; } = label;
 }
