@@ -34,7 +34,9 @@ internal static class SolutionLoader
         ArgumentNullException.ThrowIfNull(referenceAssemblies);
         ArgumentNullException.ThrowIfNull(counter);
 
-        var solutionPath = Path.GetFullPath(request.SolutionPath);
+        // MSBuild tasks such as WPF markup compile report paths against the canonical working directory; under any
+        // other spelling of the solution, their documents would get keys that climb out of it.
+        var solutionPath = CanonicalPath.Of(request.SolutionPath);
         var directory = Path.GetDirectoryName(solutionPath)!;
         var listed = (await SolutionFile.ProjectPathsAsync(solutionPath, cancellationToken))
             .Where(path => path.EndsWith(".csproj", StringComparison.OrdinalIgnoreCase))

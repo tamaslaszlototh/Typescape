@@ -1,4 +1,5 @@
 using Microsoft.CodeAnalysis;
+using Typescape.Analyzer.Infrastructure;
 using Typescape.Analyzer.Loading;
 using Typescape.Analyzer.MSBuild;
 using Typescape.Analyzer.Packages;
@@ -48,8 +49,31 @@ public sealed class SolutionLoaderTests : IDisposable
                 Assert.Equal("net10.0", single.Tfm);
                 Assert.Equal(["net10.0"], single.AvailableTfms);
             });
-        Assert.Equal(Path.GetFullPath(_directory), solution.Directory);
+        Assert.Equal(CanonicalPath.Of(_directory), solution.Directory);
         Assert.Empty(solution.SolutionDiagnostics);
+    }
+
+    [Fact]
+    public async Task A_solution_reached_through_a_symbolic_link_is_loaded_by_its_canonical_path()
+    {
+        // Creating a symbolic link on Windows needs a privilege.
+        Assert.SkipWhen(OperatingSystem.IsWindows(), "Windows paths are only made full.");
+        Project("App", "<TargetFramework>net10.0</TargetFramework>");
+        var link = Path.Combine(Directory.CreateTempSubdirectory("typescape-link-").FullName, "Link");
+        Directory.CreateSymbolicLink(link, _directory);
+        try
+        {
+            using var solution = await LoadAsync(Path.Combine(link, Path.GetFileName(Solution("App"))));
+
+            Assert.Equal(CanonicalPath.Of(_directory), solution.Directory);
+            var app = Assert.Single(solution.Projects);
+            Assert.Equal("App/App.csproj", app.Key);
+            Assert.All(app.Project.Documents, document => Assert.StartsWith(solution.Directory, document.FilePath!, StringComparison.Ordinal));
+        }
+        finally
+        {
+            Directory.Delete(Path.GetDirectoryName(link)!, recursive: true);
+        }
     }
 
     [Fact]
@@ -277,7 +301,7 @@ public sealed class SolutionLoaderTests : IDisposable
         using var solution = await LoadAsync(Solution("Legacy"), cache, new RecordingProgress());
 
         var legacy = Assert.Single(solution.Projects);
-        Assert.Contains(legacy.Project.Documents, document => document.FilePath == stale);
+        Assert.Contains(legacy.Project.Documents, document => document.FilePath == CanonicalPath.Of(stale));
         Assert.Equal("net48", legacy.Tfm);
         Assert.Equal(["net48"], legacy.AvailableTfms);
     }
