@@ -12,8 +12,8 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
-  <!-- Golden-file helper shared by all test projects. It finds .verified files through this metadata,
-       not [CallerFilePath], so it keeps working when CI builds map source paths. -->
+  <!-- Helpers shared by all test projects. They find golden files and fixtures through this metadata,
+       not [CallerFilePath], so they keep working when CI builds map source paths. -->
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Shared/**/*.cs" Link="Shared/%(RecursiveDir)%(Filename)%(Extension)" />
     <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">

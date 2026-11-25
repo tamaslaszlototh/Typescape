@@ -1,5 +1,4 @@
 using System.IO.Compression;
-using System.Reflection;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using Typescape.Snapshot;
@@ -16,15 +15,11 @@ namespace Typescape.Analyzer.Tests.Fixtures;
 /// <remarks>
 /// Each run analyzes a fresh copy outside the repository: restore output never lands in the source tree, two runs
 /// cannot race on one <c>obj/</c>, and the repository's <c>Directory.Build.props</c> do not leak into the fixture. The
-/// repository's <c>global.json</c> goes along, so the copy builds with the SDK the repository pins.
+/// repository's <c>global.json</c> goes along, unless the fixture has its own, so the copy builds with the SDK the
+/// repository pins.
 /// </remarks>
 internal static class FixtureSolution
 {
-    private static readonly string RepositoryDirectory = typeof(FixtureSolution).Assembly
-        .GetCustomAttributes<AssemblyMetadataAttribute>()
-        .Single(attribute => attribute.Key == "Typescape.RepositoryDirectory")
-        .Value!;
-
     private static readonly JsonSerializerOptions Pretty = new()
     {
         Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
@@ -38,8 +33,12 @@ internal static class FixtureSolution
         var copy = Directory.CreateTempSubdirectory($"typescape-fixture-{fixture}-").FullName;
         try
         {
-            CopyDirectory(Path.Combine(RepositoryDirectory, "tests", "fixtures", fixture), copy);
-            File.Copy(Path.Combine(RepositoryDirectory, "global.json"), Path.Combine(copy, "global.json"));
+            CopyDirectory(Path.Combine(TestMetadata.RepositoryDirectory, "tests", "fixtures", fixture), copy);
+            var globalJson = Path.Combine(copy, "global.json");
+            if (!File.Exists(globalJson))
+            {
+                File.Copy(Path.Combine(TestMetadata.RepositoryDirectory, "global.json"), globalJson);
+            }
 
             var request = new AnalysisRequest { SolutionPath = SolutionIn(copy) };
             var result = await Analyzer.AnalyzeAsync(configure?.Invoke(request) ?? request, progress: null, TestContext.Current.CancellationToken);
@@ -53,10 +52,11 @@ internal static class FixtureSolution
 
     /// <summary>
     /// Compares <paramref name="snapshot"/>, decompressed from its file and pretty-printed with Provenance scrubbed,
-    /// with <c>Golden/Fixture.&lt;golden&gt;.verified.json</c>.
+    /// with <c>Golden/Fixture.&lt;goldenName&gt;.verified.json</c>.
     /// </summary>
-    public static void Match(SnapshotRecord snapshot, string golden) =>
-        Golden.Match(Render(Write(snapshot)), $"Fixture.{golden}", "json");
+    /// <param name="goldenName">The fixture name, plus a suffix for a variant run, e.g. <c>Modern.net8.0</c>.</param>
+    public static void Match(SnapshotRecord snapshot, string goldenName) =>
+        Golden.Match(Render(Write(snapshot)), $"Fixture.{goldenName}", "json");
 
     /// <summary>The Snapshot file's bytes, with the Provenance that depends on the clock, machine or run scrubbed.</summary>
     public static byte[] Write(SnapshotRecord snapshot)

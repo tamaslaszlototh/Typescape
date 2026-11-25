@@ -1,6 +1,6 @@
-using System.Reflection;
 using Typescape.Analyzer.Infrastructure;
 using Typescape.Analyzer.MSBuild;
+using Typescape.Testing;
 
 namespace Typescape.Analyzer.Tests.MSBuild;
 
@@ -13,7 +13,7 @@ public sealed class TypescapeTargetsTests : IDisposable
     private readonly string _directory = Directory.CreateTempSubdirectory("typescape-targets-").FullName;
 
     // The repository's global.json, so dotnet msbuild picks the SDK the build and the BuildHost use.
-    public TypescapeTargetsTests() => File.Copy(Path.Combine(RepositoryRoot(), "global.json"), Path.Combine(_directory, "global.json"));
+    public TypescapeTargetsTests() => File.Copy(Path.Combine(TestMetadata.RepositoryDirectory, "global.json"), Path.Combine(_directory, "global.json"));
 
     public void Dispose() => Directory.Delete(_directory, recursive: true);
 
@@ -50,15 +50,6 @@ public sealed class TypescapeTargetsTests : IDisposable
           <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
         </Project>
         """);
-
-    private static string RepositoryRoot() =>
-        Path.GetFullPath(Path.Combine(
-            typeof(TypescapeTargetsTests).Assembly
-                .GetCustomAttributes<AssemblyMetadataAttribute>()
-                .Single(attribute => attribute.Key == "Typescape.ProjectDirectory")
-                .Value!,
-            "..",
-            ".."));
 
     private string Write(string name, string content)
     {

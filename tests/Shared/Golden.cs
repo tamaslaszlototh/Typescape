@@ -1,4 +1,3 @@
-using System.Reflection;
 using Xunit.Sdk;
 
 namespace Typescape.Testing;
@@ -51,14 +50,7 @@ internal static class Golden
     private static bool AcceptRequested() =>
         Environment.GetEnvironmentVariable(AcceptVariable) is "1" or "true";
 
-    private static string DefaultDirectory()
-    {
-        var projectDirectory = Assembly.GetExecutingAssembly()
-            .GetCustomAttributes<AssemblyMetadataAttribute>()
-            .Single(attribute => attribute.Key == "Typescape.ProjectDirectory")
-            .Value!;
-        return Path.Combine(projectDirectory, "Golden");
-    }
+    private static string DefaultDirectory() => Path.Combine(TestMetadata.ProjectDirectory, "Golden");
 
     private static string FirstDifference(string verified, string received)
     {
