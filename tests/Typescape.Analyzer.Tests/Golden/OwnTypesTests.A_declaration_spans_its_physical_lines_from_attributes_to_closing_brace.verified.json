@@ -18,9 +18,11 @@
             "start": 4,
             "end": 9
           },
+          "loc": 5,
           "generated": false
         }
-      ]
+      ],
+      "loc": 5
     }
   ]
 }

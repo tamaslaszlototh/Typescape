@@ -28,9 +28,11 @@
             "start": 2,
             "end": 2
           },
+          "loc": 1,
           "generated": false
         }
-      ]
+      ],
+      "loc": 1
     },
     {
       "key": "App|T:Customer",
@@ -50,9 +52,11 @@
             "start": 1,
             "end": 1
           },
+          "loc": 1,
           "generated": false
         }
-      ]
+      ],
+      "loc": 1
     }
   ],
   "analyzerErrors": [

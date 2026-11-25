@@ -18,6 +18,7 @@
             "start": 1,
             "end": 4
           },
+          "loc": 4,
           "generated": false
         },
         {
@@ -26,6 +27,7 @@
             "start": 3,
             "end": 7
           },
+          "loc": 5,
           "generated": true
         },
         {
@@ -34,9 +36,11 @@
             "start": 1,
             "end": 4
           },
+          "loc": 4,
           "generated": true
         }
-      ]
+      ],
+      "loc": 13
     }
   ],
   "executableMembers": [
@@ -51,6 +55,7 @@
         "start": 3,
         "end": 3
       },
+      "loc": 1,
       "cyclomatic": 1,
       "cognitive": 0,
       "generated": false
@@ -66,6 +71,7 @@
         "start": 6,
         "end": 6
       },
+      "loc": 1,
       "cyclomatic": 1,
       "cognitive": 0,
       "generated": true
@@ -81,6 +87,7 @@
         "start": 3,
         "end": 3
       },
+      "loc": 1,
       "cyclomatic": 1,
       "cognitive": 0,
       "generated": true

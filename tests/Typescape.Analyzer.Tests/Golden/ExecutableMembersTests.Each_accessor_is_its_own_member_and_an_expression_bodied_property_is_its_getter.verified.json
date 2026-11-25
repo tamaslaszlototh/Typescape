@@ -11,6 +11,7 @@
         "start": 9,
         "end": 9
       },
+      "loc": 1,
       "cyclomatic": 1,
       "cognitive": 0,
       "generated": false
@@ -26,6 +27,7 @@
         "start": 10,
         "end": 10
       },
+      "loc": 1,
       "cyclomatic": 1,
       "cognitive": 0,
       "generated": false
@@ -41,6 +43,7 @@
         "start": 13,
         "end": 14
       },
+      "loc": 2,
       "cyclomatic": 1,
       "cognitive": 0,
       "generated": false
@@ -56,6 +59,7 @@
         "start": 16,
         "end": 16
       },
+      "loc": 1,
       "cyclomatic": 1,
       "cognitive": 0,
       "generated": false
@@ -71,6 +75,7 @@
         "start": 16,
         "end": 16
       },
+      "loc": 1,
       "cyclomatic": 1,
       "cognitive": 0,
       "generated": false
@@ -86,6 +91,7 @@
         "start": 18,
         "end": 18
       },
+      "loc": 1,
       "cyclomatic": 1,
       "cognitive": 0,
       "generated": false
@@ -101,6 +107,7 @@
         "start": 22,
         "end": 22
       },
+      "loc": 1,
       "cyclomatic": 1,
       "cognitive": 0,
       "generated": false
@@ -116,6 +123,7 @@
         "start": 23,
         "end": 23
       },
+      "loc": 1,
       "cyclomatic": 1,
       "cognitive": 0,
       "generated": false

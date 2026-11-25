@@ -56,6 +56,7 @@ internal sealed record DocumentFact(string Path, GeneratedReason? GeneratedReaso
 /// <param name="Namespace">The full namespace name; empty for the global namespace.</param>
 /// <param name="ContainingType">The enclosing type's key, for a nested type.</param>
 /// <param name="Declarations">One per partial part, in Roslyn's order.</param>
+/// <param name="Loc">The sum of the declarations' LOC: never the sum of the members' LOC.</param>
 internal sealed record TypeFact(
     string Key,
     string Name,
@@ -67,15 +68,17 @@ internal sealed record TypeFact(
     int Arity,
     string Namespace,
     string? ContainingType,
-    IReadOnlyList<TypeDeclarationFact> Declarations);
+    IReadOnlyList<TypeDeclarationFact> Declarations,
+    int Loc);
 
 /// <param name="Document">The document's key.</param>
 /// <param name="Lines">The physical lines the declaration spans, <c>#line</c> directives ignored.</param>
+/// <param name="Loc">LOC (<see cref="LinesOfCode.OfType"/>): nested type declarations left out.</param>
 /// <param name="Generated">
 /// In a generated document, carrying <c>[GeneratedCode]</c> or <c>[CompilerGenerated]</c>, or nested in a generated
 /// declaration of the containing type.
 /// </param>
-internal sealed record TypeDeclarationFact(string Document, LineSpan Lines, bool Generated);
+internal sealed record TypeDeclarationFact(string Document, LineSpan Lines, int Loc, bool Generated);
 
 /// <summary>
 /// A member with an executable body; each property, indexer and event accessor is its own. Its declaration is the one
@@ -87,6 +90,7 @@ internal sealed record TypeDeclarationFact(string Document, LineSpan Lines, bool
 /// <param name="Signature">The display signature: name and parameter types, no containing type or return type.</param>
 /// <param name="Document">The key of the document holding the body.</param>
 /// <param name="Lines">The physical lines the member spans, from its attributes to its end; for an entry point, the top-level statements.</param>
+/// <param name="Loc">LOC (<see cref="LinesOfCode.OfMember"/>) over the same declaration as <paramref name="Lines"/>.</param>
 /// <param name="Cyclomatic">Cyclomatic complexity (<see cref="Metrics.Cyclomatic"/>), lambdas and local functions included.</param>
 /// <param name="Cognitive">Cognitive complexity (<see cref="Metrics.Cognitive"/>), lambdas and local functions included.</param>
 /// <param name="Generated">
@@ -101,6 +105,7 @@ internal sealed record ExecutableMemberFact(
     DeclaredAccessibility Accessibility,
     string Document,
     LineSpan Lines,
+    int Loc,
     int Cyclomatic,
     int Cognitive,
     bool Generated);

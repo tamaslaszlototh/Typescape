@@ -18,9 +18,11 @@
             "start": 3,
             "end": 11
           },
+          "loc": 3,
           "generated": false
         }
-      ]
+      ],
+      "loc": 3
     },
     {
       "key": "App|T:Shop.Order.Line",
@@ -40,9 +42,11 @@
             "start": 5,
             "end": 8
           },
+          "loc": 3,
           "generated": false
         }
-      ]
+      ],
+      "loc": 3
     },
     {
       "key": "App|T:Shop.Order.Line.State",
@@ -62,9 +66,11 @@
             "start": 7,
             "end": 7
           },
+          "loc": 1,
           "generated": false
         }
-      ]
+      ],
+      "loc": 1
     },
     {
       "key": "App|T:Shop.Order.IAudit",
@@ -84,9 +90,11 @@
             "start": 10,
             "end": 10
           },
+          "loc": 1,
           "generated": false
         }
-      ]
+      ],
+      "loc": 1
     }
   ]
 }

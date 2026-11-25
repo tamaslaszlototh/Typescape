@@ -1,6 +1,5 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Text;
 using Typescape.Snapshot;
 using Typescape.Snapshot.Records;
 
@@ -59,6 +58,7 @@ internal static class ExecutableMembers
         var (withBody, kind, body) = found;
 
         var entryPoint = body as CompilationUnitSyntax;
+        var declaration = Declaration(body);
         var metrics = MemberMetrics.Of(withBody, body, models(body.SyntaxTree), scope.CancellationToken);
         return new ExecutableMemberFact(
             BodyKey(withBody, typeKey),
@@ -67,7 +67,8 @@ internal static class ExecutableMembers
             entryPoint is null ? kind : ExecutableMemberKind.EntryPoint,
             Symbols.Accessibility(withBody),
             Source.Document(body.SyntaxTree, scope.Context),
-            Source.Lines(body.SyntaxTree, entryPoint is null ? Span(body) : Source.TopLevelStatements(entryPoint), scope.CancellationToken),
+            Source.Lines(body.SyntaxTree, entryPoint is null ? declaration.Span : Source.TopLevelStatements(entryPoint), scope.CancellationToken),
+            LinesOfCode.OfMember(declaration, scope.CancellationToken),
             metrics.Cyclomatic,
             metrics.Cognitive,
             scope.Generated.MemberIsGenerated(type, withBody, body));
@@ -114,9 +115,9 @@ internal static class ExecutableMembers
         _ => false,
     };
 
-    // An expression-bodied property or indexer is its getter, so the getter spans the whole declaration.
-    private static TextSpan Span(SyntaxNode body) =>
-        body is ArrowExpressionClauseSyntax { Parent: BasePropertyDeclarationSyntax property } ? property.Span : body.Span;
+    // An expression-bodied property or indexer is its getter, so the getter is the whole declaration.
+    private static SyntaxNode Declaration(SyntaxNode body) =>
+        body is ArrowExpressionClauseSyntax { Parent: BasePropertyDeclarationSyntax property } ? property : body;
 
     private static string Signature(IMethodSymbol method) =>
         method.MethodKind == MethodKind.StaticConstructor ? $"static {method.ToDisplayString(SignatureFormat)}"

@@ -42,6 +42,7 @@ internal static class OwnTypes
         }
 
         var isClass = type.TypeKind == TypeKind.Class;
+        TypeDeclarationFact[] declarations = [.. type.DeclaringSyntaxReferences.Select(reference => Declaration(type, reference, scope))];
         return new TypeFact(
             Symbols.TypeKey(type, scope.Context),
             type.Name,
@@ -53,7 +54,8 @@ internal static class OwnTypes
             type.Arity,
             Symbols.Namespace(type),
             type.ContainingType is { } containing ? Symbols.TypeKey(containing, scope.Context) : null,
-            [.. type.DeclaringSyntaxReferences.Select(reference => Declaration(type, reference, scope))]);
+            declarations,
+            declarations.Sum(declaration => declaration.Loc));
     }
 
     private static IEnumerable<INamedTypeSymbol> Declared(INamespaceSymbol container) =>
@@ -64,10 +66,12 @@ internal static class OwnTypes
 
     private static TypeDeclarationFact Declaration(INamedTypeSymbol type, SyntaxReference reference, ProjectScope scope)
     {
-        var span = reference.GetSyntax(scope.CancellationToken) is CompilationUnitSyntax unit ? Source.TopLevelStatements(unit) : reference.Span;
+        var syntax = reference.GetSyntax(scope.CancellationToken);
+        var span = syntax is CompilationUnitSyntax unit ? Source.TopLevelStatements(unit) : reference.Span;
         return new TypeDeclarationFact(
             Source.Document(reference.SyntaxTree, scope.Context),
             Source.Lines(reference.SyntaxTree, span, scope.CancellationToken),
+            LinesOfCode.OfType(syntax, scope.CancellationToken),
             scope.Generated.DeclarationIsGenerated(type, reference));
     }
 }

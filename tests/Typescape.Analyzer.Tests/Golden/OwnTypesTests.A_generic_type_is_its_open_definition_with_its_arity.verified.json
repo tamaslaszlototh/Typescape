@@ -18,9 +18,11 @@
             "start": 3,
             "end": 8
           },
+          "loc": 3,
           "generated": false
         }
-      ]
+      ],
+      "loc": 3
     },
     {
       "key": "App|T:Shop.Repository`2.Page`1",
@@ -40,9 +42,11 @@
             "start": 5,
             "end": 5
           },
+          "loc": 1,
           "generated": false
         }
-      ]
+      ],
+      "loc": 1
     },
     {
       "key": "App|T:Shop.Repository`2.Cursor",
@@ -62,9 +66,11 @@
             "start": 7,
             "end": 7
           },
+          "loc": 1,
           "generated": false
         }
-      ]
+      ],
+      "loc": 1
     },
     {
       "key": "App|T:Shop.Repository`1",
@@ -84,9 +90,11 @@
             "start": 10,
             "end": 10
           },
+          "loc": 1,
           "generated": false
         }
-      ]
+      ],
+      "loc": 1
     },
     {
       "key": "App|T:Shop.Orders",
@@ -106,9 +114,11 @@
             "start": 12,
             "end": 12
           },
+          "loc": 1,
           "generated": false
         }
-      ]
+      ],
+      "loc": 1
     }
   ]
 }

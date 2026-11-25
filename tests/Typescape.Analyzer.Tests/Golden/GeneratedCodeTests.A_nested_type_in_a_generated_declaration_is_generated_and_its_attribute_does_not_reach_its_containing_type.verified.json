@@ -18,9 +18,11 @@
             "start": 3,
             "end": 10
           },
+          "loc": 4,
           "generated": true
         }
-      ]
+      ],
+      "loc": 4
     },
     {
       "key": "App|T:Settings.Section",
@@ -40,9 +42,11 @@
             "start": 6,
             "end": 9
           },
+          "loc": 4,
           "generated": true
         }
-      ]
+      ],
+      "loc": 4
     },
     {
       "key": "App|T:Order",
@@ -62,9 +66,11 @@
             "start": 12,
             "end": 21
           },
+          "loc": 4,
           "generated": false
         }
-      ]
+      ],
+      "loc": 4
     },
     {
       "key": "App|T:Order.Line",
@@ -84,9 +90,11 @@
             "start": 14,
             "end": 18
           },
+          "loc": 5,
           "generated": true
         }
-      ]
+      ],
+      "loc": 5
     }
   ],
   "executableMembers": [
@@ -101,6 +109,7 @@
         "start": 8,
         "end": 8
       },
+      "loc": 1,
       "cyclomatic": 1,
       "cognitive": 0,
       "generated": true
@@ -116,6 +125,7 @@
         "start": 20,
         "end": 20
       },
+      "loc": 1,
       "cyclomatic": 1,
       "cognitive": 0,
       "generated": false
@@ -131,6 +141,7 @@
         "start": 17,
         "end": 17
       },
+      "loc": 1,
       "cyclomatic": 1,
       "cognitive": 0,
       "generated": true

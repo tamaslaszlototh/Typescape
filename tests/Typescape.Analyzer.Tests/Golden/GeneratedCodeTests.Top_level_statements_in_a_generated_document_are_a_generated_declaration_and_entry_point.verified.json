@@ -24,9 +24,11 @@
             "start": 1,
             "end": 1
           },
+          "loc": 1,
           "generated": true
         }
-      ]
+      ],
+      "loc": 1
     }
   ],
   "executableMembers": [
@@ -41,6 +43,7 @@
         "start": 1,
         "end": 1
       },
+      "loc": 1,
       "cyclomatic": 1,
       "cognitive": 0,
       "generated": true

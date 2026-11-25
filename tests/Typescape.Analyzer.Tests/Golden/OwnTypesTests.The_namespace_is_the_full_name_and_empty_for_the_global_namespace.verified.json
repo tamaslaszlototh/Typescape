@@ -18,9 +18,11 @@
             "start": 9,
             "end": 9
           },
+          "loc": 1,
           "generated": false
         }
-      ]
+      ],
+      "loc": 1
     },
     {
       "key": "App|T:Shop.Orders.Order",
@@ -40,9 +42,11 @@
             "start": 5,
             "end": 5
           },
+          "loc": 1,
           "generated": false
         }
-      ]
+      ],
+      "loc": 1
     },
     {
       "key": "App|T:Global",
@@ -62,9 +66,11 @@
             "start": 1,
             "end": 1
           },
+          "loc": 1,
           "generated": false
         }
-      ]
+      ],
+      "loc": 1
     }
   ]
 }

@@ -18,6 +18,7 @@
             "start": 3,
             "end": 6
           },
+          "loc": 4,
           "generated": false
         },
         {
@@ -26,9 +27,11 @@
             "start": 3,
             "end": 3
           },
+          "loc": 1,
           "generated": false
         }
-      ]
+      ],
+      "loc": 5
     }
   ]
 }

@@ -11,6 +11,7 @@
         "start": 9,
         "end": 16
       },
+      "loc": 7,
       "cyclomatic": 1,
       "cognitive": 0,
       "generated": false
@@ -26,6 +27,7 @@
         "start": 18,
         "end": 18
       },
+      "loc": 1,
       "cyclomatic": 1,
       "cognitive": 0,
       "generated": false
