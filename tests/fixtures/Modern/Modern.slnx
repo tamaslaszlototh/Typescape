@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Gallery/Gallery.csproj" />
+  <Project Path="Shapes/Shapes.csproj" />
+</Solution>

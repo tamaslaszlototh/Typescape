@@ -1,0 +1,721 @@
+{
+  "schemaVersion": "1.0",
+  "rulesVersion": 1,
+  "projects": [
+    {
+      "key": "Gallery/Gallery.csproj",
+      "name": "Gallery",
+      "assembly": "Gallery",
+      "style": "sdk",
+      "tfm": "net10.0",
+      "test": false,
+      "testReason": null,
+      "references": [
+        1
+      ]
+    },
+    {
+      "key": "Shapes/Shapes.csproj",
+      "name": "Shapes",
+      "assembly": "Shapes",
+      "style": "sdk",
+      "tfm": "net10.0",
+      "test": false,
+      "testReason": null,
+      "references": []
+    }
+  ],
+  "namespaces": [
+    {
+      "project": 0,
+      "name": "Gallery"
+    },
+    {
+      "project": 1,
+      "name": "Shapes"
+    }
+  ],
+  "documents": [
+    {
+      "path": "Gallery/Exhibit.cs",
+      "project": 0,
+      "generated": false,
+      "generatedReason": null
+    },
+    {
+      "path": "Gallery/obj/Debug/net10.0/.NETCoreApp,Version=v10.0.AssemblyAttributes.cs",
+      "project": 0,
+      "generated": true,
+      "generatedReason": "convention"
+    },
+    {
+      "path": "Gallery/obj/Debug/net10.0/Gallery.AssemblyInfo.cs",
+      "project": 0,
+      "generated": true,
+      "generatedReason": "convention"
+    },
+    {
+      "path": "Gallery/obj/Debug/net10.0/Gallery.GlobalUsings.g.cs",
+      "project": 0,
+      "generated": true,
+      "generatedReason": "convention"
+    },
+    {
+      "path": "Shapes/Shape.cs",
+      "project": 1,
+      "generated": false,
+      "generatedReason": null
+    },
+    {
+      "path": "Shapes/obj/Debug/net10.0/.NETCoreApp,Version=v10.0.AssemblyAttributes.cs",
+      "project": 1,
+      "generated": true,
+      "generatedReason": "convention"
+    },
+    {
+      "path": "Shapes/obj/Debug/net10.0/Shapes.AssemblyInfo.cs",
+      "project": 1,
+      "generated": true,
+      "generatedReason": "convention"
+    },
+    {
+      "path": "Shapes/obj/Debug/net10.0/Shapes.GlobalUsings.g.cs",
+      "project": 1,
+      "generated": true,
+      "generatedReason": "convention"
+    }
+  ],
+  "types": [
+    {
+      "key": "Gallery|T:Gallery.Exhibit",
+      "name": "Exhibit",
+      "kind": "class",
+      "accessibility": "public",
+      "abstract": false,
+      "sealed": false,
+      "static": true,
+      "arity": 0,
+      "namespace": 0,
+      "containingType": null,
+      "declarations": [
+        {
+          "document": 0,
+          "lines": {
+            "start": 5,
+            "end": 19
+          },
+          "loc": 13,
+          "generated": false
+        }
+      ],
+      "loc": 13
+    },
+    {
+      "key": "Shapes|T:Shapes.Circle",
+      "name": "Circle",
+      "kind": "class",
+      "accessibility": "public",
+      "abstract": false,
+      "sealed": true,
+      "static": false,
+      "arity": 0,
+      "namespace": 1,
+      "containingType": null,
+      "declarations": [
+        {
+          "document": 4,
+          "lines": {
+            "start": 8,
+            "end": 13
+          },
+          "loc": 5,
+          "generated": false
+        }
+      ],
+      "loc": 5
+    },
+    {
+      "key": "Shapes|T:Shapes.IShape",
+      "name": "IShape",
+      "kind": "interface",
+      "accessibility": "public",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": 1,
+      "containingType": null,
+      "declarations": [
+        {
+          "document": 4,
+          "lines": {
+            "start": 3,
+            "end": 6
+          },
+          "loc": 4,
+          "generated": false
+        }
+      ],
+      "loc": 4
+    },
+    {
+      "key": "Shapes|T:Shapes.Square",
+      "name": "Square",
+      "kind": "class",
+      "accessibility": "public",
+      "abstract": false,
+      "sealed": true,
+      "static": false,
+      "arity": 0,
+      "namespace": 1,
+      "containingType": null,
+      "declarations": [
+        {
+          "document": 4,
+          "lines": {
+            "start": 15,
+            "end": 18
+          },
+          "loc": 4,
+          "generated": false
+        }
+      ],
+      "loc": 4
+    }
+  ],
+  "externalTypes": [
+    {
+      "key": "System.Collections|T:System.Collections.Generic.List`1",
+      "name": "List<T>",
+      "assembly": "System.Collections",
+      "namespace": "System.Collections.Generic",
+      "kind": "class"
+    },
+    {
+      "key": "System.Linq|T:System.Linq.Enumerable",
+      "name": "Enumerable",
+      "assembly": "System.Linq",
+      "namespace": "System.Linq",
+      "kind": "class"
+    },
+    {
+      "key": "System.Runtime|T:System.Collections.Generic.IEnumerable`1",
+      "name": "IEnumerable<T>",
+      "assembly": "System.Runtime",
+      "namespace": "System.Collections.Generic",
+      "kind": "interface"
+    },
+    {
+      "key": "System.Runtime|T:System.Collections.Generic.IReadOnlyList`1",
+      "name": "IReadOnlyList<T>",
+      "assembly": "System.Runtime",
+      "namespace": "System.Collections.Generic",
+      "kind": "interface"
+    },
+    {
+      "key": "System.Runtime|T:System.Double",
+      "name": "Double",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "struct"
+    },
+    {
+      "key": "System.Runtime|T:System.Int32",
+      "name": "Int32",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "struct"
+    },
+    {
+      "key": "System.Runtime|T:System.Math",
+      "name": "Math",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "class"
+    }
+  ],
+  "executableMembers": [
+    {
+      "key": "Gallery|T:Gallery.Exhibit|M:Gallery.Exhibit.Build(System.Int32)",
+      "type": 0,
+      "declaration": 0,
+      "signature": "Build(int)",
+      "kind": "method",
+      "accessibility": "public",
+      "document": 0,
+      "lines": {
+        "start": 7,
+        "end": 16
+      },
+      "loc": 9,
+      "cyclomatic": 3,
+      "cognitive": 3,
+      "generated": false
+    },
+    {
+      "key": "Gallery|T:Gallery.Exhibit|M:Gallery.Exhibit.TotalArea(System.Collections.Generic.IEnumerable{Shapes.IShape})",
+      "type": 0,
+      "declaration": 0,
+      "signature": "TotalArea(IEnumerable<IShape>)",
+      "kind": "method",
+      "accessibility": "public",
+      "document": 0,
+      "lines": {
+        "start": 18,
+        "end": 18
+      },
+      "loc": 1,
+      "cyclomatic": 1,
+      "cognitive": 0,
+      "generated": false
+    },
+    {
+      "key": "Shapes|T:Shapes.Circle|M:Shapes.Circle.Area",
+      "type": 1,
+      "declaration": 0,
+      "signature": "Area()",
+      "kind": "method",
+      "accessibility": "public",
+      "document": 4,
+      "lines": {
+        "start": 12,
+        "end": 12
+      },
+      "loc": 1,
+      "cyclomatic": 1,
+      "cognitive": 0,
+      "generated": false
+    },
+    {
+      "key": "Shapes|T:Shapes.Square|M:Shapes.Square.Area",
+      "type": 3,
+      "declaration": 0,
+      "signature": "Area()",
+      "kind": "method",
+      "accessibility": "public",
+      "document": 4,
+      "lines": {
+        "start": 17,
+        "end": 17
+      },
+      "loc": 1,
+      "cyclomatic": 1,
+      "cognitive": 0,
+      "generated": false
+    }
+  ],
+  "externalMembers": [
+    {
+      "key": "M:System.Collections.Generic.List`1.#ctor",
+      "type": 0,
+      "name": "List<T>.List()"
+    },
+    {
+      "key": "M:System.Collections.Generic.List`1.Add(`0)",
+      "type": 0,
+      "name": "List<T>.Add(T)"
+    },
+    {
+      "key": "M:System.Linq.Enumerable.Sum``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Double})",
+      "type": 1,
+      "name": "Enumerable.Sum<TSource>(IEnumerable<TSource>, Func<TSource, double>)"
+    },
+    {
+      "key": "F:System.Math.PI",
+      "type": 6,
+      "name": "Math.PI"
+    }
+  ],
+  "nonExecutableMembers": [
+    {
+      "key": "Shapes|T:Shapes.Circle|M:Shapes.Circle.#ctor(System.Double)",
+      "type": 1,
+      "name": "Circle.Circle(double)"
+    },
+    {
+      "key": "Shapes|T:Shapes.IShape|M:Shapes.IShape.Area",
+      "type": 2,
+      "name": "IShape.Area()"
+    },
+    {
+      "key": "Shapes|T:Shapes.Square|M:Shapes.Square.#ctor(System.Double)",
+      "type": 3,
+      "name": "Square.Square(double)"
+    }
+  ],
+  "dependencies": [
+    {
+      "source": 0,
+      "target": 1,
+      "external": false,
+      "kind": "new",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "external": false,
+      "kind": "call",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "external": false,
+      "kind": "generic-arg",
+      "count": 3,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "external": false,
+      "kind": "new",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 0,
+      "external": true,
+      "kind": "new",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 0,
+      "external": true,
+      "kind": "call",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 1,
+      "external": true,
+      "kind": "call",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "external": true,
+      "kind": "signature",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "external": true,
+      "kind": "signature",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "external": true,
+      "kind": "signature",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "external": true,
+      "kind": "signature",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 1,
+      "target": 2,
+      "external": false,
+      "kind": "implements",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "external": true,
+      "kind": "member-type",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "external": true,
+      "kind": "signature",
+      "count": 2,
+      "generatedCount": 0
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "external": true,
+      "kind": "member-access",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "external": true,
+      "kind": "signature",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 3,
+      "target": 2,
+      "external": false,
+      "kind": "implements",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "external": true,
+      "kind": "signature",
+      "count": 2,
+      "generatedCount": 0
+    }
+  ],
+  "loadHealth": {
+    "projects": [
+      {
+        "project": 0,
+        "status": "ok",
+        "availableTfms": [
+          "net10.0"
+        ],
+        "metadataReferences": 167,
+        "objectResolves": true,
+        "compileErrors": {
+          "count": 0,
+          "top": []
+        },
+        "unresolvedTypes": {
+          "count": 0,
+          "top": []
+        },
+        "workspaceDiagnostics": [],
+        "sdkFallback": false,
+        "projectReferenceMismatch": false,
+        "analyzerErrors": []
+      },
+      {
+        "project": 1,
+        "status": "ok",
+        "availableTfms": [
+          "net10.0"
+        ],
+        "metadataReferences": 167,
+        "objectResolves": true,
+        "compileErrors": {
+          "count": 0,
+          "top": []
+        },
+        "unresolvedTypes": {
+          "count": 0,
+          "top": []
+        },
+        "workspaceDiagnostics": [],
+        "sdkFallback": false,
+        "projectReferenceMismatch": false,
+        "analyzerErrors": []
+      }
+    ],
+    "solutionDiagnostics": []
+  },
+  "provenance": {
+    "tool": {
+      "version": "0.0.0",
+      "commit": null
+    },
+    "timestamp": "1970-01-01T00:00:00+00:00",
+    "solution": {
+      "fileName": "Modern.slnx",
+      "format": "slnx"
+    },
+    "sdkVersion": "0.0.0",
+    "os": "scrubbed",
+    "git": null,
+    "framework": null,
+    "configuration": "Debug",
+    "properties": {},
+    "phaseSeconds": {
+      "restore": 0,
+      "load": 0,
+      "compile": 0,
+      "diagnostics": 0,
+      "walk": 0,
+      "assemble": 0
+    },
+    "peakMemoryBytes": 0
+  },
+  "occurrences": [
+    [
+      0,
+      0,
+      -1,
+      0,
+      12
+    ],
+    [
+      1,
+      1,
+      -2,
+      0,
+      18
+    ],
+    [
+      2,
+      0,
+      null,
+      0,
+      7
+    ],
+    [
+      2,
+      0,
+      null,
+      0,
+      9
+    ],
+    [
+      2,
+      1,
+      null,
+      0,
+      18
+    ],
+    [
+      3,
+      0,
+      -3,
+      0,
+      12
+    ],
+    [
+      4,
+      0,
+      0,
+      0,
+      9
+    ],
+    [
+      5,
+      0,
+      1,
+      0,
+      12
+    ],
+    [
+      6,
+      1,
+      2,
+      0,
+      18
+    ],
+    [
+      7,
+      1,
+      null,
+      0,
+      18
+    ],
+    [
+      8,
+      0,
+      null,
+      0,
+      7
+    ],
+    [
+      9,
+      1,
+      null,
+      0,
+      18
+    ],
+    [
+      10,
+      0,
+      null,
+      0,
+      7
+    ],
+    [
+      11,
+      null,
+      null,
+      4,
+      8
+    ],
+    [
+      12,
+      null,
+      null,
+      4,
+      10
+    ],
+    [
+      13,
+      null,
+      null,
+      4,
+      8
+    ],
+    [
+      13,
+      2,
+      null,
+      4,
+      12
+    ],
+    [
+      14,
+      2,
+      3,
+      4,
+      12
+    ],
+    [
+      15,
+      null,
+      null,
+      4,
+      5
+    ],
+    [
+      16,
+      null,
+      null,
+      4,
+      15
+    ],
+    [
+      17,
+      null,
+      null,
+      4,
+      15
+    ],
+    [
+      17,
+      3,
+      null,
+      4,
+      17
+    ]
+  ]
+}
