@@ -72,7 +72,7 @@ public class CompileErrorsTests
 
         var code = Assert.Single(errors.Top);
         Assert.Equal("CS1029", code.Code);
-        Assert.Equal($"#error: '{Path.Combine("obj", "Generated.cs")} is stale'", code.Sample);
+        Assert.Equal("#error: 'obj/Generated.cs is stale'", code.Sample);
     }
 
     private static CSharpCompilation Compile(params (string Path, string Source)[] documents) =>
