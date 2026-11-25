@@ -14,16 +14,25 @@ internal static class SolutionPaths
 
     /// <summary>
     /// Rewrites every path under <paramref name="directory"/> in <paramref name="text"/> to its form relative to it, by
-    /// dropping the directory prefix. Case is ignored, as on Windows and macOS.
+    /// dropping the directory prefix, with forward slashes as in <see cref="Key"/>. Case is ignored, as on Windows and
+    /// macOS.
     /// </summary>
     /// <param name="directory">The absolute solution directory.</param>
+    /// <remarks>
+    /// A quoted path ends at its closing quote, an unquoted one at the first whitespace, so an unquoted path with a
+    /// space keeps the separators after it.
+    /// </remarks>
     public static string Relativize(string text, string directory)
     {
         var trimmed = Path.TrimEndingDirectorySeparator(directory);
 
         // MSBuild writes either separator on Windows. The lookbehind keeps a path that only contains the directory.
-        var roots = new[] { trimmed, trimmed.Replace('\\', '/') }.Distinct(StringComparer.Ordinal).Select(Regex.Escape);
-        var pattern = $@"(?<![\w.\-/\\])(?:{string.Join('|', roots)})[/\\]";
-        return Regex.Replace(text, pattern, "", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        var roots = string.Join('|', new[] { trimmed, trimmed.Replace('\\', '/') }.Distinct(StringComparer.Ordinal).Select(Regex.Escape));
+        var pattern = $@"(?<![\w.\-/\\])(?:(?<quote>['""])(?:{roots})[/\\](?<rest>[^'""\r\n]*)|(?:{roots})[/\\](?<rest>[^\s'""]*))";
+        return Regex.Replace(
+            text,
+            pattern,
+            match => match.Groups["quote"].Value + match.Groups["rest"].Value.Replace('\\', '/'),
+            RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
     }
 }
