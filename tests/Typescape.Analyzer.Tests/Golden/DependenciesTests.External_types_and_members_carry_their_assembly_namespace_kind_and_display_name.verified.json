@@ -1,0 +1,94 @@
+{
+  "externalTypes": [
+    {
+      "key": "System.Collections|T:System.Collections.Generic.Dictionary`2.KeyCollection",
+      "name": "Dictionary<TKey, TValue>.KeyCollection",
+      "assembly": "System.Collections",
+      "namespace": "System.Collections.Generic",
+      "kind": "class"
+    },
+    {
+      "key": "System.Runtime|T:System.String",
+      "name": "String",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "class"
+    },
+    {
+      "key": "System.Runtime|T:System.Int32",
+      "name": "Int32",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "struct"
+    },
+    {
+      "key": "System.Runtime|T:System.IDisposable",
+      "name": "IDisposable",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "interface"
+    },
+    {
+      "key": "System.Runtime|T:System.DayOfWeek",
+      "name": "DayOfWeek",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "enum"
+    },
+    {
+      "key": "System.Runtime|T:System.Action",
+      "name": "Action",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "delegate"
+    },
+    {
+      "key": "System.Collections|T:System.Collections.Generic.List`1",
+      "name": "List<T>",
+      "assembly": "System.Collections",
+      "namespace": "System.Collections.Generic",
+      "kind": "class"
+    },
+    {
+      "key": "System.Console|T:System.Console",
+      "name": "Console",
+      "assembly": "System.Console",
+      "namespace": "System",
+      "kind": "class"
+    },
+    {
+      "key": "System.Runtime|T:System.Environment",
+      "name": "Environment",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "class"
+    }
+  ],
+  "externalMembers": [
+    {
+      "key": "M:System.Collections.Generic.List`1.Add(`0)",
+      "type": "System.Collections|T:System.Collections.Generic.List`1",
+      "name": "List<T>.Add(T)"
+    },
+    {
+      "key": "M:System.Console.WriteLine(System.String)",
+      "type": "System.Console|T:System.Console",
+      "name": "Console.WriteLine(string)"
+    },
+    {
+      "key": "M:System.String.Join``1(System.String,System.Collections.Generic.IEnumerable{``0})",
+      "type": "System.Runtime|T:System.String",
+      "name": "String.Join<T>(string, IEnumerable<T>)"
+    },
+    {
+      "key": "M:System.Int32.TryParse(System.String,System.Int32@)",
+      "type": "System.Runtime|T:System.Int32",
+      "name": "Int32.TryParse(string, out int)"
+    },
+    {
+      "key": "P:System.Environment.TickCount",
+      "type": "System.Runtime|T:System.Environment",
+      "name": "Environment.TickCount"
+    }
+  ]
+}

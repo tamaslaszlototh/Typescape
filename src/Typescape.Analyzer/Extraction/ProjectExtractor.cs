@@ -42,7 +42,7 @@ internal static class ProjectExtractor
             documented.Documents.Count > 0 ? documented : documented with { Documents = [new DocumentFact(key, GeneratedReason: null)] },
             AnalyzerErrors.Catch(
                 key,
-                () => ProjectFacts.Empty with { Dependencies = Dependencies.Of(compilation.GetSemanticModel(document), key, scope) },
+                () => Dependencies.Of(compilation.GetSemanticModel(document), key, scope),
                 cancellationToken),
         ]);
     }

@@ -1,5 +1,4 @@
 {
-  "documents": [],
   "types": [
     {
       "key": "App|T:Order",
@@ -142,7 +141,5 @@
       },
       "generated": true
     }
-  ],
-  "dependencies": [],
-  "analyzerErrors": []
+  ]
 }

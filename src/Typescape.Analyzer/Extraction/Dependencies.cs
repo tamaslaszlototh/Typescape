@@ -1,21 +1,26 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
 using Typescape.Snapshot.Records;
 
 namespace Typescape.Analyzer.Extraction;
 
 /// <summary>
-/// The Dependencies one document's syntax shows, one fact per place: from the innermost own type around it to the
+/// The Dependencies one document's syntax shows, one Occurrence per place: from the innermost own type around it to the
 /// named type's open definition. A type's use of itself is no Dependency. A place in a lambda or local function belongs
-/// to the Executable Member around it.
+/// to the Executable Member around it. A type reference that does not resolve is only counted.
 /// </summary>
 internal sealed class Dependencies : CSharpSyntaxWalker
 {
     private readonly SemanticModel model;
     private readonly string document;
     private readonly ProjectScope scope;
-    private readonly List<DependencyFact> facts = [];
+    private readonly Targets targets;
+    private readonly Dictionary<(string Source, string Target, DependencyKind Kind), DependencyFact> dependencies = [];
+    private readonly List<OccurrenceFact> occurrences = [];
+    private readonly Dictionary<string, int> unresolved = [];
+    private readonly HashSet<(TextSpan, string)> unresolvedPlaces = [];
     private (INamedTypeSymbol Type, string Key)? source;
     private ISymbol? member;
     private string? executable;
@@ -26,14 +31,23 @@ internal sealed class Dependencies : CSharpSyntaxWalker
         this.model = model;
         this.document = document;
         this.scope = scope;
+        targets = new Targets(scope);
     }
 
     /// <param name="document">The key of the document <paramref name="model"/> is for.</param>
-    public static IReadOnlyList<DependencyFact> Of(SemanticModel model, string document, ProjectScope scope)
+    public static ProjectFacts Of(SemanticModel model, string document, ProjectScope scope)
     {
         var walker = new Dependencies(model, document, scope);
         walker.Visit(model.SyntaxTree.GetRoot(scope.CancellationToken));
-        return walker.facts;
+        return ProjectFacts.Empty with
+        {
+            Dependencies = [.. walker.dependencies.Values],
+            Occurrences = walker.occurrences,
+            ExternalTypes = [.. walker.targets.ExternalTypes],
+            ExternalMembers = [.. walker.targets.ExternalMembers],
+            NonExecutableMembers = [.. walker.targets.NonExecutableMembers],
+            UnresolvedTypes = [.. walker.unresolved.Select(pair => new UnresolvedTypeFact(pair.Key, pair.Value))],
+        };
     }
 
     public override void VisitClassDeclaration(ClassDeclarationSyntax node) => InType(node, () => base.VisitClassDeclaration(node));
@@ -154,7 +168,7 @@ internal sealed class Dependencies : CSharpSyntaxWalker
     {
         if (node.Parent is BasePropertyDeclarationSyntax && member is IPropertySymbol { GetMethod: { } getter })
         {
-            InMember(getter, node, () => base.VisitArrowExpressionClause(node));
+            InMember(getter, () => base.VisitArrowExpressionClause(node));
         }
         else
         {
@@ -200,15 +214,24 @@ internal sealed class Dependencies : CSharpSyntaxWalker
 
     public override void VisitObjectCreationExpression(ObjectCreationExpressionSyntax node)
     {
-        Use(node.Type, DependencyKind.New);
+        Use(node.Type, DependencyKind.New, model.GetSymbolInfo(node, scope.CancellationToken).Symbol);
         base.VisitObjectCreationExpression(node);
     }
 
-    // The created type is the target type, which the code does not write: its type arguments are no generic-arg.
+    // The created type is the target type, which the code does not write: its type arguments are no generic-arg, and
+    // where it does not resolve, the declaration that writes it counts it.
     public override void VisitImplicitObjectCreationExpression(ImplicitObjectCreationExpressionSyntax node)
     {
         var created = model.GetTypeInfo(node, scope.CancellationToken).Type;
-        Record(created is INamedTypeSymbol { OriginalDefinition.SpecialType: SpecialType.System_Nullable_T } nullable ? nullable.TypeArguments[0] : created, DependencyKind.New, node);
+        if (created is not { TypeKind: TypeKind.Error })
+        {
+            Record(
+                created is INamedTypeSymbol { OriginalDefinition.SpecialType: SpecialType.System_Nullable_T } nullable ? nullable.TypeArguments[0] : created,
+                DependencyKind.New,
+                node,
+                model.GetSymbolInfo(node, scope.CancellationToken).Symbol);
+        }
+
         base.VisitImplicitObjectCreationExpression(node);
     }
 
@@ -235,12 +258,33 @@ internal sealed class Dependencies : CSharpSyntaxWalker
             return;
         }
 
+        // A call that fails overload resolution still names its type among the candidates, but no one member.
         if (called is IMethodSymbol method)
         {
-            Record(Owner(method), DependencyKind.Call, InvokedName(node.Expression));
+            Record(Symbols.Owner(method), DependencyKind.Call, InvokedName(node.Expression), info.Symbol);
         }
 
         base.VisitInvocationExpression(node);
+    }
+
+    public override void VisitMemberAccessExpression(MemberAccessExpressionSyntax node)
+    {
+        if (node.Expression is SimpleNameSyntax receiver)
+        {
+            Unbound(receiver);
+        }
+
+        base.VisitMemberAccessExpression(node);
+    }
+
+    public override void VisitConditionalAccessExpression(ConditionalAccessExpressionSyntax node)
+    {
+        if (node.Expression is SimpleNameSyntax receiver)
+        {
+            Unbound(receiver);
+        }
+
+        base.VisitConditionalAccessExpression(node);
     }
 
     public override void VisitIdentifierName(IdentifierNameSyntax node)
@@ -399,9 +443,11 @@ internal sealed class Dependencies : CSharpSyntaxWalker
 
     public override void VisitAttribute(AttributeSyntax node)
     {
-        // A constructor that fails overload resolution still names its attribute type among the candidates.
+        // A constructor that fails overload resolution still names its attribute type among the candidates. An attribute
+        // type that does not resolve has neither, only its name's error type.
         var info = model.GetSymbolInfo(node, scope.CancellationToken);
-        Record((info.Symbol ?? info.CandidateSymbols.FirstOrDefault())?.ContainingType, DependencyKind.Attribute, node);
+        var type = (info.Symbol ?? info.CandidateSymbols.FirstOrDefault())?.ContainingType ?? model.GetTypeInfo(node.Name, scope.CancellationToken).Type;
+        Record(type, DependencyKind.Attribute, node, info.Symbol);
         base.VisitAttribute(node);
     }
 
@@ -459,7 +505,7 @@ internal sealed class Dependencies : CSharpSyntaxWalker
     {
         if (model.GetDeclaredSymbol(declaration, scope.CancellationToken) is { } declared)
         {
-            InMember(declared, declaration, visit);
+            InMember(declared, visit);
         }
         else
         {
@@ -467,11 +513,11 @@ internal sealed class Dependencies : CSharpSyntaxWalker
         }
     }
 
-    private void InMember(ISymbol declared, SyntaxNode declaration, Action visit)
+    private void InMember(ISymbol declared, Action visit)
     {
         var outer = (member, executable);
         member = declared;
-        executable = declared is IMethodSymbol method && source is { } from ? ExecutableMembers.Key(method, declaration, from.Key) : null;
+        executable = declared is IMethodSymbol method && source is { } from ? ExecutableMembers.Key(method, from.Key, scope.CancellationToken) : null;
         visit();
         (member, executable) = outer;
     }
@@ -487,7 +533,10 @@ internal sealed class Dependencies : CSharpSyntaxWalker
                 Record(type, DependencyKind.TypeUsage, argument);
                 break;
             case IFieldSymbol or IPropertySymbol or IEventSymbol or IMethodSymbol:
-                Record(Owner(named), DependencyKind.TypeUsage, argument);
+                Record(Symbols.Owner(named), DependencyKind.TypeUsage, argument);
+                break;
+            case null when argument is SimpleNameSyntax name:
+                Unbound(name);
                 break;
         }
 
@@ -512,11 +561,11 @@ internal sealed class Dependencies : CSharpSyntaxWalker
             case IFieldSymbol { CorrespondingTupleField: not null }:
                 break;
             case IFieldSymbol or IPropertySymbol or IEventSymbol:
-                Record(Owner(accessed), DependencyKind.MemberAccess, name);
+                Record(Symbols.Owner(accessed), DependencyKind.MemberAccess, name, accessed);
                 break;
             // An attribute's name binds to its constructor.
             case IMethodSymbol { MethodKind: not MethodKind.Constructor } method when !IsInvoked(name):
-                Record(Owner(method), DependencyKind.MemberAccess, name);
+                Record(Symbols.Owner(method), DependencyKind.MemberAccess, name, method);
                 break;
         }
     }
@@ -525,16 +574,63 @@ internal sealed class Dependencies : CSharpSyntaxWalker
     {
         if (!inNameof && model.GetSymbolInfo(access, scope.CancellationToken).Symbol is IPropertySymbol indexer)
         {
-            Record(Owner(indexer), DependencyKind.MemberAccess, access);
+            Record(Symbols.Owner(indexer), DependencyKind.MemberAccess, access, indexer);
         }
     }
 
     private void PatternType(ExpressionSyntax expression)
     {
-        if (expression is TypeSyntax type && model.GetSymbolInfo(type, scope.CancellationToken).Symbol is ITypeSymbol)
+        if (expression is not TypeSyntax type)
+        {
+            return;
+        }
+
+        if (model.GetSymbolInfo(type, scope.CancellationToken).Symbol is ITypeSymbol)
         {
             Use(type, DependencyKind.TypeUsage);
         }
+        else if (Leftmost(type) is { } name)
+        {
+            Unbound(name);
+        }
+    }
+
+    private static SimpleNameSyntax? Leftmost(TypeSyntax type) => type switch
+    {
+        SimpleNameSyntax name => name,
+        QualifiedNameSyntax qualified => Leftmost(qualified.Left),
+        _ => null,
+    };
+
+    // A name that binds to nothing where the code reaches into it, tests it in a pattern or names it in nameof is a type
+    // that did not resolve, as in `JsonConvert.SerializeObject(x)`. A lowercase name is taken for a local or parameter,
+    // and a name in a type whose base class did not resolve may be a member it inherits.
+    private void Unbound(SimpleNameSyntax name)
+    {
+        var text = name.Identifier.ValueText;
+        if (char.IsUpper(text[0])
+            && model.GetSymbolInfo(name, scope.CancellationToken) is { Symbol: null, CandidateSymbols.IsEmpty: true }
+            && !MayInherit(source?.Type))
+        {
+            Unresolved(text, name);
+        }
+    }
+
+    // A nested type also reaches the members its containing types inherit.
+    private static bool MayInherit(INamedTypeSymbol? type)
+    {
+        for (var current = type; current is not null; current = current.ContainingType)
+        {
+            for (var baseType = current.BaseType; baseType is not null; baseType = baseType.BaseType)
+            {
+                if (baseType.TypeKind == TypeKind.Error)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     private static bool IsInvoked(SimpleNameSyntax name)
@@ -552,10 +648,6 @@ internal sealed class Dependencies : CSharpSyntaxWalker
         MemberBindingExpressionSyntax binding => binding.Name,
         _ => expression,
     };
-
-    // An extension block is no type: its members belong to the static class around it.
-    private static INamedTypeSymbol? Owner(ISymbol member) =>
-        member.ContainingType is { IsExtension: true } block ? block.ContainingType : member.ContainingType;
 
     private DependencyKind BaseKind(INamedTypeSymbol type, TypeSyntax baseType) =>
         type.TypeKind != TypeKind.Interface && model.GetTypeInfo(baseType, scope.CancellationToken).Type is { TypeKind: TypeKind.Interface }
@@ -587,8 +679,9 @@ internal sealed class Dependencies : CSharpSyntaxWalker
         }
     }
 
-    // Syntax sugar is see-through: the code names the element types, not Nullable<T> or ValueTuple.
-    private void Use(TypeSyntax syntax, DependencyKind kind)
+    // Syntax sugar is see-through: the code names the element types, not Nullable<T> or ValueTuple. `used` is the member
+    // the place uses, e.g. the constructor of a `new`.
+    private void Use(TypeSyntax syntax, DependencyKind kind, ISymbol? used = null)
     {
         switch (syntax)
         {
@@ -627,16 +720,16 @@ internal sealed class Dependencies : CSharpSyntaxWalker
             case IdentifierNameSyntax { IsVar: true } name when model.GetSymbolInfo(name, scope.CancellationToken).Symbol is not INamedTypeSymbol { Name: "var" }:
                 break;
             case IdentifierNameSyntax name when model.GetAliasInfo(name, scope.CancellationToken) is not null:
-                Aliased(model.GetTypeInfo(syntax, scope.CancellationToken).Type, kind, syntax);
+                Aliased(model.GetTypeInfo(syntax, scope.CancellationToken).Type, kind, syntax, used);
                 break;
             default:
-                Record(model.GetTypeInfo(syntax, scope.CancellationToken).Type, kind, syntax);
+                Record(model.GetTypeInfo(syntax, scope.CancellationToken).Type, kind, syntax, used);
                 break;
         }
     }
 
     // The same sugar as Use, on the symbol: an alias hides the named type's syntax, type arguments included.
-    private void Aliased(ITypeSymbol? type, DependencyKind kind, SyntaxNode at)
+    private void Aliased(ITypeSymbol? type, DependencyKind kind, SyntaxNode at, ISymbol? used = null)
     {
         switch (type)
         {
@@ -657,7 +750,7 @@ internal sealed class Dependencies : CSharpSyntaxWalker
                 Aliased(nullable.TypeArguments[0], kind, at);
                 break;
             case INamedTypeSymbol named:
-                Record(named, kind, at);
+                Record(named, kind, at, used);
                 for (var current = named; current is not null; current = current.ContainingType)
                 {
                     foreach (var argument in current.TypeArguments)
@@ -670,28 +763,52 @@ internal sealed class Dependencies : CSharpSyntaxWalker
         }
     }
 
-    private void Record(ITypeSymbol? type, DependencyKind kind, SyntaxNode at)
+    // `used` is the member of `type` the place uses, if any; a member of another type counts as none.
+    private void Record(ITypeSymbol? type, DependencyKind kind, SyntaxNode at, ISymbol? used = null)
     {
-        // Type parameters, dynamic, arrays and pointers are no types to depend on; an unresolved type is no Dependency.
-        // An anonymous type has no key.
-        if (source is not { } from || type is not INamedTypeSymbol { TypeKind: not TypeKind.Error, IsAnonymousType: false } named)
+        // An unresolved type is no Dependency and no External Type. Type parameters, dynamic, arrays and pointers are no
+        // types to depend on. An anonymous type has no key.
+        if (type is INamedTypeSymbol { TypeKind: TypeKind.Error } error)
+        {
+            Unresolved(error.Name.Length > 0 ? error.Name : at.ToString(), at);
+            return;
+        }
+
+        if (source is not { } from || type is not INamedTypeSymbol { IsAnonymousType: false } named)
         {
             return;
         }
 
-        var target = named.OriginalDefinition;
-        if (target.SpecialType == SpecialType.System_Void || SymbolEqualityComparer.Default.Equals(target, from.Type))
+        var definition = named.OriginalDefinition;
+        if (definition.SpecialType == SpecialType.System_Void || SymbolEqualityComparer.Default.Equals(definition, from.Type))
         {
             return;
         }
 
-        facts.Add(new DependencyFact(
-            from.Key,
-            executable,
-            Symbols.TypeKey(target, scope.Context),
-            kind,
-            document,
-            Source.Lines(at.SyntaxTree, at.Span, scope.CancellationToken).Start,
-            scope.Generated.CodeIsGenerated(from.Type, at, member)));
+        var target = targets.Type(definition);
+        var generated = scope.Generated.CodeIsGenerated(from.Type, at, member) ? 1 : 0;
+        var counted = dependencies.GetValueOrDefault((from.Key, target.Key, kind)) ?? new DependencyFact(from.Key, target.Key, kind, 0, 0);
+        dependencies[(from.Key, target.Key, kind)] = counted with { Count = counted.Count + 1, GeneratedCount = counted.GeneratedCount + generated };
+
+        if (scope.Context.Occurrences)
+        {
+            occurrences.Add(new OccurrenceFact(
+                from.Key,
+                target.Key,
+                kind,
+                executable,
+                used is null ? null : targets.Member(used, target, at),
+                document,
+                Source.Lines(at.SyntaxTree, at.Span, scope.CancellationToken).Start));
+        }
+    }
+
+    // Counted once per place, though a place can be two Occurrences, as a positional record parameter is.
+    private void Unresolved(string name, SyntaxNode at)
+    {
+        if (unresolvedPlaces.Add((at.Span, name)))
+        {
+            unresolved[name] = unresolved.GetValueOrDefault(name) + 1;
+        }
     }
 }

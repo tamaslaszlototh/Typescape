@@ -1,0 +1,124 @@
+{
+  "occurrences": [
+    {
+      "source": "App|T:Texts",
+      "target": "System.Runtime|T:System.String",
+      "kind": "signature",
+      "sourceMember": null,
+      "targetMember": null,
+      "document": "App/Snippet.cs",
+      "line": 11
+    },
+    {
+      "source": "App|T:Texts",
+      "target": "System.Runtime|T:System.String",
+      "kind": "signature",
+      "sourceMember": "App|T:Texts|M:Texts.Shout(System.String)",
+      "targetMember": null,
+      "document": "App/Snippet.cs",
+      "line": 13
+    },
+    {
+      "source": "App|T:Texts",
+      "target": "System.Runtime|T:System.String",
+      "kind": "signature",
+      "sourceMember": "App|T:Texts|M:Texts.Log(System.String)",
+      "targetMember": null,
+      "document": "App/Snippet.cs",
+      "line": 16
+    },
+    {
+      "source": "App|T:Texts",
+      "target": "System.Runtime|T:System.String",
+      "kind": "signature",
+      "sourceMember": "App|T:Texts|M:Texts.Log(System.String)",
+      "targetMember": null,
+      "document": "App/Snippet.cs",
+      "line": 17
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "App|T:Shape",
+      "kind": "signature",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint(Shape,IRender)",
+      "targetMember": null,
+      "document": "App/Snippet.cs",
+      "line": 22
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "App|T:IRender",
+      "kind": "signature",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint(Shape,IRender)",
+      "targetMember": null,
+      "document": "App/Snippet.cs",
+      "line": 22
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "App|T:Shape",
+      "kind": "call",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint(Shape,IRender)",
+      "targetMember": "App|T:Shape|M:Shape.Scale",
+      "document": "App/Snippet.cs",
+      "line": 24
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "App|T:Shape",
+      "kind": "call",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint(Shape,IRender)",
+      "targetMember": "App|T:Shape|M:Shape.Draw",
+      "document": "App/Snippet.cs",
+      "line": 25
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "App|T:IRender",
+      "kind": "call",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint(Shape,IRender)",
+      "targetMember": "App|T:IRender|M:IRender.Render",
+      "document": "App/Snippet.cs",
+      "line": 26
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "App|T:Texts",
+      "kind": "call",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint(Shape,IRender)",
+      "targetMember": "App|T:Texts|M:Texts.Log(System.String)",
+      "document": "App/Snippet.cs",
+      "line": 27
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "App|T:Texts",
+      "kind": "call",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint(Shape,IRender)",
+      "targetMember": "App|T:Texts|M:Texts.Shout(System.String)",
+      "document": "App/Snippet.cs",
+      "line": 27
+    }
+  ],
+  "externalTypes": [
+    {
+      "key": "System.Runtime|T:System.String",
+      "name": "String",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "class"
+    }
+  ],
+  "nonExecutableMembers": [
+    {
+      "key": "App|T:Shape|M:Shape.Draw",
+      "type": "App|T:Shape",
+      "name": "Shape.Draw()"
+    },
+    {
+      "key": "App|T:IRender|M:IRender.Render",
+      "type": "App|T:IRender",
+      "name": "IRender.Render()"
+    }
+  ]
+}

@@ -20,6 +20,10 @@ _Avoid_: UI, frontend, dashboard
 A type referenced by the analyzed solution but defined outside it (framework or package); shown only as a collapsed stub.
 _Avoid_: Library type, foreign type
 
+**External member**:
+A member of an External Type that an Occurrence targets, such as a called framework method; like the External Type, it is shown only by name.
+_Avoid_: Library member, foreign member
+
 **Executable Member**:
 A member of a type that has an executable body (method, constructor, destructor, operator, conversion, or a single property/indexer/event accessor) and is the unit metrics are measured on; lambdas and local functions belong to their containing Executable Member.
 _Avoid_: Method, function, routine, member body

@@ -1,6 +1,4 @@
 {
-  "documents": [],
-  "types": [],
   "executableMembers": [
     {
       "key": "App|T:Order|M:Order.Validate",
@@ -15,7 +13,5 @@
       },
       "generated": true
     }
-  ],
-  "dependencies": [],
-  "analyzerErrors": []
+  ]
 }

@@ -39,7 +39,7 @@ public class DiagnoseTests
         var compiled = new CompiledProject(
             new LoadedProject("App/App.csproj", project, "net10.0", ["net10.0"]),
             compilation,
-            new ProjectContext("App/App.csproj", "/repo", Test: false, new HashSet<string>()));
+            new ProjectContext("App/App.csproj", "/repo", Test: false, new HashSet<string>(), Occurrences: true));
 
         return new MSBuildStages().Diagnose(compiled, TestContext.Current.CancellationToken);
     }

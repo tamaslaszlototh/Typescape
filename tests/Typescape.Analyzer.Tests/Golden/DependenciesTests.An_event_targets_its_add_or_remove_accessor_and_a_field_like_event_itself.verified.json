@@ -1,0 +1,106 @@
+{
+  "occurrences": [
+    {
+      "source": "App|T:Shape",
+      "target": "System.Runtime|T:System.EventHandler",
+      "kind": "member-type",
+      "sourceMember": null,
+      "targetMember": null,
+      "document": "App/Snippet.cs",
+      "line": 5
+    },
+    {
+      "source": "App|T:Shape",
+      "target": "System.Runtime|T:System.EventHandler",
+      "kind": "member-type",
+      "sourceMember": null,
+      "targetMember": null,
+      "document": "App/Snippet.cs",
+      "line": 6
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "App|T:Shape",
+      "kind": "signature",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint(Shape)",
+      "targetMember": null,
+      "document": "App/Snippet.cs",
+      "line": 11
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "App|T:Shape",
+      "kind": "member-access",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint(Shape)",
+      "targetMember": "App|T:Shape|M:Shape.add_Moved(System.EventHandler)",
+      "document": "App/Snippet.cs",
+      "line": 13
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "App|T:Shape",
+      "kind": "member-access",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint(Shape)",
+      "targetMember": "App|T:Shape|M:Shape.remove_Moved(System.EventHandler)",
+      "document": "App/Snippet.cs",
+      "line": 14
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "App|T:Shape",
+      "kind": "member-access",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint(Shape)",
+      "targetMember": "App|T:Shape|E:Shape.Changed",
+      "document": "App/Snippet.cs",
+      "line": 15
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "System.Runtime|T:System.Object",
+      "kind": "signature",
+      "sourceMember": "App|T:Canvas|M:Canvas.OnMoved(System.Object,System.EventArgs)",
+      "targetMember": null,
+      "document": "App/Snippet.cs",
+      "line": 18
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "System.Runtime|T:System.EventArgs",
+      "kind": "signature",
+      "sourceMember": "App|T:Canvas|M:Canvas.OnMoved(System.Object,System.EventArgs)",
+      "targetMember": null,
+      "document": "App/Snippet.cs",
+      "line": 18
+    }
+  ],
+  "externalTypes": [
+    {
+      "key": "System.Runtime|T:System.EventHandler",
+      "name": "EventHandler",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "delegate"
+    },
+    {
+      "key": "System.Runtime|T:System.Object",
+      "name": "Object",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "class"
+    },
+    {
+      "key": "System.Runtime|T:System.EventArgs",
+      "name": "EventArgs",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "class"
+    }
+  ],
+  "nonExecutableMembers": [
+    {
+      "key": "App|T:Shape|E:Shape.Changed",
+      "type": "App|T:Shape",
+      "name": "Shape.Changed"
+    }
+  ]
+}

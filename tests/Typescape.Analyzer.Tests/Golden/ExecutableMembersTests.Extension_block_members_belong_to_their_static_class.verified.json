@@ -1,6 +1,4 @@
 {
-  "documents": [],
-  "types": [],
   "executableMembers": [
     {
       "key": "App|T:Text|M:Text.get_IsBlank(System.String)",
@@ -41,7 +39,5 @@
       },
       "generated": false
     }
-  ],
-  "dependencies": [],
-  "analyzerErrors": []
+  ]
 }

@@ -1,0 +1,119 @@
+{
+  "dependencies": [
+    {
+      "source": "App|T:Order",
+      "target": "System.Runtime|T:System.Guid",
+      "kind": "generic-arg",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": "App|T:Store",
+      "target": "System.Runtime|T:System.String",
+      "kind": "signature",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": "App|T:Store",
+      "target": "System.Runtime|T:System.Object",
+      "kind": "signature",
+      "count": 1,
+      "generatedCount": 0
+    }
+  ],
+  "occurrences": [
+    {
+      "source": "App|T:Order",
+      "target": "System.Runtime|T:System.Guid",
+      "kind": "generic-arg",
+      "sourceMember": null,
+      "targetMember": null,
+      "document": "App/Snippet.cs",
+      "line": 5
+    },
+    {
+      "source": "App|T:Store",
+      "target": "System.Runtime|T:System.String",
+      "kind": "signature",
+      "sourceMember": "App|T:Store|M:Store.Save(System.Object)",
+      "targetMember": null,
+      "document": "App/Snippet.cs",
+      "line": 12
+    },
+    {
+      "source": "App|T:Store",
+      "target": "System.Runtime|T:System.Object",
+      "kind": "signature",
+      "sourceMember": "App|T:Store|M:Store.Save(System.Object)",
+      "targetMember": null,
+      "document": "App/Snippet.cs",
+      "line": 12
+    }
+  ],
+  "externalTypes": [
+    {
+      "key": "System.Runtime|T:System.Guid",
+      "name": "Guid",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "struct"
+    },
+    {
+      "key": "System.Runtime|T:System.String",
+      "name": "String",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "class"
+    },
+    {
+      "key": "System.Runtime|T:System.Object",
+      "name": "Object",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "class"
+    }
+  ],
+  "unresolvedTypes": [
+    {
+      "name": "Base",
+      "count": 1
+    },
+    {
+      "name": "IMissing",
+      "count": 1
+    },
+    {
+      "name": "JsonObject",
+      "count": 1
+    },
+    {
+      "name": "JsonSerializer",
+      "count": 2
+    },
+    {
+      "name": "JsonConvert",
+      "count": 1
+    },
+    {
+      "name": "JsonToken",
+      "count": 2
+    },
+    {
+      "name": "JsonReader",
+      "count": 1
+    },
+    {
+      "name": "JsonWriter",
+      "count": 1
+    },
+    {
+      "name": "JsonProperty",
+      "count": 1
+    },
+    {
+      "name": "JsonSettings",
+      "count": 1
+    }
+  ]
+}

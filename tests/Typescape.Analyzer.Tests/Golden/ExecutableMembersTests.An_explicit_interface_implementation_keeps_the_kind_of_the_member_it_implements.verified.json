@@ -1,6 +1,4 @@
 {
-  "documents": [],
-  "types": [],
   "executableMembers": [
     {
       "key": "App|T:IAmount`1|M:IAmount`1.Zero",
@@ -67,7 +65,5 @@
       },
       "generated": false
     }
-  ],
-  "dependencies": [],
-  "analyzerErrors": []
+  ]
 }

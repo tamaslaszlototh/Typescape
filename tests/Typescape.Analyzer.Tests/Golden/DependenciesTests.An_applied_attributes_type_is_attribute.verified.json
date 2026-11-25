@@ -1,71 +1,67 @@
 {
-  "documents": [],
-  "types": [],
-  "executableMembers": [],
-  "dependencies": [
+  "occurrences": [
     {
       "source": "App|T:Order",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.SerializableAttribute",
       "kind": "attribute",
+      "sourceMember": null,
+      "targetMember": "M:System.SerializableAttribute.#ctor",
       "document": "App/Snippet.cs",
-      "line": 3,
-      "generated": false
+      "line": 3
     },
     {
       "source": "App|T:Order",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.Int32",
       "kind": "member-type",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 6,
-      "generated": false
+      "line": 6
     },
     {
       "source": "App|T:Order",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.ObsoleteAttribute",
       "kind": "attribute",
+      "sourceMember": null,
+      "targetMember": "M:System.ObsoleteAttribute.#ctor",
       "document": "App/Snippet.cs",
-      "line": 6,
-      "generated": false
+      "line": 6
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Count(System.Int32)",
       "target": "System.Runtime|T:System.UInt32",
       "kind": "signature",
+      "sourceMember": "App|T:Order|M:Order.Count(System.Int32)",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 9,
-      "generated": false
+      "line": 9
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Count(System.Int32)",
       "target": "System.Runtime|T:System.Int32",
       "kind": "signature",
+      "sourceMember": "App|T:Order|M:Order.Count(System.Int32)",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 9,
-      "generated": false
+      "line": 9
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Count(System.Int32)",
       "target": "System.Runtime|T:System.CLSCompliantAttribute",
       "kind": "attribute",
+      "sourceMember": "App|T:Order|M:Order.Count(System.Int32)",
+      "targetMember": "M:System.CLSCompliantAttribute.#ctor(System.Boolean)",
       "document": "App/Snippet.cs",
-      "line": 8,
-      "generated": false
+      "line": 8
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Count(System.Int32)",
       "target": "System.Runtime|T:System.CLSCompliantAttribute",
       "kind": "attribute",
+      "sourceMember": "App|T:Order|M:Order.Count(System.Int32)",
+      "targetMember": "M:System.CLSCompliantAttribute.#ctor(System.Boolean)",
       "document": "App/Snippet.cs",
-      "line": 9,
-      "generated": false
+      "line": 9
     }
-  ],
-  "analyzerErrors": []
+  ]
 }

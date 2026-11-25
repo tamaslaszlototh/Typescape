@@ -1,35 +1,31 @@
 {
-  "documents": [],
-  "types": [],
-  "executableMembers": [],
-  "dependencies": [
+  "occurrences": [
     {
       "source": "App|T:Node`1",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.IEquatable`1",
       "kind": "implements",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 3,
-      "generated": false
+      "line": 3
     },
     {
       "source": "App|T:Node`1",
-      "sourceMember": "App|T:Node`1|M:Node`1.Next(Node{System.Int32})",
       "target": "System.Runtime|T:System.Int32",
       "kind": "generic-arg",
+      "sourceMember": "App|T:Node`1|M:Node`1.Next(Node{System.Int32})",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 6,
-      "generated": false
+      "line": 6
     },
     {
       "source": "App|T:Node`1",
-      "sourceMember": "App|T:Node`1|M:Node`1.Equals(Node{`0})",
       "target": "System.Runtime|T:System.Boolean",
       "kind": "signature",
+      "sourceMember": "App|T:Node`1|M:Node`1.Equals(Node{`0})",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 7,
-      "generated": false
+      "line": 7
     }
-  ],
-  "analyzerErrors": []
+  ]
 }

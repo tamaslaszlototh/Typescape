@@ -12,9 +12,5 @@
       "path": "App/obj/Generators/Unmarked.cs",
       "generatedReason": "generator"
     }
-  ],
-  "types": [],
-  "executableMembers": [],
-  "dependencies": [],
-  "analyzerErrors": []
+  ]
 }

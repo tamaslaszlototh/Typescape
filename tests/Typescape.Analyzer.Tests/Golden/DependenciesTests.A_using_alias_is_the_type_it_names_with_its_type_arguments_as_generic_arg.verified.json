@@ -1,35 +1,31 @@
 {
-  "documents": [],
-  "types": [],
-  "executableMembers": [],
-  "dependencies": [
+  "occurrences": [
     {
       "source": "App|T:Order",
-      "sourceMember": null,
       "target": "System.Collections|T:System.Collections.Generic.List`1",
       "kind": "member-type",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 6,
-      "generated": false
+      "line": 6
     },
     {
       "source": "App|T:Order",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.Guid",
       "kind": "generic-arg",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 6,
-      "generated": false
+      "line": 6
     },
     {
       "source": "App|T:Order",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.Guid",
       "kind": "member-type",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 7,
-      "generated": false
+      "line": 7
     }
-  ],
-  "analyzerErrors": []
+  ]
 }

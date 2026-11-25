@@ -1,0 +1,102 @@
+{
+  "occurrences": [
+    {
+      "source": "App|T:Shape",
+      "target": "System.Runtime|T:System.Int32",
+      "kind": "member-type",
+      "sourceMember": null,
+      "targetMember": null,
+      "document": "App/Snippet.cs",
+      "line": 3
+    },
+    {
+      "source": "App|T:Shape",
+      "target": "System.Runtime|T:System.Int32",
+      "kind": "member-type",
+      "sourceMember": null,
+      "targetMember": null,
+      "document": "App/Snippet.cs",
+      "line": 4
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "System.Runtime|T:System.Int32",
+      "kind": "signature",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint(Shape)",
+      "targetMember": null,
+      "document": "App/Snippet.cs",
+      "line": 11
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "App|T:Shape",
+      "kind": "signature",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint(Shape)",
+      "targetMember": null,
+      "document": "App/Snippet.cs",
+      "line": 11
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "App|T:Shape",
+      "kind": "member-access",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint(Shape)",
+      "targetMember": "App|T:Shape|F:Shape.Id",
+      "document": "App/Snippet.cs",
+      "line": 11
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "App|T:Shape",
+      "kind": "member-access",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint(Shape)",
+      "targetMember": "App|T:Shape|F:Shape.Sides",
+      "document": "App/Snippet.cs",
+      "line": 11
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "System.Runtime|T:System.Int32",
+      "kind": "type-usage",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint(Shape)",
+      "targetMember": null,
+      "document": "App/Snippet.cs",
+      "line": 11
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "App|T:Color",
+      "kind": "member-access",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint(Shape)",
+      "targetMember": "App|T:Color|F:Color.Red",
+      "document": "App/Snippet.cs",
+      "line": 11
+    }
+  ],
+  "externalTypes": [
+    {
+      "key": "System.Runtime|T:System.Int32",
+      "name": "Int32",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "struct"
+    }
+  ],
+  "nonExecutableMembers": [
+    {
+      "key": "App|T:Shape|F:Shape.Id",
+      "type": "App|T:Shape",
+      "name": "Shape.Id"
+    },
+    {
+      "key": "App|T:Shape|F:Shape.Sides",
+      "type": "App|T:Shape",
+      "name": "Shape.Sides"
+    },
+    {
+      "key": "App|T:Color|F:Color.Red",
+      "type": "App|T:Color",
+      "name": "Color.Red"
+    }
+  ]
+}

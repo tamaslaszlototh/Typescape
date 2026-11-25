@@ -23,6 +23,7 @@ internal sealed class MSBuildStages : IAnalysisStages
         SolutionLoader.LoadAsync(request, projects, cancellationToken);
 
     public async Task<CompiledProject> CompileAsync(
+        AnalysisRequest request,
         LoadedSolution solution,
         LoadedProject project,
         CancellationToken cancellationToken)
@@ -36,7 +37,7 @@ internal sealed class MSBuildStages : IAnalysisStages
             .OfType<string>()
             .ToHashSet(StringComparer.Ordinal);
 
-        var context = new ProjectContext(project.Key, solution.Directory, project.Test, generatedPaths);
+        var context = new ProjectContext(project.Key, solution.Directory, project.Test, generatedPaths, request.Occurrences);
         return new CompiledProject(project, compilation, context);
     }
 

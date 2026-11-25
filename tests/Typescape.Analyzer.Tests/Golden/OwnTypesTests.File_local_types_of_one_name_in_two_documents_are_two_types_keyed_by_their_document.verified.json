@@ -1,5 +1,4 @@
 {
-  "documents": [],
   "types": [
     {
       "key": "App|T:Helper@App/A.cs",
@@ -139,7 +138,5 @@
       },
       "generated": false
     }
-  ],
-  "dependencies": [],
-  "analyzerErrors": []
+  ]
 }

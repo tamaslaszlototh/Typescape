@@ -84,7 +84,7 @@ internal static class AnalysisPipeline
                 solution.Projects,
                 parallel,
                 new PhaseCounter(AnalysisPhase.Compile, progress),
-                (project, token) => new ValueTask<CompiledProject>(stages.CompileAsync(solution, project, token))));
+                (project, token) => new ValueTask<CompiledProject>(stages.CompileAsync(request, solution, project, token))));
 
         var diagnostics = await RunPhaseAsync(AnalysisPhase.Diagnostics, progress, provenance, cancellationToken, () =>
             ForEachAsync(

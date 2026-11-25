@@ -1,188 +1,184 @@
 {
-  "documents": [],
-  "types": [],
-  "executableMembers": [],
-  "dependencies": [
+  "occurrences": [
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
       "target": "System.Runtime|T:System.Object",
       "kind": "signature",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 6,
-      "generated": false
+      "line": 6
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
       "target": "System.Runtime|T:System.Object",
       "kind": "signature",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 6,
-      "generated": false
+      "line": 6
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
       "target": "System.Runtime|T:System.Uri",
       "kind": "signature",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 6,
-      "generated": false
+      "line": 6
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
       "target": "System.Runtime|T:System.Guid",
       "kind": "type-usage",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 8,
-      "generated": false
+      "line": 8
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
       "target": "System.Runtime|T:System.Version",
       "kind": "type-usage",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 10,
-      "generated": false
+      "line": 10
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
       "target": "System.Runtime|T:System.DateTime",
       "kind": "type-usage",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 11,
-      "generated": false
+      "line": 11
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
       "target": "System.Runtime|T:System.TimeSpan",
       "kind": "type-usage",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 12,
-      "generated": false
+      "line": 12
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
       "target": "System.Runtime|T:System.Exception",
       "kind": "type-usage",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 12,
-      "generated": false
+      "line": 12
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
       "target": "System.Runtime|T:System.Uri",
       "kind": "type-usage",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 13,
-      "generated": false
+      "line": 13
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
       "target": "System.Runtime|T:System.Uri",
       "kind": "member-access",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
+      "targetMember": "P:System.Uri.IsFile",
       "document": "App/Snippet.cs",
-      "line": 13,
-      "generated": false
+      "line": 13
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
       "target": "System.Runtime|T:System.DateOnly",
       "kind": "type-usage",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 16,
-      "generated": false
+      "line": 16
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
       "target": "System.Runtime|T:System.TimeOnly",
       "kind": "type-usage",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 17,
-      "generated": false
+      "line": 17
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
       "target": "System.Runtime|T:System.Uri",
       "kind": "type-usage",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 20,
-      "generated": false
+      "line": 20
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
       "target": "System.Runtime|T:System.FormatException",
       "kind": "type-usage",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 21,
-      "generated": false
+      "line": 21
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
       "target": "System.Runtime|T:System.Int32",
       "kind": "call",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
+      "targetMember": "M:System.Int32.TryParse(System.String,System.Int32@)",
       "document": "App/Snippet.cs",
-      "line": 22,
-      "generated": false
+      "line": 22
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
       "target": "System.Runtime|T:System.Int32",
       "kind": "type-usage",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 22,
-      "generated": false
+      "line": 22
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
       "target": "System.Runtime|T:System.Decimal",
       "kind": "type-usage",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 23,
-      "generated": false
+      "line": 23
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
       "target": "System.Runtime|T:System.Environment",
       "kind": "type-usage",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 23,
-      "generated": false
+      "line": 23
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
       "target": "System.Runtime|T:System.Half",
       "kind": "type-usage",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 24,
-      "generated": false
+      "line": 24
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
       "target": "System.Runtime|T:System.TimeZoneInfo",
       "kind": "type-usage",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Object,System.Uri[])",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 25,
-      "generated": false
+      "line": 25
     }
-  ],
-  "analyzerErrors": []
+  ]
 }

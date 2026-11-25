@@ -1,143 +1,139 @@
 {
-  "documents": [],
-  "types": [],
-  "executableMembers": [],
-  "dependencies": [
+  "occurrences": [
     {
       "source": "App|T:Order",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.Guid",
       "kind": "signature",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 3,
-      "generated": false
+      "line": 3
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.#ctor(System.Uri)",
       "target": "System.Runtime|T:System.Uri",
       "kind": "signature",
+      "sourceMember": "App|T:Order|M:Order.#ctor(System.Uri)",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 5,
-      "generated": false
+      "line": 5
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.#ctor(System.Uri)",
       "target": "System.Runtime|T:System.Guid",
       "kind": "member-access",
+      "sourceMember": "App|T:Order|M:Order.#ctor(System.Uri)",
+      "targetMember": "F:System.Guid.Empty",
       "document": "App/Snippet.cs",
-      "line": 5,
-      "generated": false
+      "line": 5
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Age(System.DateTime)",
       "target": "System.Runtime|T:System.TimeSpan",
       "kind": "signature",
+      "sourceMember": "App|T:Order|M:Order.Age(System.DateTime)",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 6,
-      "generated": false
+      "line": 6
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Age(System.DateTime)",
       "target": "System.Runtime|T:System.DateTime",
       "kind": "signature",
+      "sourceMember": "App|T:Order|M:Order.Age(System.DateTime)",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 6,
-      "generated": false
+      "line": 6
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Age(System.DateTime)",
       "target": "System.Runtime|T:System.TimeSpan",
       "kind": "member-access",
+      "sourceMember": "App|T:Order|M:Order.Age(System.DateTime)",
+      "targetMember": "F:System.TimeSpan.Zero",
       "document": "App/Snippet.cs",
-      "line": 6,
-      "generated": false
+      "line": 6
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Close(System.Decimal@,System.String@)",
       "target": "System.Runtime|T:System.Decimal",
       "kind": "signature",
+      "sourceMember": "App|T:Order|M:Order.Close(System.Decimal@,System.String@)",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 7,
-      "generated": false
+      "line": 7
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Close(System.Decimal@,System.String@)",
       "target": "System.Runtime|T:System.String",
       "kind": "signature",
+      "sourceMember": "App|T:Order|M:Order.Close(System.Decimal@,System.String@)",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 7,
-      "generated": false
+      "line": 7
     },
     {
       "source": "App|T:Order",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.Int32",
       "kind": "member-type",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 8,
-      "generated": false
+      "line": 8
     },
     {
       "source": "App|T:Order",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.Int64",
       "kind": "signature",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 8,
-      "generated": false
+      "line": 8
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.op_Addition(Order,System.Version)",
       "target": "System.Runtime|T:System.Version",
       "kind": "signature",
+      "sourceMember": "App|T:Order|M:Order.op_Addition(Order,System.Version)",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 9,
-      "generated": false
+      "line": 9
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.op_Implicit(Order)~System.Exception",
       "target": "System.Runtime|T:System.Exception",
       "kind": "signature",
+      "sourceMember": "App|T:Order|M:Order.op_Implicit(Order)~System.Exception",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 10,
-      "generated": false
+      "line": 10
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.op_Implicit(Order)~System.Exception",
       "target": "System.Runtime|T:System.Exception",
       "kind": "new",
+      "sourceMember": "App|T:Order|M:Order.op_Implicit(Order)~System.Exception",
+      "targetMember": "M:System.Exception.#ctor",
       "document": "App/Snippet.cs",
-      "line": 10,
-      "generated": false
+      "line": 10
     },
     {
       "source": "App|T:Parse",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.Version",
       "kind": "signature",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 13,
-      "generated": false
+      "line": 13
     },
     {
       "source": "App|T:Parse",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.String",
       "kind": "signature",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 13,
-      "generated": false
+      "line": 13
     }
-  ],
-  "analyzerErrors": []
+  ]
 }

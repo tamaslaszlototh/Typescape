@@ -1,116 +1,112 @@
 {
-  "documents": [],
-  "types": [],
-  "executableMembers": [],
-  "dependencies": [
+  "occurrences": [
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Guid[],System.Action)",
       "target": "System.Runtime|T:System.String",
       "kind": "signature",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Guid[],System.Action)",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 6,
-      "generated": false
+      "line": 6
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Guid[],System.Action)",
       "target": "System.Runtime|T:System.Guid",
       "kind": "signature",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Guid[],System.Action)",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 6,
-      "generated": false
+      "line": 6
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Guid[],System.Action)",
       "target": "System.Runtime|T:System.Action",
       "kind": "signature",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Guid[],System.Action)",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 6,
-      "generated": false
+      "line": 6
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Guid[],System.Action)",
       "target": "System.Console|T:System.Console",
       "kind": "call",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Guid[],System.Action)",
+      "targetMember": "M:System.Console.WriteLine(System.String)",
       "document": "App/Snippet.cs",
-      "line": 8,
-      "generated": false
+      "line": 8
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Guid[],System.Action)",
       "target": "System.Runtime|T:System.String",
       "kind": "call",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Guid[],System.Action)",
+      "targetMember": "M:System.String.Trim",
       "document": "App/Snippet.cs",
-      "line": 8,
-      "generated": false
+      "line": 8
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Guid[],System.Action)",
       "target": "System.Linq|T:System.Linq.Enumerable",
       "kind": "call",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Guid[],System.Action)",
+      "targetMember": "M:System.Linq.Enumerable.ToList``1(System.Collections.Generic.IEnumerable{``0})",
       "document": "App/Snippet.cs",
-      "line": 11,
-      "generated": false
+      "line": 11
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Guid[],System.Action)",
       "target": "System.Linq|T:System.Linq.Enumerable",
       "kind": "call",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Guid[],System.Action)",
+      "targetMember": "M:System.Linq.Enumerable.Where``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})",
       "document": "App/Snippet.cs",
-      "line": 10,
-      "generated": false
+      "line": 10
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Guid[],System.Action)",
       "target": "System.Runtime|T:System.Guid",
       "kind": "member-access",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Guid[],System.Action)",
+      "targetMember": "F:System.Guid.Empty",
       "document": "App/Snippet.cs",
-      "line": 10,
-      "generated": false
+      "line": 10
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Guid[],System.Action)",
       "target": "App|T:Texts",
       "kind": "call",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Guid[],System.Action)",
+      "targetMember": "App|T:Texts|M:Texts.Shout(System.String)",
       "document": "App/Snippet.cs",
-      "line": 12,
-      "generated": false
+      "line": 12
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Guid[],System.Action)",
       "target": "System.Runtime|T:System.Action",
       "kind": "call",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Guid[],System.Action)",
+      "targetMember": "M:System.Action.Invoke",
       "document": "App/Snippet.cs",
-      "line": 13,
-      "generated": false
+      "line": 13
     },
     {
       "source": "App|T:Texts",
+      "target": "System.Runtime|T:System.String",
+      "kind": "signature",
       "sourceMember": null,
-      "target": "System.Runtime|T:System.String",
-      "kind": "signature",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 25,
-      "generated": false
+      "line": 25
     },
     {
       "source": "App|T:Texts",
-      "sourceMember": "App|T:Texts|M:Texts.Shout(System.String)",
       "target": "System.Runtime|T:System.String",
       "kind": "signature",
+      "sourceMember": "App|T:Texts|M:Texts.Shout(System.String)",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 27,
-      "generated": false
+      "line": 27
     }
-  ],
-  "analyzerErrors": []
+  ]
 }

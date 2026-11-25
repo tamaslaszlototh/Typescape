@@ -1,53 +1,49 @@
 {
-  "documents": [],
-  "types": [],
-  "executableMembers": [],
-  "dependencies": [
+  "occurrences": [
     {
       "source": "App|T:Line",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.Guid",
       "kind": "signature",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 3,
-      "generated": false
+      "line": 3
     },
     {
       "source": "App|T:Line",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.Decimal",
       "kind": "signature",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 3,
-      "generated": false
+      "line": 3
     },
     {
       "source": "App|T:Line",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.Guid",
       "kind": "member-type",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 3,
-      "generated": false
+      "line": 3
     },
     {
       "source": "App|T:Line",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.Decimal",
       "kind": "member-type",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 5,
-      "generated": false
+      "line": 5
     },
     {
       "source": "App|T:Order",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.Uri",
       "kind": "signature",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 8,
-      "generated": false
+      "line": 8
     }
-  ],
-  "analyzerErrors": []
+  ]
 }

@@ -1,5 +1,4 @@
 {
-  "documents": [],
   "types": [
     {
       "key": "App|T:Order",
@@ -23,8 +22,5 @@
         }
       ]
     }
-  ],
-  "executableMembers": [],
-  "dependencies": [],
-  "analyzerErrors": []
+  ]
 }

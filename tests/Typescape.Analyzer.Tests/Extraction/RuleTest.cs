@@ -1,5 +1,7 @@
+using System.Collections;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
+using System.Text.Json.Serialization.Metadata;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Typescape.Analyzer.Extraction;
@@ -20,11 +22,25 @@ internal static class RuleTest
 
     public static string SolutionDirectory { get; } = Path.GetFullPath("/repo");
 
-    public static ProjectContext Context { get; } = new(ProjectKey, SolutionDirectory, Test: false, new HashSet<string>());
+    public static ProjectContext Context { get; } = new(ProjectKey, SolutionDirectory, Test: false, new HashSet<string>(), Occurrences: true);
 
     private static MetadataReference[] Framework { get; } = FrameworkReferences();
 
-    private static JsonSerializerOptions Json { get; } = new(SnapshotJson.Options) { WriteIndented = true };
+    // An empty fact list is left out, so a new list leaves existing goldens alone.
+    private static JsonSerializerOptions Json { get; } = new(SnapshotJson.Options)
+    {
+        WriteIndented = true,
+        TypeInfoResolver = SnapshotJson.Options.TypeInfoResolver!.WithAddedModifier(type =>
+        {
+            if (type.Type == typeof(ProjectFacts))
+            {
+                foreach (var property in type.Properties)
+                {
+                    property.ShouldSerialize = (_, value) => value is not ICollection { Count: 0 };
+                }
+            }
+        }),
+    };
 
     public static ProjectFacts Extract(string source) => Extract([(SnippetPath, source)]);
 
@@ -72,17 +88,28 @@ internal static class RuleTest
         return compilation;
     }
 
-    /// <summary>
-    /// Only the chosen fact lists of <paramref name="facts"/>, always with its analyzer errors, so a new fact list leaves
-    /// existing goldens alone.
-    /// </summary>
-    public static ProjectFacts Keep(ProjectFacts facts, bool documents = false, bool types = false, bool members = false, bool dependencies = false) =>
+    /// <summary>Only the chosen fact lists of <paramref name="facts"/>, always with its analyzer errors.</summary>
+    /// <param name="targets">The External Types, External members and non-executable members.</param>
+    public static ProjectFacts Keep(
+        ProjectFacts facts,
+        bool documents = false,
+        bool types = false,
+        bool members = false,
+        bool dependencies = false,
+        bool occurrences = false,
+        bool targets = false,
+        bool unresolved = false) =>
         ProjectFacts.Empty with
         {
             Documents = documents ? facts.Documents : [],
             Types = types ? facts.Types : [],
             ExecutableMembers = members ? facts.ExecutableMembers : [],
             Dependencies = dependencies ? facts.Dependencies : [],
+            Occurrences = occurrences ? facts.Occurrences : [],
+            ExternalTypes = targets ? facts.ExternalTypes : [],
+            ExternalMembers = targets ? facts.ExternalMembers : [],
+            NonExecutableMembers = targets ? facts.NonExecutableMembers : [],
+            UnresolvedTypes = unresolved ? facts.UnresolvedTypes : [],
             AnalyzerErrors = facts.AnalyzerErrors,
         };
 

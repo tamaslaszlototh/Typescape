@@ -1,71 +1,67 @@
 {
-  "documents": [],
-  "types": [],
-  "executableMembers": [],
-  "dependencies": [
+  "occurrences": [
     {
       "source": "App|T:Order",
-      "sourceMember": null,
       "target": "App|T:Entity",
       "kind": "inherits",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 4,
-      "generated": false
+      "line": 4
     },
     {
       "source": "App|T:Order",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.IDisposable",
       "kind": "implements",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 4,
-      "generated": false
+      "line": 4
     },
     {
       "source": "App|T:Line",
-      "sourceMember": null,
       "target": "App|T:Base",
       "kind": "inherits",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 5,
-      "generated": false
+      "line": 5
     },
     {
       "source": "App|T:Line",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.Int32",
       "kind": "signature",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 5,
-      "generated": false
+      "line": 5
     },
     {
       "source": "App|T:Base",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.Int32",
       "kind": "signature",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 6,
-      "generated": false
+      "line": 6
     },
     {
       "source": "App|T:Base",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.Int32",
       "kind": "member-type",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 6,
-      "generated": false
+      "line": 6
     },
     {
       "source": "App|T:IRepository",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.IDisposable",
       "kind": "inherits",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 7,
-      "generated": false
+      "line": 7
     }
-  ],
-  "analyzerErrors": []
+  ]
 }

@@ -1,6 +1,4 @@
 {
-  "documents": [],
-  "types": [],
   "executableMembers": [
     {
       "key": "App|T:Order|M:Order.get_Current",
@@ -42,124 +40,123 @@
       "generated": false
     }
   ],
-  "dependencies": [
+  "occurrences": [
     {
       "source": "App|T:Order",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.Func`1",
       "kind": "member-type",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 5,
-      "generated": false
+      "line": 5
     },
     {
       "source": "App|T:Order",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.Uri",
       "kind": "generic-arg",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 5,
-      "generated": false
+      "line": 5
     },
     {
       "source": "App|T:Order",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.Uri",
       "kind": "new",
+      "sourceMember": null,
+      "targetMember": "M:System.Uri.#ctor(System.String)",
       "document": "App/Snippet.cs",
-      "line": 5,
-      "generated": false
+      "line": 5
     },
     {
       "source": "App|T:Order",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.Guid",
       "kind": "member-type",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 6,
-      "generated": false
+      "line": 6
     },
     {
       "source": "App|T:Order",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.Guid",
       "kind": "call",
+      "sourceMember": null,
+      "targetMember": "M:System.Guid.NewGuid",
       "document": "App/Snippet.cs",
-      "line": 6,
-      "generated": false
+      "line": 6
     },
     {
       "source": "App|T:Order",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.Version",
       "kind": "member-type",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 8,
-      "generated": false
+      "line": 8
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.get_Current",
       "target": "System.Runtime|T:System.Version",
       "kind": "new",
+      "sourceMember": "App|T:Order|M:Order.get_Current",
+      "targetMember": "M:System.Version.#ctor(System.Int32,System.Int32)",
       "document": "App/Snippet.cs",
-      "line": 8,
-      "generated": false
+      "line": 8
     },
     {
       "source": "App|T:Order",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.String",
       "kind": "member-type",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 10,
-      "generated": false
+      "line": 10
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.get_Note",
       "target": "System.Runtime|T:System.DateTime",
       "kind": "call",
+      "sourceMember": "App|T:Order|M:Order.get_Note",
+      "targetMember": "M:System.DateTime.ToString",
       "document": "App/Snippet.cs",
-      "line": 12,
-      "generated": false
+      "line": 12
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.get_Note",
       "target": "System.Runtime|T:System.DateTime",
       "kind": "member-access",
+      "sourceMember": "App|T:Order|M:Order.get_Note",
+      "targetMember": "P:System.DateTime.Now",
       "document": "App/Snippet.cs",
-      "line": 12,
-      "generated": false
+      "line": 12
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place",
       "target": "System.Runtime|T:System.Action",
       "kind": "type-usage",
+      "sourceMember": "App|T:Order|M:Order.Place",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 17,
-      "generated": false
+      "line": 17
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place",
       "target": "System.Console|T:System.Console",
       "kind": "call",
+      "sourceMember": "App|T:Order|M:Order.Place",
+      "targetMember": "M:System.Console.WriteLine",
       "document": "App/Snippet.cs",
-      "line": 17,
-      "generated": false
+      "line": 17
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place",
       "target": "System.Runtime|T:System.Math",
       "kind": "call",
+      "sourceMember": "App|T:Order|M:Order.Place",
+      "targetMember": "M:System.Math.Abs(System.Int32)",
       "document": "App/Snippet.cs",
-      "line": 20,
-      "generated": false
+      "line": 20
     }
-  ],
-  "analyzerErrors": []
+  ]
 }

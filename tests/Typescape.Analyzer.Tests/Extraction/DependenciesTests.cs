@@ -1,3 +1,7 @@
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Typescape.Analyzer.Extraction;
+
 namespace Typescape.Analyzer.Tests.Extraction;
 
 public class DependenciesTests
@@ -16,7 +20,7 @@ public class DependenciesTests
             enum Status : byte { Open }
             """);
 
-        RuleTest.Match(RuleTest.Keep(facts, dependencies: true));
+        RuleTest.Match(RuleTest.Keep(facts, occurrences: true));
     }
 
     [Fact]
@@ -31,7 +35,7 @@ public class DependenciesTests
             record struct Tax : IFormattable { public string ToString(string? format, IFormatProvider? provider) => ""; }
             """);
 
-        RuleTest.Match(RuleTest.Keep(facts, dependencies: true));
+        RuleTest.Match(RuleTest.Keep(facts, occurrences: true));
     }
 
     [Fact]
@@ -48,7 +52,7 @@ public class DependenciesTests
             class Order(Uri source);
             """);
 
-        RuleTest.Match(RuleTest.Keep(facts, dependencies: true));
+        RuleTest.Match(RuleTest.Keep(facts, occurrences: true));
     }
 
     [Fact]
@@ -71,7 +75,7 @@ public class DependenciesTests
             delegate void Handler<T>(T item) where T : Exception;
             """);
 
-        RuleTest.Match(RuleTest.Keep(facts, dependencies: true));
+        RuleTest.Match(RuleTest.Keep(facts, occurrences: true));
     }
 
     [Fact]
@@ -90,7 +94,7 @@ public class DependenciesTests
             }
             """);
 
-        RuleTest.Match(RuleTest.Keep(facts, dependencies: true));
+        RuleTest.Match(RuleTest.Keep(facts, occurrences: true));
     }
 
     [Fact]
@@ -112,7 +116,7 @@ public class DependenciesTests
             delegate Version Parse(string text);
             """);
 
-        RuleTest.Match(RuleTest.Keep(facts, dependencies: true));
+        RuleTest.Match(RuleTest.Keep(facts, occurrences: true));
     }
 
     [Fact]
@@ -131,7 +135,7 @@ public class DependenciesTests
             }
             """);
 
-        RuleTest.Match(RuleTest.Keep(facts, dependencies: true));
+        RuleTest.Match(RuleTest.Keep(facts, occurrences: true));
     }
 
     [Fact]
@@ -149,7 +153,7 @@ public class DependenciesTests
             }
             """);
 
-        RuleTest.Match(RuleTest.Keep(facts, dependencies: true));
+        RuleTest.Match(RuleTest.Keep(facts, occurrences: true));
     }
 
     [Fact]
@@ -172,7 +176,7 @@ public class DependenciesTests
                 """)],
             allowedErrors: ["CS0227"]));
 
-        RuleTest.Match(RuleTest.Keep(facts, dependencies: true));
+        RuleTest.Match(RuleTest.Keep(facts, occurrences: true));
     }
 
     [Fact]
@@ -189,7 +193,7 @@ public class DependenciesTests
             }
             """);
 
-        RuleTest.Match(RuleTest.Keep(facts, dependencies: true));
+        RuleTest.Match(RuleTest.Keep(facts, occurrences: true));
     }
 
     [Fact]
@@ -206,7 +210,7 @@ public class DependenciesTests
             }
             """);
 
-        RuleTest.Match(RuleTest.Keep(facts, dependencies: true));
+        RuleTest.Match(RuleTest.Keep(facts, occurrences: true));
     }
 
     [Fact]
@@ -236,7 +240,7 @@ public class DependenciesTests
             }
             """);
 
-        RuleTest.Match(RuleTest.Keep(facts, dependencies: true));
+        RuleTest.Match(RuleTest.Keep(facts, occurrences: true));
     }
 
     [Fact]
@@ -246,7 +250,7 @@ public class DependenciesTests
             [(RuleTest.SnippetPath, "System.Console.WriteLine(System.Array.Empty<System.Guid>());")],
             Microsoft.CodeAnalysis.OutputKind.ConsoleApplication));
 
-        RuleTest.Match(RuleTest.Keep(facts, dependencies: true));
+        RuleTest.Match(RuleTest.Keep(facts, occurrences: true));
     }
 
     [Fact]
@@ -293,7 +297,7 @@ public class DependenciesTests
             }
             """);
 
-        RuleTest.Match(RuleTest.Keep(facts, dependencies: true));
+        RuleTest.Match(RuleTest.Keep(facts, occurrences: true));
     }
 
     [Fact]
@@ -331,7 +335,7 @@ public class DependenciesTests
             }
             """);
 
-        RuleTest.Match(RuleTest.Keep(facts, dependencies: true));
+        RuleTest.Match(RuleTest.Keep(facts, occurrences: true));
     }
 
     [Fact]
@@ -357,7 +361,7 @@ public class DependenciesTests
             }
             """);
 
-        RuleTest.Match(RuleTest.Keep(facts, dependencies: true));
+        RuleTest.Match(RuleTest.Keep(facts, occurrences: true));
     }
 
     [Fact]
@@ -393,7 +397,7 @@ public class DependenciesTests
             }
             """);
 
-        RuleTest.Match(RuleTest.Keep(facts, dependencies: true));
+        RuleTest.Match(RuleTest.Keep(facts, occurrences: true));
     }
 
     [Fact]
@@ -410,7 +414,7 @@ public class DependenciesTests
             }
             """);
 
-        RuleTest.Match(RuleTest.Keep(facts, dependencies: true));
+        RuleTest.Match(RuleTest.Keep(facts, occurrences: true));
     }
 
     [Fact]
@@ -432,7 +436,7 @@ public class DependenciesTests
             }
             """);
 
-        RuleTest.Match(RuleTest.Keep(facts, dependencies: true));
+        RuleTest.Match(RuleTest.Keep(facts, occurrences: true));
     }
 
     [Fact]
@@ -463,6 +467,330 @@ public class DependenciesTests
             }
             """);
 
-        RuleTest.Match(RuleTest.Keep(facts, members: true, dependencies: true));
+        RuleTest.Match(RuleTest.Keep(facts, members: true, occurrences: true));
+    }
+
+    [Fact]
+    public void A_call_targets_the_called_method_which_is_its_executable_member_where_it_has_a_body()
+    {
+        var facts = RuleTest.Extract("""
+            abstract class Shape
+            {
+                public abstract void Draw();
+                public void Scale() { }
+            }
+
+            interface IRender { void Render(); }
+
+            static partial class Texts
+            {
+                extension(string text)
+                {
+                    public string Shout() => text;
+                }
+
+                public static partial void Log(string text);
+                public static partial void Log(string text) { }
+            }
+
+            class Canvas
+            {
+                public void Paint(Shape shape, IRender render)
+                {
+                    shape.Scale();
+                    shape.Draw();
+                    render.Render();
+                    Texts.Log("".Shout());
+                }
+            }
+            """);
+
+        RuleTest.Match(RuleTest.Keep(facts, occurrences: true, targets: true));
+    }
+
+    [Fact]
+    public void A_property_or_indexer_targets_its_setter_under_a_simple_assignment_and_its_getter_otherwise()
+    {
+        var facts = RuleTest.Extract("""
+            using System;
+
+            class Shape
+            {
+                public string Name { get; set; } = "";
+                public int Area { get => 0; set { } }
+                public int this[int index] { get => index; set { } }
+                public Shape Inner => this;
+            }
+
+            [AttributeUsage(AttributeTargets.All)]
+            class LevelAttribute : Attribute
+            {
+                public int Level { get => 0; set { } }
+            }
+
+            static class Texts
+            {
+                extension(string text)
+                {
+                    public int Twice => text.Length * 2;
+                }
+            }
+
+            class Canvas
+            {
+                [Level(Level = 2)]
+                public void Paint(Shape shape)
+                {
+                    shape.Area = shape.Area;
+                    shape.Area += 1;
+                    shape.Name = "";
+                    shape[0] = shape[1];
+                    (shape.Name, shape.Area) = ("", 1);
+                    var copy = new Shape { Area = 2, Inner = { Area = 3 } };
+                    var twice = "".Twice;
+                }
+            }
+            """);
+
+        RuleTest.Match(RuleTest.Keep(facts, occurrences: true, targets: true));
+    }
+
+    [Fact]
+    public void An_event_targets_its_add_or_remove_accessor_and_a_field_like_event_itself()
+    {
+        var facts = RuleTest.Extract("""
+            using System;
+
+            class Shape
+            {
+                public event EventHandler? Changed;
+                public event EventHandler Moved { add { } remove { } }
+            }
+
+            class Canvas
+            {
+                public void Paint(Shape shape)
+                {
+                    shape.Moved += OnMoved;
+                    shape.Moved -= OnMoved;
+                    shape.Changed += OnMoved;
+                }
+
+                void OnMoved(object? sender, EventArgs e) { }
+            }
+            """);
+
+        RuleTest.Match(RuleTest.Keep(facts, occurrences: true, targets: true));
+    }
+
+    [Fact]
+    public void A_field_constant_or_enum_value_is_a_non_executable_target_member()
+    {
+        var facts = RuleTest.Extract("""
+            class Shape
+            {
+                public const int Sides = 0;
+                public int Id;
+            }
+
+            enum Color { Red }
+
+            class Canvas
+            {
+                public int Paint(Shape shape) => shape.Id + Shape.Sides + (int)Color.Red;
+            }
+            """);
+
+        RuleTest.Match(RuleTest.Keep(facts, occurrences: true, targets: true));
+    }
+
+    [Fact]
+    public void A_new_or_an_applied_attribute_targets_its_constructor_and_an_implicit_one_is_non_executable()
+    {
+        var facts = RuleTest.Extract("""
+            using System;
+
+            class Board
+            {
+                public Board() { }
+            }
+
+            class Dot { }
+
+            class MarkAttribute : Attribute { }
+
+            class Canvas
+            {
+                [Mark]
+                public void Paint()
+                {
+                    var board = new Board();
+                    Dot dot = new();
+                }
+            }
+            """);
+
+        RuleTest.Match(RuleTest.Keep(facts, occurrences: true, targets: true));
+    }
+
+    [Fact]
+    public void External_types_and_members_carry_their_assembly_namespace_kind_and_display_name()
+    {
+        var facts = RuleTest.Extract("""
+            using System;
+            using System.Collections.Generic;
+
+            class Order
+            {
+                Dictionary<string, int>.KeyCollection? keys;
+                IDisposable? owner;
+                DayOfWeek day;
+                Action? done;
+
+                public void Place(List<int> items)
+                {
+                    items.Add(1);
+                    Console.WriteLine(string.Join(",", items));
+                    int.TryParse("1", out var parsed);
+                    var ticks = Environment.TickCount;
+                }
+            }
+            """);
+
+        RuleTest.Match(RuleTest.Keep(facts, targets: true));
+    }
+
+    [Fact]
+    public void An_unresolved_type_reference_is_counted_and_creates_no_dependency_and_no_external_type()
+    {
+        var compilation = RuleTest.Compile(
+            [(RuleTest.SnippetPath, """
+                using System;
+                using Newtonsoft.Json;
+
+                [JsonObject]
+                class Order : Missing.Base, IMissing<Guid>
+                {
+                    JsonSerializer serializer = new();
+                }
+
+                class Store
+                {
+                    public string Save(object value)
+                    {
+                        var text = JsonConvert.SerializeObject(value);
+                        var token = JsonToken.StartObject;
+                        var isToken = value is JsonToken or JsonReader;
+                        switch (value) { case JsonWriter: break; }
+                        var name = nameof(JsonProperty);
+                        var settings = JsonSettings?.Default;
+                        return text;
+                    }
+                }
+
+                record Line(JsonSerializer Serializer);
+                """)],
+            allowedErrors: ["CS0246", "CS0103"]);
+
+        RuleTest.Match(RuleTest.Keep(RuleTest.Extract(compilation), dependencies: true, occurrences: true, targets: true, unresolved: true));
+    }
+
+    [Fact]
+    public void Without_occurrences_the_type_level_counts_external_types_and_unresolved_references_remain()
+    {
+        var compilation = RuleTest.Compile(
+            [(RuleTest.SnippetPath, """
+                using System;
+
+                class Order
+                {
+                    Guid id = Guid.NewGuid();
+
+                    public void Place(Missing missing)
+                    {
+                        Console.WriteLine(id);
+                        Console.WriteLine(Environment.TickCount);
+                        new Line().Total();
+                    }
+                }
+
+                class Line { public int Total() => 0; }
+                """)],
+            allowedErrors: ["CS0246"]);
+
+        var all = RuleTest.Extract(compilation);
+        var counted = RuleTest.Extract(compilation, RuleTest.Context with { Occurrences = false });
+
+        Assert.NotEmpty(all.Occurrences);
+        Assert.Empty(counted.Occurrences);
+        Assert.Empty(counted.ExternalMembers);
+        Assert.Empty(counted.NonExecutableMembers);
+        Assert.Equal(all.Dependencies, counted.Dependencies);
+        Assert.Equal(all.ExternalTypes, counted.ExternalTypes);
+        Assert.Equal([new UnresolvedTypeFact("Missing", 1)], counted.UnresolvedTypes);
+        Assert.Equal(all.UnresolvedTypes, counted.UnresolvedTypes);
+    }
+
+    [Fact]
+    public void An_unbound_name_that_may_be_a_local_or_an_inherited_member_is_no_unresolved_type()
+    {
+        var compilation = RuleTest.Compile(
+            [(RuleTest.SnippetPath, """
+                class Page : Missing.Base
+                {
+                    void Render() => Response.Write("");
+                }
+
+                class Order
+                {
+                    string Note() => cutomer.Name;
+                }
+                """)],
+            allowedErrors: ["CS0246", "CS0103"]);
+
+        Assert.Equal([new UnresolvedTypeFact("Base", 1)], RuleTest.Extract(compilation).UnresolvedTypes);
+    }
+
+    [Fact]
+    public void An_external_member_is_identified_by_its_type_as_polyfills_repeat_ids_across_assemblies()
+    {
+        MetadataReference Polyfill(string assembly)
+        {
+            var source = CSharpSyntaxTree.ParseText(
+                "namespace Shims { public static class Guard { public static void Check() { } } }",
+                cancellationToken: TestContext.Current.CancellationToken);
+            using var image = new MemoryStream();
+            CSharpCompilation.Create(assembly, [source], RuleTest.Compile([]).References, new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
+                .Emit(image, cancellationToken: TestContext.Current.CancellationToken);
+            return MetadataReference.CreateFromImage(image.ToArray()).WithAliases([assembly]);
+        }
+
+        var tree = CSharpSyntaxTree.ParseText(
+            """
+            extern alias PolyA;
+            extern alias PolyB;
+
+            class Order
+            {
+                void Place()
+                {
+                    PolyA::Shims.Guard.Check();
+                    PolyB::Shims.Guard.Check();
+                }
+            }
+            """,
+            new CSharpParseOptions(LanguageVersion.Latest),
+            RuleTest.FullPath(RuleTest.SnippetPath),
+            cancellationToken: TestContext.Current.CancellationToken);
+        var compilation = CSharpCompilation.Create("App", [tree], [.. RuleTest.Compile([]).References, Polyfill("PolyA"), Polyfill("PolyB")], new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+
+        var facts = RuleTest.Extract(compilation);
+
+        Assert.Equal(
+            [new ExternalMemberFact("M:Shims.Guard.Check", "PolyA|T:Shims.Guard", "Guard.Check()"), new ExternalMemberFact("M:Shims.Guard.Check", "PolyB|T:Shims.Guard", "Guard.Check()")],
+            facts.ExternalMembers);
+        Assert.Equal(
+            [("PolyA|T:Shims.Guard", "M:Shims.Guard.Check"), ("PolyB|T:Shims.Guard", "M:Shims.Guard.Check")],
+            facts.Occurrences.Select(occurrence => (occurrence.Target, occurrence.TargetMember)));
     }
 }

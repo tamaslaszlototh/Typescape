@@ -1,53 +1,32 @@
 {
-  "documents": [],
-  "types": [],
-  "executableMembers": [],
   "dependencies": [
     {
       "source": "App|T:Order",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.Guid",
       "kind": "member-type",
-      "document": "App/Snippet.cs",
-      "line": 6,
-      "generated": false
+      "count": 1,
+      "generatedCount": 0
     },
     {
       "source": "App|T:Order",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.Uri",
       "kind": "member-type",
-      "document": "App/Snippet.cs",
-      "line": 7,
-      "generated": true
+      "count": 1,
+      "generatedCount": 1
     },
     {
       "source": "App|T:Order",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.CodeDom.Compiler.GeneratedCodeAttribute",
       "kind": "attribute",
-      "document": "App/Snippet.cs",
-      "line": 7,
-      "generated": true
+      "count": 2,
+      "generatedCount": 2
     },
     {
       "source": "App|T:Order",
-      "sourceMember": null,
-      "target": "System.Runtime|T:System.CodeDom.Compiler.GeneratedCodeAttribute",
-      "kind": "attribute",
-      "document": "App/Snippet.cs",
-      "line": 10,
-      "generated": true
-    },
-    {
-      "source": "App|T:Order",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.Version",
       "kind": "member-type",
-      "document": "App/Snippet.cs",
-      "line": 13,
-      "generated": true
+      "count": 1,
+      "generatedCount": 1
     }
-  ],
-  "analyzerErrors": []
+  ]
 }

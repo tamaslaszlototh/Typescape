@@ -1,89 +1,85 @@
 {
-  "documents": [],
-  "types": [],
-  "executableMembers": [],
-  "dependencies": [
+  "occurrences": [
     {
       "source": "App|T:Order",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.IDisposable",
       "kind": "implements",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 3,
-      "generated": false
+      "line": 3
     },
     {
       "source": "App|T:Money",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.IComparable",
       "kind": "implements",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 4,
-      "generated": false
+      "line": 4
     },
     {
       "source": "App|T:Money",
-      "sourceMember": "App|T:Money|M:Money.CompareTo(System.Object)",
       "target": "System.Runtime|T:System.Int32",
       "kind": "signature",
+      "sourceMember": "App|T:Money|M:Money.CompareTo(System.Object)",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 4,
-      "generated": false
+      "line": 4
     },
     {
       "source": "App|T:Money",
-      "sourceMember": "App|T:Money|M:Money.CompareTo(System.Object)",
       "target": "System.Runtime|T:System.Object",
       "kind": "signature",
+      "sourceMember": "App|T:Money|M:Money.CompareTo(System.Object)",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 4,
-      "generated": false
+      "line": 4
     },
     {
       "source": "App|T:Line",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.IDisposable",
       "kind": "implements",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 5,
-      "generated": false
+      "line": 5
     },
     {
       "source": "App|T:Tax",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.IFormattable",
       "kind": "implements",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 6,
-      "generated": false
+      "line": 6
     },
     {
       "source": "App|T:Tax",
-      "sourceMember": "App|T:Tax|M:Tax.ToString(System.String,System.IFormatProvider)",
       "target": "System.Runtime|T:System.String",
       "kind": "signature",
+      "sourceMember": "App|T:Tax|M:Tax.ToString(System.String,System.IFormatProvider)",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 6,
-      "generated": false
+      "line": 6
     },
     {
       "source": "App|T:Tax",
-      "sourceMember": "App|T:Tax|M:Tax.ToString(System.String,System.IFormatProvider)",
       "target": "System.Runtime|T:System.String",
       "kind": "signature",
+      "sourceMember": "App|T:Tax|M:Tax.ToString(System.String,System.IFormatProvider)",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 6,
-      "generated": false
+      "line": 6
     },
     {
       "source": "App|T:Tax",
-      "sourceMember": "App|T:Tax|M:Tax.ToString(System.String,System.IFormatProvider)",
       "target": "System.Runtime|T:System.IFormatProvider",
       "kind": "signature",
+      "sourceMember": "App|T:Tax|M:Tax.ToString(System.String,System.IFormatProvider)",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 6,
-      "generated": false
+      "line": 6
     }
-  ],
-  "analyzerErrors": []
+  ]
 }

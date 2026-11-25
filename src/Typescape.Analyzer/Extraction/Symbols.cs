@@ -28,6 +28,27 @@ internal static class Symbols
         return null;
     }
 
+    /// <summary>
+    /// The type <paramref name="member"/> belongs to: an extension block is no type, so its members belong to the static
+    /// class around it.
+    /// </summary>
+    public static INamedTypeSymbol? Owner(ISymbol member) =>
+        member.ContainingType is { IsExtension: true } block ? block.ContainingType : member.ContainingType;
+
+    /// <summary>The kind of a type a reader would call a type; <c>null</c> for others, such as a C# 14 extension block.</summary>
+    public static DeclaredTypeKind? TypeKind(INamedTypeSymbol type) => type.TypeKind switch
+    {
+        Microsoft.CodeAnalysis.TypeKind.Class => type.IsRecord ? DeclaredTypeKind.Record : DeclaredTypeKind.Class,
+        Microsoft.CodeAnalysis.TypeKind.Struct => type.IsRecord ? DeclaredTypeKind.RecordStruct : DeclaredTypeKind.Struct,
+        Microsoft.CodeAnalysis.TypeKind.Interface => DeclaredTypeKind.Interface,
+        Microsoft.CodeAnalysis.TypeKind.Enum => DeclaredTypeKind.Enum,
+        Microsoft.CodeAnalysis.TypeKind.Delegate => DeclaredTypeKind.Delegate,
+        _ => null,
+    };
+
+    /// <summary>The full name of the type's namespace; empty for the global namespace.</summary>
+    public static string Namespace(INamedTypeSymbol type) => NamespaceName(type.ContainingNamespace);
+
     public static DeclaredAccessibility Accessibility(ISymbol symbol) => symbol.DeclaredAccessibility switch
     {
         Microsoft.CodeAnalysis.Accessibility.Public => DeclaredAccessibility.Public,
@@ -38,4 +59,10 @@ internal static class Symbols
         Microsoft.CodeAnalysis.Accessibility.Private => DeclaredAccessibility.Private,
         var other => throw new InvalidOperationException($"{symbol} has no declared accessibility ({other})."),
     };
+
+    // Built from the names rather than ToDisplayString, which escapes keywords such as @class.
+    private static string NamespaceName(INamespaceSymbol ns) =>
+        ns.IsGlobalNamespace ? ""
+        : ns.ContainingNamespace.IsGlobalNamespace ? ns.Name
+        : $"{NamespaceName(ns.ContainingNamespace)}.{ns.Name}";
 }

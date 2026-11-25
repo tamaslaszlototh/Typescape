@@ -1,6 +1,4 @@
 {
-  "documents": [],
-  "types": [],
   "executableMembers": [
     {
       "key": "App|T:Order|M:Order.get_Total",
@@ -106,7 +104,5 @@
       },
       "generated": false
     }
-  ],
-  "dependencies": [],
-  "analyzerErrors": []
+  ]
 }

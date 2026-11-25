@@ -32,9 +32,5 @@
       "path": "App/Order.gen.cs",
       "generatedReason": null
     }
-  ],
-  "types": [],
-  "executableMembers": [],
-  "dependencies": [],
-  "analyzerErrors": []
+  ]
 }

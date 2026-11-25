@@ -1,5 +1,4 @@
 {
-  "documents": [],
   "types": [
     {
       "key": "App|T:Shop.Repository`2",
@@ -111,8 +110,5 @@
         }
       ]
     }
-  ],
-  "executableMembers": [],
-  "dependencies": [],
-  "analyzerErrors": []
+  ]
 }

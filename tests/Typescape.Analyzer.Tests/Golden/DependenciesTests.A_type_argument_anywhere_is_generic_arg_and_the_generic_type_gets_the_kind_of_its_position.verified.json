@@ -1,89 +1,85 @@
 {
-  "documents": [],
-  "types": [],
-  "executableMembers": [],
-  "dependencies": [
+  "occurrences": [
     {
       "source": "App|T:Order",
-      "sourceMember": null,
       "target": "System.Collections|T:System.Collections.Generic.List`1",
       "kind": "inherits",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 4,
-      "generated": false
+      "line": 4
     },
     {
       "source": "App|T:Order",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.Guid",
       "kind": "generic-arg",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 4,
-      "generated": false
+      "line": 4
     },
     {
       "source": "App|T:Order",
-      "sourceMember": null,
       "target": "System.Collections|T:System.Collections.Generic.Dictionary`2",
       "kind": "member-type",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 6,
-      "generated": false
+      "line": 6
     },
     {
       "source": "App|T:Order",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.String",
       "kind": "generic-arg",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 6,
-      "generated": false
+      "line": 6
     },
     {
       "source": "App|T:Order",
-      "sourceMember": null,
       "target": "System.Collections|T:System.Collections.Generic.List`1",
       "kind": "generic-arg",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 6,
-      "generated": false
+      "line": 6
     },
     {
       "source": "App|T:Order",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.Uri",
       "kind": "generic-arg",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 6,
-      "generated": false
+      "line": 6
     },
     {
       "source": "App|T:Order",
-      "sourceMember": null,
       "target": "System.Collections|T:System.Collections.Generic.Dictionary`2",
       "kind": "new",
+      "sourceMember": null,
+      "targetMember": "M:System.Collections.Generic.Dictionary`2.#ctor",
       "document": "App/Snippet.cs",
-      "line": 6,
-      "generated": false
+      "line": 6
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Run",
       "target": "System.Runtime|T:System.Array",
       "kind": "call",
+      "sourceMember": "App|T:Order|M:Order.Run",
+      "targetMember": "M:System.Array.Empty``1",
       "document": "App/Snippet.cs",
-      "line": 8,
-      "generated": false
+      "line": 8
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Run",
       "target": "System.Runtime|T:System.Version",
       "kind": "generic-arg",
+      "sourceMember": "App|T:Order|M:Order.Run",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 8,
-      "generated": false
+      "line": 8
     }
-  ],
-  "analyzerErrors": []
+  ]
 }

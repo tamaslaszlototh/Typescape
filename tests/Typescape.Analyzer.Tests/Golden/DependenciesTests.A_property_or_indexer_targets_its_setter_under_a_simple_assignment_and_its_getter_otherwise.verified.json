@@ -1,0 +1,318 @@
+{
+  "occurrences": [
+    {
+      "source": "App|T:Shape",
+      "target": "System.Runtime|T:System.String",
+      "kind": "member-type",
+      "sourceMember": null,
+      "targetMember": null,
+      "document": "App/Snippet.cs",
+      "line": 5
+    },
+    {
+      "source": "App|T:Shape",
+      "target": "System.Runtime|T:System.Int32",
+      "kind": "member-type",
+      "sourceMember": null,
+      "targetMember": null,
+      "document": "App/Snippet.cs",
+      "line": 6
+    },
+    {
+      "source": "App|T:Shape",
+      "target": "System.Runtime|T:System.Int32",
+      "kind": "member-type",
+      "sourceMember": null,
+      "targetMember": null,
+      "document": "App/Snippet.cs",
+      "line": 7
+    },
+    {
+      "source": "App|T:Shape",
+      "target": "System.Runtime|T:System.Int32",
+      "kind": "signature",
+      "sourceMember": null,
+      "targetMember": null,
+      "document": "App/Snippet.cs",
+      "line": 7
+    },
+    {
+      "source": "App|T:LevelAttribute",
+      "target": "System.Runtime|T:System.Attribute",
+      "kind": "inherits",
+      "sourceMember": null,
+      "targetMember": null,
+      "document": "App/Snippet.cs",
+      "line": 12
+    },
+    {
+      "source": "App|T:LevelAttribute",
+      "target": "System.Runtime|T:System.AttributeUsageAttribute",
+      "kind": "attribute",
+      "sourceMember": null,
+      "targetMember": "M:System.AttributeUsageAttribute.#ctor(System.AttributeTargets)",
+      "document": "App/Snippet.cs",
+      "line": 11
+    },
+    {
+      "source": "App|T:LevelAttribute",
+      "target": "System.Runtime|T:System.AttributeTargets",
+      "kind": "member-access",
+      "sourceMember": null,
+      "targetMember": "F:System.AttributeTargets.All",
+      "document": "App/Snippet.cs",
+      "line": 11
+    },
+    {
+      "source": "App|T:LevelAttribute",
+      "target": "System.Runtime|T:System.Int32",
+      "kind": "member-type",
+      "sourceMember": null,
+      "targetMember": null,
+      "document": "App/Snippet.cs",
+      "line": 14
+    },
+    {
+      "source": "App|T:Texts",
+      "target": "System.Runtime|T:System.String",
+      "kind": "signature",
+      "sourceMember": null,
+      "targetMember": null,
+      "document": "App/Snippet.cs",
+      "line": 19
+    },
+    {
+      "source": "App|T:Texts",
+      "target": "System.Runtime|T:System.Int32",
+      "kind": "member-type",
+      "sourceMember": null,
+      "targetMember": null,
+      "document": "App/Snippet.cs",
+      "line": 21
+    },
+    {
+      "source": "App|T:Texts",
+      "target": "System.Runtime|T:System.String",
+      "kind": "member-access",
+      "sourceMember": "App|T:Texts|M:Texts.get_Twice(System.String)",
+      "targetMember": "P:System.String.Length",
+      "document": "App/Snippet.cs",
+      "line": 21
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "App|T:Shape",
+      "kind": "signature",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint(Shape)",
+      "targetMember": null,
+      "document": "App/Snippet.cs",
+      "line": 28
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "App|T:LevelAttribute",
+      "kind": "attribute",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint(Shape)",
+      "targetMember": "App|T:LevelAttribute|M:LevelAttribute.#ctor",
+      "document": "App/Snippet.cs",
+      "line": 27
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "App|T:LevelAttribute",
+      "kind": "member-access",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint(Shape)",
+      "targetMember": "App|T:LevelAttribute|M:LevelAttribute.set_Level(System.Int32)",
+      "document": "App/Snippet.cs",
+      "line": 27
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "App|T:Shape",
+      "kind": "member-access",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint(Shape)",
+      "targetMember": "App|T:Shape|M:Shape.set_Area(System.Int32)",
+      "document": "App/Snippet.cs",
+      "line": 30
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "App|T:Shape",
+      "kind": "member-access",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint(Shape)",
+      "targetMember": "App|T:Shape|M:Shape.get_Area",
+      "document": "App/Snippet.cs",
+      "line": 30
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "App|T:Shape",
+      "kind": "member-access",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint(Shape)",
+      "targetMember": "App|T:Shape|M:Shape.get_Area",
+      "document": "App/Snippet.cs",
+      "line": 31
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "App|T:Shape",
+      "kind": "member-access",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint(Shape)",
+      "targetMember": "App|T:Shape|P:Shape.Name",
+      "document": "App/Snippet.cs",
+      "line": 32
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "App|T:Shape",
+      "kind": "member-access",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint(Shape)",
+      "targetMember": "App|T:Shape|M:Shape.set_Item(System.Int32,System.Int32)",
+      "document": "App/Snippet.cs",
+      "line": 33
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "App|T:Shape",
+      "kind": "member-access",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint(Shape)",
+      "targetMember": "App|T:Shape|M:Shape.get_Item(System.Int32)",
+      "document": "App/Snippet.cs",
+      "line": 33
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "App|T:Shape",
+      "kind": "member-access",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint(Shape)",
+      "targetMember": "App|T:Shape|P:Shape.Name",
+      "document": "App/Snippet.cs",
+      "line": 34
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "App|T:Shape",
+      "kind": "member-access",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint(Shape)",
+      "targetMember": "App|T:Shape|M:Shape.set_Area(System.Int32)",
+      "document": "App/Snippet.cs",
+      "line": 34
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "App|T:Shape",
+      "kind": "new",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint(Shape)",
+      "targetMember": "App|T:Shape|M:Shape.#ctor",
+      "document": "App/Snippet.cs",
+      "line": 35
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "App|T:Shape",
+      "kind": "member-access",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint(Shape)",
+      "targetMember": "App|T:Shape|M:Shape.set_Area(System.Int32)",
+      "document": "App/Snippet.cs",
+      "line": 35
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "App|T:Shape",
+      "kind": "member-access",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint(Shape)",
+      "targetMember": "App|T:Shape|M:Shape.get_Inner",
+      "document": "App/Snippet.cs",
+      "line": 35
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "App|T:Shape",
+      "kind": "member-access",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint(Shape)",
+      "targetMember": "App|T:Shape|M:Shape.set_Area(System.Int32)",
+      "document": "App/Snippet.cs",
+      "line": 35
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "App|T:Texts",
+      "kind": "member-access",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint(Shape)",
+      "targetMember": "App|T:Texts|M:Texts.get_Twice(System.String)",
+      "document": "App/Snippet.cs",
+      "line": 36
+    }
+  ],
+  "externalTypes": [
+    {
+      "key": "System.Runtime|T:System.String",
+      "name": "String",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "class"
+    },
+    {
+      "key": "System.Runtime|T:System.Int32",
+      "name": "Int32",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "struct"
+    },
+    {
+      "key": "System.Runtime|T:System.Attribute",
+      "name": "Attribute",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "class"
+    },
+    {
+      "key": "System.Runtime|T:System.AttributeUsageAttribute",
+      "name": "AttributeUsageAttribute",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "class"
+    },
+    {
+      "key": "System.Runtime|T:System.AttributeTargets",
+      "name": "AttributeTargets",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "enum"
+    }
+  ],
+  "externalMembers": [
+    {
+      "key": "M:System.AttributeUsageAttribute.#ctor(System.AttributeTargets)",
+      "type": "System.Runtime|T:System.AttributeUsageAttribute",
+      "name": "AttributeUsageAttribute.AttributeUsageAttribute(AttributeTargets)"
+    },
+    {
+      "key": "F:System.AttributeTargets.All",
+      "type": "System.Runtime|T:System.AttributeTargets",
+      "name": "AttributeTargets.All"
+    },
+    {
+      "key": "P:System.String.Length",
+      "type": "System.Runtime|T:System.String",
+      "name": "String.Length"
+    }
+  ],
+  "nonExecutableMembers": [
+    {
+      "key": "App|T:LevelAttribute|M:LevelAttribute.#ctor",
+      "type": "App|T:LevelAttribute",
+      "name": "LevelAttribute.LevelAttribute()"
+    },
+    {
+      "key": "App|T:Shape|P:Shape.Name",
+      "type": "App|T:Shape",
+      "name": "Shape.Name"
+    },
+    {
+      "key": "App|T:Shape|M:Shape.#ctor",
+      "type": "App|T:Shape",
+      "name": "Shape.Shape()"
+    }
+  ]
+}

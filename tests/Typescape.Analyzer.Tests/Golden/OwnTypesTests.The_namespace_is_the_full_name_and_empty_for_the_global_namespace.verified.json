@@ -1,5 +1,4 @@
 {
-  "documents": [],
   "types": [
     {
       "key": "App|T:Shop.Orders.class.Line",
@@ -67,8 +66,5 @@
         }
       ]
     }
-  ],
-  "executableMembers": [],
-  "dependencies": [],
-  "analyzerErrors": []
+  ]
 }

@@ -80,7 +80,7 @@ internal sealed class FakeStages(params int[] documentsPerProject) : IAnalysisSt
             return Task.FromResult(new LoadedSolution(workspace, solution, "/repo", projects, [], [], [], ReferenceAssemblyFailures));
         });
 
-    public async Task<CompiledProject> CompileAsync(LoadedSolution solution, LoadedProject project, CancellationToken cancellationToken)
+    public async Task<CompiledProject> CompileAsync(AnalysisRequest request, LoadedSolution solution, LoadedProject project, CancellationToken cancellationToken)
     {
         Begin("compile", cancellationToken);
         using var _ = Enter("compile");
@@ -95,7 +95,7 @@ internal sealed class FakeStages(params int[] documentsPerProject) : IAnalysisSt
         Compilations[project.Key] = new WeakReference<Compilation>(compilation);
 
         Log.Enqueue("compile end");
-        return new CompiledProject(project, compilation, new ProjectContext(project.Key, solution.Directory, false, new HashSet<string>()));
+        return new CompiledProject(project, compilation, new ProjectContext(project.Key, solution.Directory, false, new HashSet<string>(), request.Occurrences));
     }
 
     public ProjectDiagnostics Diagnose(CompiledProject project, CancellationToken cancellationToken) =>

@@ -1,161 +1,157 @@
 {
-  "documents": [],
-  "types": [],
-  "executableMembers": [],
-  "dependencies": [
+  "occurrences": [
     {
       "source": "App|T:Order",
-      "sourceMember": null,
       "target": "System.Runtime|T:System.Int32",
       "kind": "member-type",
+      "sourceMember": null,
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 6,
-      "generated": false
+      "line": 6
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
       "target": "System.Runtime|T:System.String",
       "kind": "signature",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 8,
-      "generated": false
+      "line": 8
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
       "target": "System.Collections|T:System.Collections.Generic.List`1",
       "kind": "signature",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 8,
-      "generated": false
+      "line": 8
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
       "target": "System.Runtime|T:System.Int32",
       "kind": "signature",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 8,
-      "generated": false
+      "line": 8
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
       "target": "System.Runtime|T:System.Uri",
       "kind": "signature",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 8,
-      "generated": false
+      "line": 8
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
       "target": "System.Runtime|T:System.Guid",
       "kind": "generic-arg",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 8,
-      "generated": false
+      "line": 8
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
       "target": "System.Runtime|T:System.Int32",
       "kind": "member-access",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
+      "targetMember": "F:System.Int32.MaxValue",
       "document": "App/Snippet.cs",
-      "line": 10,
-      "generated": false
+      "line": 10
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
       "target": "System.Runtime|T:System.String",
       "kind": "member-access",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
+      "targetMember": "P:System.String.Length",
       "document": "App/Snippet.cs",
-      "line": 10,
-      "generated": false
+      "line": 10
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
       "target": "System.Runtime|T:System.AppDomain",
       "kind": "member-access",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
+      "targetMember": "P:System.AppDomain.CurrentDomain",
       "document": "App/Snippet.cs",
-      "line": 11,
-      "generated": false
+      "line": 11
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
       "target": "System.Runtime|T:System.AppDomain",
       "kind": "member-access",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
+      "targetMember": "E:System.AppDomain.ProcessExit",
       "document": "App/Snippet.cs",
-      "line": 11,
-      "generated": false
+      "line": 11
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
       "target": "System.Collections|T:System.Collections.Generic.List`1",
       "kind": "member-access",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
+      "targetMember": "P:System.Collections.Generic.List`1.Item(System.Int32)",
       "document": "App/Snippet.cs",
-      "line": 12,
-      "generated": false
+      "line": 12
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
       "target": "System.Runtime|T:System.DayOfWeek",
       "kind": "member-access",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
+      "targetMember": "F:System.DayOfWeek.Monday",
       "document": "App/Snippet.cs",
-      "line": 13,
-      "generated": false
+      "line": 13
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
       "target": "System.Runtime|T:System.Action`1",
       "kind": "type-usage",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 14,
-      "generated": false
+      "line": 14
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
       "target": "System.Runtime|T:System.String",
       "kind": "generic-arg",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 14,
-      "generated": false
+      "line": 14
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
       "target": "System.Console|T:System.Console",
       "kind": "member-access",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
+      "targetMember": "M:System.Console.WriteLine(System.String)",
       "document": "App/Snippet.cs",
-      "line": 14,
-      "generated": false
+      "line": 14
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
       "target": "System.Runtime|T:System.UriBuilder",
       "kind": "new",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
+      "targetMember": "M:System.UriBuilder.#ctor",
       "document": "App/Snippet.cs",
-      "line": 15,
-      "generated": false
+      "line": 15
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
       "target": "System.Runtime|T:System.UriBuilder",
       "kind": "member-access",
+      "sourceMember": "App|T:Order|M:Order.Place(System.String,System.Collections.Generic.List{System.Guid},System.ValueTuple{System.Int32,System.Uri})",
+      "targetMember": "P:System.UriBuilder.Port",
       "document": "App/Snippet.cs",
-      "line": 15,
-      "generated": false
+      "line": 15
     }
-  ],
-  "analyzerErrors": []
+  ]
 }

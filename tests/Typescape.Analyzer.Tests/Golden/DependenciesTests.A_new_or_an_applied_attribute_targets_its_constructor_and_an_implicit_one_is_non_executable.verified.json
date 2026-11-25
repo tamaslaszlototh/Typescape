@@ -1,0 +1,70 @@
+{
+  "occurrences": [
+    {
+      "source": "App|T:MarkAttribute",
+      "target": "System.Runtime|T:System.Attribute",
+      "kind": "inherits",
+      "sourceMember": null,
+      "targetMember": null,
+      "document": "App/Snippet.cs",
+      "line": 10
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "App|T:MarkAttribute",
+      "kind": "attribute",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint",
+      "targetMember": "App|T:MarkAttribute|M:MarkAttribute.#ctor",
+      "document": "App/Snippet.cs",
+      "line": 14
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "App|T:Board",
+      "kind": "new",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint",
+      "targetMember": "App|T:Board|M:Board.#ctor",
+      "document": "App/Snippet.cs",
+      "line": 17
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "App|T:Dot",
+      "kind": "type-usage",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint",
+      "targetMember": null,
+      "document": "App/Snippet.cs",
+      "line": 18
+    },
+    {
+      "source": "App|T:Canvas",
+      "target": "App|T:Dot",
+      "kind": "new",
+      "sourceMember": "App|T:Canvas|M:Canvas.Paint",
+      "targetMember": "App|T:Dot|M:Dot.#ctor",
+      "document": "App/Snippet.cs",
+      "line": 18
+    }
+  ],
+  "externalTypes": [
+    {
+      "key": "System.Runtime|T:System.Attribute",
+      "name": "Attribute",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "class"
+    }
+  ],
+  "nonExecutableMembers": [
+    {
+      "key": "App|T:MarkAttribute|M:MarkAttribute.#ctor",
+      "type": "App|T:MarkAttribute",
+      "name": "MarkAttribute.MarkAttribute()"
+    },
+    {
+      "key": "App|T:Dot|M:Dot.#ctor",
+      "type": "App|T:Dot",
+      "name": "Dot.Dot()"
+    }
+  ]
+}

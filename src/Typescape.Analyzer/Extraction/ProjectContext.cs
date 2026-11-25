@@ -5,8 +5,13 @@ namespace Typescape.Analyzer.Extraction;
 /// <param name="SolutionDirectory">The absolute solution directory, which every stored path is made relative to.</param>
 /// <param name="Test">Whether the project counts as a test project.</param>
 /// <param name="GeneratedDocumentPaths">The file paths of the documents source generators added to the compilation.</param>
+/// <param name="Occurrences">
+/// Whether to collect Occurrences and the members they target; without them (<c>--no-occurrences</c>) the type-level
+/// Dependency counts remain.
+/// </param>
 internal sealed record ProjectContext(
     string ProjectKey,
     string SolutionDirectory,
     bool Test,
-    IReadOnlySet<string> GeneratedDocumentPaths);
+    IReadOnlySet<string> GeneratedDocumentPaths,
+    bool Occurrences);

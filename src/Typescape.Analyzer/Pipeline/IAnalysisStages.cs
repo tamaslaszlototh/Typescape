@@ -21,8 +21,8 @@ internal interface IAnalysisStages
     /// </summary>
     Task<LoadedSolution> LoadAsync(AnalysisRequest request, PhaseCounter projects, CancellationToken cancellationToken);
 
-    /// <summary>Compile, for one project.</summary>
-    Task<CompiledProject> CompileAsync(LoadedSolution solution, LoadedProject project, CancellationToken cancellationToken);
+    /// <summary>Compile, for one project: its compilation and what Walk needs to know about it.</summary>
+    Task<CompiledProject> CompileAsync(AnalysisRequest request, LoadedSolution solution, LoadedProject project, CancellationToken cancellationToken);
 
     /// <summary>
     /// Diagnostics, for one project: the full compiler diagnostics, summarized as Load Health evidence. Always runs,

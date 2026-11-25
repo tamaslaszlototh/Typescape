@@ -1,35 +1,31 @@
 {
-  "documents": [],
-  "types": [],
-  "executableMembers": [],
-  "dependencies": [
+  "occurrences": [
     {
       "source": "App|T:Program",
-      "sourceMember": "App|T:Program|M:Program.{Main}$(System.String[])",
       "target": "System.Console|T:System.Console",
       "kind": "call",
+      "sourceMember": "App|T:Program|M:Program.{Main}$(System.String[])",
+      "targetMember": "M:System.Console.WriteLine(System.Object)",
       "document": "App/Snippet.cs",
-      "line": 1,
-      "generated": false
+      "line": 1
     },
     {
       "source": "App|T:Program",
-      "sourceMember": "App|T:Program|M:Program.{Main}$(System.String[])",
       "target": "System.Runtime|T:System.Array",
       "kind": "call",
+      "sourceMember": "App|T:Program|M:Program.{Main}$(System.String[])",
+      "targetMember": "M:System.Array.Empty``1",
       "document": "App/Snippet.cs",
-      "line": 1,
-      "generated": false
+      "line": 1
     },
     {
       "source": "App|T:Program",
-      "sourceMember": "App|T:Program|M:Program.{Main}$(System.String[])",
       "target": "System.Runtime|T:System.Guid",
       "kind": "generic-arg",
+      "sourceMember": "App|T:Program|M:Program.{Main}$(System.String[])",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 1,
-      "generated": false
+      "line": 1
     }
-  ],
-  "analyzerErrors": []
+  ]
 }

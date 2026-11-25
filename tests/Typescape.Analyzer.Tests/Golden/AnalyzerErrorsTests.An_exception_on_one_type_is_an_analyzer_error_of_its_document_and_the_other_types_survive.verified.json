@@ -55,8 +55,6 @@
       ]
     }
   ],
-  "executableMembers": [],
-  "dependencies": [],
   "analyzerErrors": [
     {
       "document": "App/Broken.cs",

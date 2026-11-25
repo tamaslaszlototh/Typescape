@@ -1,5 +1,4 @@
 {
-  "documents": [],
   "types": [
     {
       "key": "App|T:Settings",
@@ -130,7 +129,5 @@
       },
       "generated": true
     }
-  ],
-  "dependencies": [],
-  "analyzerErrors": []
+  ]
 }

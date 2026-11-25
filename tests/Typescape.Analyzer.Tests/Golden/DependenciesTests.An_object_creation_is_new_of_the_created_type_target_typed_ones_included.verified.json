@@ -1,89 +1,85 @@
 {
-  "documents": [],
-  "types": [],
-  "executableMembers": [],
-  "dependencies": [
+  "occurrences": [
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.Boolean)",
       "target": "System.Runtime|T:System.Boolean",
       "kind": "signature",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Boolean)",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 6,
-      "generated": false
+      "line": 6
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.Boolean)",
       "target": "System.Runtime|T:System.Uri",
       "kind": "new",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Boolean)",
+      "targetMember": "M:System.Uri.#ctor(System.String)",
       "document": "App/Snippet.cs",
-      "line": 8,
-      "generated": false
+      "line": 8
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.Boolean)",
       "target": "System.Collections|T:System.Collections.Generic.List`1",
       "kind": "new",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Boolean)",
+      "targetMember": "M:System.Collections.Generic.List`1.#ctor",
       "document": "App/Snippet.cs",
-      "line": 9,
-      "generated": false
+      "line": 9
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.Boolean)",
       "target": "System.Runtime|T:System.Guid",
       "kind": "generic-arg",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Boolean)",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 9,
-      "generated": false
+      "line": 9
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.Boolean)",
       "target": "System.Runtime|T:System.Exception",
       "kind": "type-usage",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Boolean)",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 10,
-      "generated": false
+      "line": 10
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.Boolean)",
       "target": "System.Runtime|T:System.Exception",
       "kind": "new",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Boolean)",
+      "targetMember": "M:System.Exception.#ctor",
       "document": "App/Snippet.cs",
-      "line": 10,
-      "generated": false
+      "line": 10
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.Boolean)",
       "target": "System.Runtime|T:System.DateTime",
       "kind": "type-usage",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Boolean)",
+      "targetMember": null,
       "document": "App/Snippet.cs",
-      "line": 11,
-      "generated": false
+      "line": 11
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.Boolean)",
       "target": "System.Runtime|T:System.DateTime",
       "kind": "new",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Boolean)",
+      "targetMember": "M:System.DateTime.#ctor",
       "document": "App/Snippet.cs",
-      "line": 11,
-      "generated": false
+      "line": 11
     },
     {
       "source": "App|T:Order",
-      "sourceMember": "App|T:Order|M:Order.Place(System.Boolean)",
       "target": "System.Runtime|T:System.InvalidOperationException",
       "kind": "new",
+      "sourceMember": "App|T:Order|M:Order.Place(System.Boolean)",
+      "targetMember": "M:System.InvalidOperationException.#ctor",
       "document": "App/Snippet.cs",
-      "line": 13,
-      "generated": false
+      "line": 13
     }
-  ],
-  "analyzerErrors": []
+  ]
 }
