@@ -84,10 +84,10 @@ internal sealed class MemberMetrics : CSharpSyntaxWalker
         base.VisitCasePatternSwitchLabel(node);
     }
 
-    // The trailing discard arm is the fallback, not a decision.
+    // An unguarded trailing discard arm is the fallback, not a decision; a guarded one can still fail to match.
     public override void VisitSwitchExpression(SwitchExpressionSyntax node)
     {
-        cyclomatic += node.Arms.Count - (node.Arms.LastOrDefault()?.Pattern is DiscardPatternSyntax ? 1 : 0);
+        cyclomatic += node.Arms.Count - (node.Arms.LastOrDefault() is { Pattern: DiscardPatternSyntax, WhenClause: null } ? 1 : 0);
         ScoreStructure(node, node.Arms);
     }
 

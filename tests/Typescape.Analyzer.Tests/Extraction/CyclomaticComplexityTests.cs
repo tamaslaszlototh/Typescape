@@ -48,12 +48,12 @@ public class CyclomaticComplexityTests
     }
 
     [Fact]
-    public void Each_switch_expression_arm_counts_one_but_a_trailing_discard()
+    public void Each_switch_expression_arm_counts_one_but_an_unguarded_trailing_discard()
     {
         Assert.Equal(3, Score("""string M() => x switch { 1 => "one", 2 => "two", _ => "many" };"""));
         Assert.Equal(4, Score("""string M() => x switch { 1 => "one", 2 => "two", var other => "many" };"""));
         Assert.Equal(3, Score("""string M() => x switch { 1 => "one", _ when a => "odd", _ => "many" };"""));
-        Assert.Equal(2, Score("""string M() => x switch { 1 => "one", _ when a => "odd" };"""));
+        Assert.Equal(3, Score("""string M() => x switch { 1 => "one", _ when a => "odd" };"""));
     }
 
     [Fact]
@@ -91,6 +91,8 @@ public class CyclomaticComplexityTests
     {
         Assert.Equal(3, Score("bool M() => a && b && c;"));
         Assert.Equal(3, Score("bool M() => a || b || c;"));
+        Assert.Equal(3, Score("bool M() => a && b || c;"));
+        Assert.Equal(4, Score("bool M() => a || b && c || d;"));
         Assert.Equal(4, Score("bool M() => a && !(b || c) && d;"));
         Assert.Equal(1, Score("bool M() => a & b | c ^ d;"));
     }
@@ -110,6 +112,8 @@ public class CyclomaticComplexityTests
             }
             """));
         Assert.Equal(1, Score("bool M() => s is not null;"));
+        Assert.Equal(5, Score("void M() { switch (x) { case 1 or 2: break; case > 2 and < 10: break; } }"));
+        Assert.Equal(5, Score("""string M() => x switch { 1 or 2 => "few", > 2 and < 10 => "some", _ => "many" };"""));
     }
 
     [Fact]
@@ -145,6 +149,30 @@ public class CyclomaticComplexityTests
         Assert.Equal(2, Score("void M() { Action log = delegate { if (a) { } }; }"));
         Assert.Equal(3, Score("void M() { Check(); void Check() { if (a && b) { } } }"));
         Assert.Equal(3, Score("void M() { var any = xs.Where(item => item > 0 ? a : b).Any(); if (c) { } }"));
+    }
+
+    [Fact]
+    public void Accessors_and_expression_bodied_properties_count_their_decision_points()
+    {
+        var scores = Scores(RuleTest.Extract("""
+            class Account
+            {
+                int balance;
+                bool open;
+
+                public int Balance
+                {
+                    get => open ? balance : 0;
+                    set { if (value >= 0 && open) { balance = value; } }
+                }
+
+                public string Status => balance switch { < 0 => "overdrawn", 0 => "empty", _ => "ok" };
+            }
+            """));
+
+        Assert.Equal(2, scores["Balance.get"]);
+        Assert.Equal(3, scores["Balance.set"]);
+        Assert.Equal(3, scores["Status.get"]);
     }
 
     [Fact]
