@@ -63,10 +63,12 @@ internal static class FixtureSolution
     /// documented platform exception (spec §10.1). Classic projects go to Visual Studio MSBuild on Windows with Visual
     /// Studio and fall back to .NET SDK MSBuild elsewhere; that choice alone sets
     /// <see cref="ProjectHealthRecord.SdkFallback"/>, words the fallback warning, and decides which project references
-    /// the workspace reports as kept (<see cref="WorkspaceDiagnosticKind.Info"/>).
+    /// the workspace reports as kept (<see cref="WorkspaceDiagnosticKind.Info"/>). It also picks the markup compiler: Visual
+    /// Studio's runs on .NET Framework, whose code generator writes one more header line into each <c>*.g.cs</c>
+    /// (<c>Runtime Version:4.0.30319.42000</c>), so the lines in those documents are moved back to the .NET SDK layout.
     /// </summary>
     public static SnapshotRecord WithoutMSBuildChoice(SnapshotRecord snapshot) =>
-        snapshot with
+        WithoutFrameworkMarkupHeader(snapshot) with
         {
             LoadHealth = snapshot.LoadHealth with
             {
@@ -85,6 +87,53 @@ internal static class FixtureSolution
                 ],
             },
         };
+
+    private static SnapshotRecord WithoutFrameworkMarkupHeader(SnapshotRecord snapshot)
+    {
+        var visualStudioLoaded = snapshot.LoadHealth.Projects
+            .Where(health => !health.SdkFallback && snapshot.Projects[health.Project].Style == ProjectStyle.Legacy)
+            .Select(health => health.Project)
+            .ToHashSet();
+        var shifted = snapshot.Documents
+            .Select((document, index) => (document, index))
+            .Where(entry => visualStudioLoaded.Contains(entry.document.Project)
+                && entry.document.Path.Contains("/obj/", StringComparison.Ordinal)
+                && entry.document.Path.EndsWith(".g.cs", StringComparison.Ordinal))
+            .Select(entry => entry.index)
+            .ToHashSet();
+        if (shifted.Count == 0)
+        {
+            return snapshot;
+        }
+
+        LineSpan Up(LineSpan lines) => new(lines.Start - 1, lines.End - 1);
+        return snapshot with
+        {
+            Types =
+            [
+                .. snapshot.Types.Select(type => type with
+                {
+                    Declarations =
+                    [
+                        .. type.Declarations.Select(declaration =>
+                            shifted.Contains(declaration.Document) ? declaration with { Lines = Up(declaration.Lines) } : declaration),
+                    ],
+                }),
+            ],
+            ExecutableMembers =
+            [
+                .. snapshot.ExecutableMembers.Select(member =>
+                    shifted.Contains(member.Document) ? member with { Lines = Up(member.Lines) } : member),
+            ],
+            Occurrences = snapshot.Occurrences is null
+                ? null
+                :
+                [
+                    .. snapshot.Occurrences.Select(occurrence =>
+                        shifted.Contains(occurrence.Document) ? occurrence with { Line = occurrence.Line - 1 } : occurrence),
+                ],
+        };
+    }
 
     /// <summary>The Snapshot file's bytes, with the Provenance that depends on the clock, machine or run scrubbed.</summary>
     public static byte[] Write(SnapshotRecord snapshot)
