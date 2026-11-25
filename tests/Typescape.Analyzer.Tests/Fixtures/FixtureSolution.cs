@@ -1,6 +1,7 @@
 using System.IO.Compression;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using Typescape.Snapshot;
 using Typescape.Snapshot.Files;
 using Typescape.Snapshot.Records;
@@ -18,7 +19,7 @@ namespace Typescape.Analyzer.Tests.Fixtures;
 /// repository's <c>global.json</c> goes along, unless the fixture has its own, so the copy builds with the SDK the
 /// repository pins.
 /// </remarks>
-internal static class FixtureSolution
+internal static partial class FixtureSolution
 {
     private static readonly JsonSerializerOptions Pretty = new()
     {
@@ -66,9 +67,15 @@ internal static class FixtureSolution
     /// the workspace reports as kept (<see cref="WorkspaceDiagnosticKind.Info"/>). It also picks the markup compiler: Visual
     /// Studio's runs on .NET Framework, whose code generator writes one more header line into each <c>*.g.cs</c>
     /// (<c>Runtime Version:4.0.30319.42000</c>), so the lines in those documents are moved back to the .NET SDK layout.
+    /// Finally, an SDK-style project still evaluates its classic references under .NET SDK MSBuild; when Visual Studio
+    /// MSBuild loaded such a reference, that second evaluation can fail on a Visual Studio-only import (the web
+    /// application targets) and is reported as a failure of the reference, so those failures, which cite the .NET SDK
+    /// directory, are left out too.
     /// </summary>
-    public static SnapshotRecord WithoutMSBuildChoice(SnapshotRecord snapshot) =>
-        WithoutFrameworkMarkupHeader(snapshot) with
+    public static SnapshotRecord WithoutMSBuildChoice(SnapshotRecord snapshot)
+    {
+        var visualStudioLoaded = VisualStudioLoaded(snapshot);
+        return WithoutFrameworkMarkupHeader(snapshot, visualStudioLoaded) with
         {
             LoadHealth = snapshot.LoadHealth with
             {
@@ -81,19 +88,29 @@ internal static class FixtureSolution
                         [
                             .. project.WorkspaceDiagnostics.Where(diagnostic =>
                                 diagnostic.Kind != WorkspaceDiagnosticKind.Info
-                                && !diagnostic.Message.Contains("will be loaded with the .NET Core SDK", StringComparison.Ordinal)),
+                                && !diagnostic.Message.Contains("will be loaded with the .NET Core SDK", StringComparison.Ordinal)
+                                && !(visualStudioLoaded.Contains(project.Project)
+                                    && diagnostic.Kind == WorkspaceDiagnosticKind.Failure
+                                    && SdkDirectory().IsMatch(diagnostic.Message))),
                         ],
                     }),
                 ],
             },
         };
+    }
 
-    private static SnapshotRecord WithoutFrameworkMarkupHeader(SnapshotRecord snapshot)
-    {
-        var visualStudioLoaded = snapshot.LoadHealth.Projects
+    // Classic projects that did not fall back: Visual Studio MSBuild loaded them.
+    private static HashSet<int> VisualStudioLoaded(SnapshotRecord snapshot) =>
+        snapshot.LoadHealth.Projects
             .Where(health => !health.SdkFallback && snapshot.Projects[health.Project].Style == ProjectStyle.Legacy)
             .Select(health => health.Project)
             .ToHashSet();
+
+    [GeneratedRegex(@"[\\/]dotnet[\\/]sdk[\\/]\d+\.\d+\.\d+[^\\/]*[\\/]", RegexOptions.IgnoreCase)]
+    private static partial Regex SdkDirectory();
+
+    private static SnapshotRecord WithoutFrameworkMarkupHeader(SnapshotRecord snapshot, HashSet<int> visualStudioLoaded)
+    {
         var shifted = snapshot.Documents
             .Select((document, index) => (document, index))
             .Where(entry => visualStudioLoaded.Contains(entry.document.Project)
