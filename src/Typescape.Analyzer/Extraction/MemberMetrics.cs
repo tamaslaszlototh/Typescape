@@ -40,8 +40,7 @@ internal sealed class MemberMetrics : CSharpSyntaxWalker
     {
         var walker = new MemberMetrics(member, model, cancellationToken);
 
-        // The entry point's code is its top-level statements, not the usings and types around them.
-        IEnumerable<SyntaxNode> code = body is CompilationUnitSyntax unit ? unit.Members.OfType<GlobalStatementSyntax>() : [body];
+        IEnumerable<SyntaxNode> code = body is CompilationUnitSyntax unit ? Source.GlobalStatements(unit) : [body];
         foreach (var node in code)
         {
             walker.Visit(node);

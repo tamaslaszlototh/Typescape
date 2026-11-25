@@ -4,9 +4,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 namespace Typescape.Analyzer.Extraction;
 
 /// <summary>
-/// LOC (spec §5.3): the distinct physical lines the syntax tokens cover, a multi-line token covering every one of its
-/// lines. Blank lines, comments, preprocessor directives and inactive <c>#if</c> text hold no token, so they never count.
-/// Lines are the file's own, <c>#line</c> directives ignored.
+/// LOC (spec §5.3): the distinct physical lines the syntax tokens cover, a multi-line token covering each of its lines.
 /// </summary>
 internal static class LinesOfCode
 {
@@ -22,10 +20,9 @@ internal static class LinesOfCode
     public static int OfType(SyntaxNode declaration, CancellationToken cancellationToken) =>
         Count(Tokens(declaration, node => node == declaration || !IsNestedType(node)), declaration.SyntaxTree, cancellationToken);
 
-    // The entry point's code is its top-level statements, not the usings and types around them.
     private static IEnumerable<SyntaxToken> Tokens(SyntaxNode declaration, Func<SyntaxNode, bool> descend) =>
         declaration is CompilationUnitSyntax unit
-            ? unit.Members.OfType<GlobalStatementSyntax>().SelectMany(statement => statement.DescendantTokens(descend))
+            ? Source.GlobalStatements(unit).SelectMany(statement => statement.DescendantTokens(descend))
             : declaration.DescendantTokens(descend);
 
     // A C# 14 extension block is no type of its own: its members belong to the static class around it.
@@ -37,7 +34,7 @@ internal static class LinesOfCode
     {
         var lines = tree.GetText(cancellationToken).Lines;
         var count = 0;
-        var last = -1;
+        var lastCounted = -1;
         foreach (var token in tokens)
         {
             // A missing token of broken code has no text, and so no line.
@@ -46,12 +43,12 @@ internal static class LinesOfCode
                 continue;
             }
 
-            var first = Math.Max(lines.IndexOf(token.SpanStart), last + 1);
-            var end = lines.IndexOf(token.Span.End - 1);
-            if (end >= first)
+            var firstNew = Math.Max(lines.IndexOf(token.SpanStart), lastCounted + 1);
+            var lastLine = lines.IndexOf(token.Span.End - 1);
+            if (lastLine >= firstNew)
             {
-                count += end - first + 1;
-                last = end;
+                count += lastLine - firstNew + 1;
+                lastCounted = lastLine;
             }
         }
 

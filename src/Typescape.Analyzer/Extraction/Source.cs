@@ -20,12 +20,15 @@ internal static class Source
     }
 
     /// <summary>
-    /// From the first top-level statement to the end of the last: the compilation unit that declares them would also
-    /// cover the usings and every type declared after them.
+    /// The entry point's code: the compilation unit that holds the top-level statements also holds usings and types.
     /// </summary>
+    public static IEnumerable<GlobalStatementSyntax> GlobalStatements(CompilationUnitSyntax unit) =>
+        unit.Members.OfType<GlobalStatementSyntax>();
+
+    /// <summary>From the first top-level statement to the end of the last.</summary>
     public static TextSpan TopLevelStatements(CompilationUnitSyntax unit)
     {
-        var statements = unit.Members.OfType<GlobalStatementSyntax>().ToArray();
+        var statements = GlobalStatements(unit).ToArray();
         return TextSpan.FromBounds(statements[0].SpanStart, statements[^1].Span.End);
     }
 }
