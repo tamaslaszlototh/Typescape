@@ -11,7 +11,7 @@ public sealed class CanonicalPathTests : IDisposable
     [Fact]
     public void A_path_through_a_symbolic_link_is_the_path_of_its_target()
     {
-        // Creating a symbolic link on Windows needs a privilege, and Windows paths are not resolved anyway.
+        // Creating a symbolic link on Windows needs a privilege.
         Assert.SkipWhen(OperatingSystem.IsWindows(), "Windows paths are only made full.");
         var real = Directory.CreateDirectory(Path.Combine(_directory, "Real")).FullName;
         File.WriteAllText(Path.Combine(real, "Test.slnx"), "");

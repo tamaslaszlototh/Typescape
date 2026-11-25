@@ -15,9 +15,8 @@ internal static class DotnetRestore
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        // NuGet resolves each ProjectReference against the MSBuild node's working directory, which the OS reports
-        // canonically. A solution reached through a symlink or in another case would then name each referenced project
-        // twice, and NuGet restores both spellings in parallel into the same obj folder ("file already exists").
+        // NuGet resolves ProjectReferences against a canonical working directory; any other spelling of the solution
+        // makes it restore each referenced project twice, in parallel, into one obj folder.
         var solution = CanonicalPath.Of(request.SolutionPath);
         List<string> arguments = ["restore", solution, "-tl:off", "-nologo", "-v:q"];
         arguments.AddRange(GlobalProperties.For(request).Select(property => $"-p:{property.Key}={property.Value}"));
