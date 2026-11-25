@@ -1,4 +1,5 @@
 using Microsoft.CodeAnalysis;
+using Typescape.Analyzer.Assembling;
 using Typescape.Analyzer.Extraction;
 using Typescape.Analyzer.Loading;
 using Typescape.Analyzer.Restore;
@@ -53,5 +54,5 @@ internal sealed class MSBuildStages : IAnalysisStages
         ProjectExtractor.ExtractDocument(project.Compilation, project.Context, document, cancellationToken);
 
     public SnapshotRecord Assemble(AssembleInput input, CancellationToken cancellationToken) =>
-        throw new NotImplementedException("Assemble is not implemented yet.");
+        SnapshotAssembler.Assemble(input, cancellationToken);
 }

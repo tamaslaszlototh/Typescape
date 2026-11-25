@@ -60,20 +60,23 @@ internal static class RuleTest
 
     /// <param name="documents">Paths relative to the solution directory.</param>
     /// <param name="allowedErrors">The compiler error codes the snippet may have, e.g. <c>CS0116</c>.</param>
+    /// <param name="references">References besides the framework, e.g. another snippet's compilation.</param>
     /// <exception cref="InvalidOperationException">The documents have any other compile error.</exception>
     public static CSharpCompilation Compile(
         IEnumerable<(string Path, string Source)> documents,
         OutputKind outputKind = OutputKind.DynamicallyLinkedLibrary,
-        IReadOnlyCollection<string>? allowedErrors = null)
+        IReadOnlyCollection<string>? allowedErrors = null,
+        string assembly = "App",
+        IEnumerable<MetadataReference>? references = null)
     {
         var trees = documents.Select(document => CSharpSyntaxTree.ParseText(
             document.Source,
             new CSharpParseOptions(LanguageVersion.Latest),
             FullPath(document.Path)));
         var compilation = CSharpCompilation.Create(
-            "App",
+            assembly,
             trees,
-            Framework,
+            [.. Framework, .. references ?? []],
             new CSharpCompilationOptions(outputKind));
 
         // A typo in a snippet would otherwise surface as a puzzling golden diff.

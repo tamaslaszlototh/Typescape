@@ -21,13 +21,16 @@ namespace Typescape.Snapshot;
 /// <param name="ExternalTypes">Types referenced by the solution but defined outside it, sorted by key.</param>
 /// <param name="ExecutableMembers">The members with an executable body, sorted by key.</param>
 /// <param name="ExternalMembers">
-/// Members of External Types that are the target of an Occurrence, sorted by key. Empty when <paramref name="Occurrences"/> is <c>null</c>.
+/// Members of External Types that are the target of an Occurrence, sorted by External Type, then key. Empty when
+/// <paramref name="Occurrences"/> is <c>null</c>.
 /// </param>
 /// <param name="NonExecutableMembers">
 /// Own members without an executable body that are the target of an Occurrence, sorted by key. Empty when
 /// <paramref name="Occurrences"/> is <c>null</c>.
 /// </param>
-/// <param name="Dependencies">Type-level Dependencies, one per (source type, target type, Dependency Kind).</param>
+/// <param name="Dependencies">
+/// Type-level Dependencies, one per (source type, target type, Dependency Kind), sorted by source key, target key, then Kind.
+/// </param>
 /// <param name="LoadHealth">How completely each project was loaded, plus the workspace diagnostics of no project.</param>
 /// <param name="Provenance">
 /// How the Snapshot was produced. The only part that may differ between two analyses of the same code: compare two

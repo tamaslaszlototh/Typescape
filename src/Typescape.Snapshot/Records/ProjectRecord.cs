@@ -4,7 +4,7 @@ namespace Typescape.Snapshot.Records;
 /// <param name="Key">Stable key: the project file path relative to the solution directory, forward slashes.</param>
 /// <param name="Name">The project name.</param>
 /// <param name="Assembly">The assembly name.</param>
-/// <param name="Style">Whether the project file is SDK-style or legacy.</param>
+/// <param name="Style">Whether the project file is SDK-style or legacy; <c>null</c> when it cannot be read (a failed project).</param>
 /// <param name="Tfm">The target framework the project was analyzed for, or <c>null</c> when none could be chosen.</param>
 /// <param name="Test">Whether the project counts as a test project.</param>
 /// <param name="TestReason">
@@ -16,7 +16,7 @@ public sealed record ProjectRecord(
     string Key,
     string Name,
     string Assembly,
-    ProjectStyle Style,
+    ProjectStyle? Style,
     string? Tfm,
     bool Test,
     string? TestReason,

@@ -570,7 +570,14 @@
           "type": "string"
         },
         "style": {
-          "$ref": "#/$defs/ProjectStyle"
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ProjectStyle"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "tfm": {
           "type": [

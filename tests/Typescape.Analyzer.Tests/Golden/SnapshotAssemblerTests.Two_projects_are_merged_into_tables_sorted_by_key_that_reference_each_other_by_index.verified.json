@@ -1,0 +1,677 @@
+{
+  "schemaVersion": "1.0",
+  "rulesVersion": 1,
+  "projects": [
+    {
+      "key": "App/App.csproj",
+      "name": "App",
+      "assembly": "App",
+      "style": "sdk",
+      "tfm": "net10.0",
+      "test": false,
+      "testReason": null,
+      "references": [
+        1
+      ]
+    },
+    {
+      "key": "Core/Core.csproj",
+      "name": "Core",
+      "assembly": "Core",
+      "style": "sdk",
+      "tfm": "net10.0",
+      "test": false,
+      "testReason": null,
+      "references": []
+    }
+  ],
+  "namespaces": [
+    {
+      "project": 0,
+      "name": "App"
+    },
+    {
+      "project": 0,
+      "name": "App.Zoo"
+    },
+    {
+      "project": 1,
+      "name": "Core"
+    }
+  ],
+  "documents": [
+    {
+      "path": "App/Report.cs",
+      "project": 0,
+      "generated": false,
+      "generatedReason": null
+    },
+    {
+      "path": "App/Zoo/Keeper.cs",
+      "project": 0,
+      "generated": false,
+      "generatedReason": null
+    },
+    {
+      "path": "Core/Circle.cs",
+      "project": 1,
+      "generated": false,
+      "generatedReason": null
+    },
+    {
+      "path": "Core/Shape.cs",
+      "project": 1,
+      "generated": false,
+      "generatedReason": null
+    }
+  ],
+  "types": [
+    {
+      "key": "App|T:App.Report",
+      "name": "Report",
+      "kind": "class",
+      "accessibility": "public",
+      "abstract": false,
+      "sealed": false,
+      "static": true,
+      "arity": 0,
+      "namespace": 0,
+      "containingType": null,
+      "declarations": [
+        {
+          "document": 0,
+          "lines": {
+            "start": 5,
+            "end": 12
+          },
+          "loc": 8,
+          "generated": false
+        }
+      ],
+      "loc": 8
+    },
+    {
+      "key": "App|T:App.Zoo.Keeper",
+      "name": "Keeper",
+      "kind": "class",
+      "accessibility": "internal",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": 1,
+      "containingType": null,
+      "declarations": [
+        {
+          "document": 1,
+          "lines": {
+            "start": 3,
+            "end": 7
+          },
+          "loc": 4,
+          "generated": false
+        }
+      ],
+      "loc": 4
+    },
+    {
+      "key": "App|T:App.Zoo.Keeper.Cage",
+      "name": "Cage",
+      "kind": "class",
+      "accessibility": "private",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": 1,
+      "containingType": 1,
+      "declarations": [
+        {
+          "document": 1,
+          "lines": {
+            "start": 6,
+            "end": 6
+          },
+          "loc": 1,
+          "generated": false
+        }
+      ],
+      "loc": 1
+    },
+    {
+      "key": "Core|T:Core.Circle",
+      "name": "Circle",
+      "kind": "class",
+      "accessibility": "public",
+      "abstract": false,
+      "sealed": true,
+      "static": false,
+      "arity": 0,
+      "namespace": 2,
+      "containingType": null,
+      "declarations": [
+        {
+          "document": 2,
+          "lines": {
+            "start": 3,
+            "end": 7
+          },
+          "loc": 5,
+          "generated": false
+        }
+      ],
+      "loc": 5
+    },
+    {
+      "key": "Core|T:Core.Color",
+      "name": "Color",
+      "kind": "enum",
+      "accessibility": "public",
+      "abstract": false,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": 2,
+      "containingType": null,
+      "declarations": [
+        {
+          "document": 3,
+          "lines": {
+            "start": 9,
+            "end": 9
+          },
+          "loc": 1,
+          "generated": false
+        }
+      ],
+      "loc": 1
+    },
+    {
+      "key": "Core|T:Core.Shape",
+      "name": "Shape",
+      "kind": "class",
+      "accessibility": "public",
+      "abstract": true,
+      "sealed": false,
+      "static": false,
+      "arity": 0,
+      "namespace": 2,
+      "containingType": null,
+      "declarations": [
+        {
+          "document": 3,
+          "lines": {
+            "start": 3,
+            "end": 7
+          },
+          "loc": 5,
+          "generated": false
+        }
+      ],
+      "loc": 5
+    }
+  ],
+  "externalTypes": [
+    {
+      "key": "System.Console|T:System.Console",
+      "name": "Console",
+      "assembly": "System.Console",
+      "namespace": "System",
+      "kind": "class"
+    },
+    {
+      "key": "System.Runtime|T:System.Double",
+      "name": "Double",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "struct"
+    },
+    {
+      "key": "System.Runtime|T:System.Math",
+      "name": "Math",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "class"
+    },
+    {
+      "key": "System.Runtime|T:System.String",
+      "name": "String",
+      "assembly": "System.Runtime",
+      "namespace": "System",
+      "kind": "class"
+    }
+  ],
+  "executableMembers": [
+    {
+      "key": "App|T:App.Report|M:App.Report.Print(Core.Shape)",
+      "type": 0,
+      "declaration": 0,
+      "signature": "Print(Shape)",
+      "kind": "method",
+      "accessibility": "public",
+      "document": 0,
+      "lines": {
+        "start": 7,
+        "end": 11
+      },
+      "loc": 5,
+      "cyclomatic": 2,
+      "cognitive": 1,
+      "generated": false
+    },
+    {
+      "key": "Core|T:Core.Circle|M:Core.Circle.Area",
+      "type": 3,
+      "declaration": 0,
+      "signature": "Area()",
+      "kind": "method",
+      "accessibility": "public",
+      "document": 2,
+      "lines": {
+        "start": 5,
+        "end": 5
+      },
+      "loc": 1,
+      "cyclomatic": 1,
+      "cognitive": 0,
+      "generated": false
+    },
+    {
+      "key": "Core|T:Core.Circle|M:Core.Circle.get_Color",
+      "type": 3,
+      "declaration": 0,
+      "signature": "Color.get",
+      "kind": "accessor",
+      "accessibility": "public",
+      "document": 2,
+      "lines": {
+        "start": 6,
+        "end": 6
+      },
+      "loc": 1,
+      "cyclomatic": 1,
+      "cognitive": 0,
+      "generated": false
+    }
+  ],
+  "externalMembers": [
+    {
+      "key": "M:System.Console.WriteLine(System.String)",
+      "type": 0,
+      "name": "Console.WriteLine(string)"
+    },
+    {
+      "key": "F:System.Math.PI",
+      "type": 2,
+      "name": "Math.PI"
+    }
+  ],
+  "nonExecutableMembers": [
+    {
+      "key": "Core|T:Core.Circle|M:Core.Circle.#ctor(System.Double)",
+      "type": 3,
+      "name": "Circle.Circle(double)"
+    },
+    {
+      "key": "Core|T:Core.Color|F:Core.Color.Red",
+      "type": 4,
+      "name": "Color.Red"
+    },
+    {
+      "key": "Core|T:Core.Shape|F:Core.Shape.Name",
+      "type": 5,
+      "name": "Shape.Name"
+    },
+    {
+      "key": "Core|T:Core.Shape|M:Core.Shape.Area",
+      "type": 5,
+      "name": "Shape.Area()"
+    }
+  ],
+  "dependencies": [
+    {
+      "source": 0,
+      "target": 3,
+      "external": false,
+      "kind": "new",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "external": false,
+      "kind": "member-access",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "external": false,
+      "kind": "member-access",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "external": false,
+      "kind": "signature",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "external": false,
+      "kind": "call",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 5,
+      "external": false,
+      "kind": "member-access",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 0,
+      "target": 0,
+      "external": true,
+      "kind": "call",
+      "count": 2,
+      "generatedCount": 0
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "external": false,
+      "kind": "member-type",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "external": false,
+      "kind": "new",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 2,
+      "target": 1,
+      "external": false,
+      "kind": "member-type",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "external": false,
+      "kind": "member-type",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "external": false,
+      "kind": "member-access",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 3,
+      "target": 5,
+      "external": false,
+      "kind": "inherits",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 3,
+      "target": 1,
+      "external": true,
+      "kind": "signature",
+      "count": 2,
+      "generatedCount": 0
+    },
+    {
+      "source": 3,
+      "target": 2,
+      "external": true,
+      "kind": "member-access",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 5,
+      "target": 1,
+      "external": true,
+      "kind": "signature",
+      "count": 1,
+      "generatedCount": 0
+    },
+    {
+      "source": 5,
+      "target": 3,
+      "external": true,
+      "kind": "member-type",
+      "count": 1,
+      "generatedCount": 0
+    }
+  ],
+  "loadHealth": {
+    "projects": [
+      {
+        "project": 0,
+        "status": "ok",
+        "availableTfms": [
+          "net10.0"
+        ],
+        "metadataReferences": 0,
+        "objectResolves": true,
+        "compileErrors": {
+          "count": 0,
+          "top": []
+        },
+        "unresolvedTypes": {
+          "count": 0,
+          "top": []
+        },
+        "workspaceDiagnostics": [],
+        "sdkFallback": false,
+        "projectReferenceMismatch": false,
+        "analyzerErrors": []
+      },
+      {
+        "project": 1,
+        "status": "ok",
+        "availableTfms": [
+          "net10.0"
+        ],
+        "metadataReferences": 0,
+        "objectResolves": true,
+        "compileErrors": {
+          "count": 0,
+          "top": []
+        },
+        "unresolvedTypes": {
+          "count": 0,
+          "top": []
+        },
+        "workspaceDiagnostics": [],
+        "sdkFallback": false,
+        "projectReferenceMismatch": false,
+        "analyzerErrors": []
+      }
+    ],
+    "solutionDiagnostics": []
+  },
+  "provenance": {
+    "tool": {
+      "version": "0.0.0",
+      "commit": null
+    },
+    "timestamp": "2026-11-23T00:00:00+00:00",
+    "solution": {
+      "fileName": "Fake.slnx",
+      "format": "slnx"
+    },
+    "sdkVersion": "10.0.100",
+    "os": "Test OS",
+    "git": null,
+    "framework": null,
+    "configuration": "Debug",
+    "properties": {},
+    "phaseSeconds": {
+      "restore": null,
+      "load": 0,
+      "compile": 0,
+      "diagnostics": 0,
+      "walk": 0,
+      "assemble": 0
+    },
+    "peakMemoryBytes": 0
+  },
+  "occurrences": [
+    [
+      0,
+      0,
+      -1,
+      0,
+      10
+    ],
+    [
+      1,
+      0,
+      2,
+      0,
+      10
+    ],
+    [
+      2,
+      0,
+      -2,
+      0,
+      10
+    ],
+    [
+      3,
+      0,
+      null,
+      0,
+      7
+    ],
+    [
+      4,
+      0,
+      -4,
+      0,
+      9
+    ],
+    [
+      5,
+      0,
+      -3,
+      0,
+      9
+    ],
+    [
+      6,
+      0,
+      0,
+      0,
+      9
+    ],
+    [
+      6,
+      0,
+      0,
+      0,
+      10
+    ],
+    [
+      7,
+      null,
+      null,
+      1,
+      5
+    ],
+    [
+      8,
+      null,
+      -1,
+      1,
+      5
+    ],
+    [
+      9,
+      null,
+      null,
+      1,
+      6
+    ],
+    [
+      10,
+      null,
+      null,
+      2,
+      6
+    ],
+    [
+      11,
+      2,
+      -2,
+      2,
+      6
+    ],
+    [
+      12,
+      null,
+      null,
+      2,
+      3
+    ],
+    [
+      13,
+      null,
+      null,
+      2,
+      3
+    ],
+    [
+      13,
+      1,
+      null,
+      2,
+      5
+    ],
+    [
+      14,
+      1,
+      1,
+      2,
+      5
+    ],
+    [
+      15,
+      null,
+      null,
+      3,
+      6
+    ],
+    [
+      16,
+      null,
+      null,
+      3,
+      5
+    ]
+  ]
+}
