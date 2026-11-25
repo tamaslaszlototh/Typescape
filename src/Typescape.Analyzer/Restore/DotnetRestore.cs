@@ -24,13 +24,13 @@ internal static class DotnetRestore
         ProcessResult result;
         try
         {
-            // The solution directory's global.json picks the SDK, as it does for the BuildHost.
-            result = await ProcessRunner.RunAsync(
-                "dotnet",
-                arguments,
-                Path.GetDirectoryName(solution)!,
-                ProcessRunner.QuietEnvironment,
-                cancellationToken);
+            result = await RestoreAsync(solution, arguments, cancellationToken);
+
+            // A project still has two spellings when, say, its folder is a symlink; a serial restore can't race on it.
+            if (result.ExitCode != 0 && RacedOnObjFolder(result))
+            {
+                result = await RestoreAsync(solution, [.. arguments, "--disable-parallel"], cancellationToken);
+            }
         }
         catch (Win32Exception e)
         {
@@ -40,6 +40,13 @@ internal static class DotnetRestore
         return result.ExitCode == 0 ? null : Warning($"dotnet restore exited with code {result.ExitCode}.", ErrorLines(result));
     }
 
+    // The solution directory's global.json picks the SDK, as it does for the BuildHost.
+    private static Task<ProcessResult> RestoreAsync(string solution, List<string> arguments, CancellationToken cancellationToken) =>
+        ProcessRunner.RunAsync("dotnet", arguments, Path.GetDirectoryName(solution)!, ProcessRunner.QuietEnvironment, cancellationToken);
+
+    private static bool RacedOnObjFolder(ProcessResult result) =>
+        Lines(result).Any(line => line.Contains(": error ", StringComparison.Ordinal) && line.Contains("already exists", StringComparison.Ordinal));
+
     private static string Warning(string reason, IReadOnlyList<string> details) =>
         string.Join(
             Environment.NewLine,
@@ -48,9 +55,7 @@ internal static class DotnetRestore
     // MSBuild logs errors to stdout and repeats them in its summary.
     private static string[] ErrorLines(ProcessResult result)
     {
-        var lines = $"{result.Output}\n{result.Error}"
-            .Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-            .ToArray();
+        var lines = Lines(result);
         var errors = lines.Where(line => line.Contains(": error ", StringComparison.Ordinal)).Distinct().ToArray();
         var shown = errors.Length > 0 ? errors : lines;
 
@@ -58,4 +63,7 @@ internal static class DotnetRestore
             ? [.. shown.Select(line => $"  {line}")]
             : [.. shown.Take(MaxErrorLines).Select(line => $"  {line}"), $"  … and {shown.Length - MaxErrorLines} more."];
     }
+
+    private static string[] Lines(ProcessResult result) =>
+        $"{result.Output}\n{result.Error}".Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 }

@@ -81,6 +81,22 @@ public sealed class DotnetRestoreTests : IDisposable
     }
 
     [Fact]
+    public async Task A_restore_that_races_on_an_obj_folder_is_retried_serially()
+    {
+        // The real race (one project restored under two path spellings) fails only a few runs in a hundred, so this
+        // project fails the way it does, but only while the restore is parallel.
+        var solution = Solution("App", Net10 + """
+            <Target Name="RaceOnObjFolder" BeforeTargets="CollectPackageReferences" Condition="'$(RestoreDisableParallel)' != 'true'">
+              <Error Text="The file 'obj/App.csproj.nuget.dgspec.json' already exists." />
+            </Target>
+            """);
+
+        var warning = await RestoreAsync(solution);
+
+        Assert.Null(warning);
+    }
+
+    [Fact]
     public async Task Cancellation_stops_the_restore()
     {
         var solution = Solution("App", Net10);
