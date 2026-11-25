@@ -36,7 +36,9 @@ public sealed record LoadHealthRecord(
 /// Whether the direct project references (<see cref="ProjectRecord.References"/>) disagree with the project references
 /// MSBuildWorkspace reports, beyond its reporting the transitive closure.
 /// </param>
-/// <param name="AnalyzerErrors">Exceptions in Typescape's own walker, sorted by document, then exception type, then frame.</param>
+/// <param name="AnalyzerErrors">
+/// Exceptions in Typescape's own walker, and facts Assemble left out; sorted by document, then exception type, then frame.
+/// </param>
 public sealed record ProjectHealthRecord(
     int Project,
     LoadStatus Status,
@@ -117,11 +119,18 @@ public enum WorkspaceDiagnosticKind
     Failure,
 }
 
-/// <summary>An exception in Typescape's own walker, caught on one document. It makes the project degraded.</summary>
+/// <summary>
+/// An exception in Typescape's own walker, caught on one document, or a fact of the document that Assemble left out
+/// because it conflicts with another project's. It makes the project degraded.
+/// </summary>
 /// <param name="Document">Index into <see cref="SnapshotRecord.Documents"/> of the document being walked.</param>
-/// <param name="ExceptionType">The exception's full type name, e.g. <c>System.InvalidCastException</c>.</param>
+/// <param name="ExceptionType">
+/// The exception's full type name, e.g. <c>System.InvalidCastException</c>; for a left-out fact, why:
+/// <c>duplicate-type-key</c> (an earlier project by key declares a type of the same key) or <c>unplaced-member</c> (no
+/// declaration of its type holds an Executable Member).
+/// </param>
 /// <param name="Frame">
 /// The top stack frame as a method, e.g. <c>Typescape.Analyzer.Walk.DependencyWalker.VisitInvocation(InvocationExpressionSyntax)</c>.
-/// Never its file and line, which hold an absolute path from the machine that built the tool.
+/// Never its file and line, which hold an absolute path from the machine that built the tool. For a left-out fact, its key.
 /// </param>
 public sealed record AnalyzerErrorRecord(int Document, string ExceptionType, string Frame);

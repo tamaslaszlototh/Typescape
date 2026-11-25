@@ -29,11 +29,16 @@ internal sealed record TestProject(string Key, IReadOnlyList<ProjectFacts> Parts
     public IReadOnlyList<string> References { get; init; } = [];
 
     public ProjectDiagnostics Diagnostics { get; init; } = new(new CompileErrorsRecord(0, []), ObjectResolves: true);
+
+    /// <summary>Whether MSBuildWorkspace gave the project any metadata reference.</summary>
+    public bool HasMetadataReferences { get; init; } = true;
 }
 
 /// <summary>Builds Assemble's input over real Roslyn projects and runs <see cref="SnapshotAssembler"/>.</summary>
 internal static class AssembleTest
 {
+    private static readonly MetadataReference ObjectReference = MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
+
     public static SnapshotRecord Assemble(params TestProject[] projects) => Assemble(projects, unopened: []);
 
     public static SnapshotRecord Assemble(
@@ -46,7 +51,12 @@ internal static class AssembleTest
         foreach (var project in projects)
         {
             var roslyn = workspace.AddProject(ProjectInfo.Create(
-                ProjectId.CreateNewId(), VersionStamp.Create(), project.Assembly, project.Assembly, LanguageNames.CSharp));
+                ProjectId.CreateNewId(),
+                VersionStamp.Create(),
+                project.Assembly,
+                project.Assembly,
+                LanguageNames.CSharp,
+                metadataReferences: project.HasMetadataReferences ? [ObjectReference] : []));
             var loaded = new LoadedProject(project.Key, roslyn, "net10.0", ["net10.0"]) { References = project.References, Style = ProjectStyle.Sdk };
             var compiled = new CompiledProject(
                 loaded,

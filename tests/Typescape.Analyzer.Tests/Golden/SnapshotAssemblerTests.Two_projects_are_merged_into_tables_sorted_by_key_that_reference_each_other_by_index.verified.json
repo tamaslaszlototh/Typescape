@@ -474,7 +474,7 @@
         "availableTfms": [
           "net10.0"
         ],
-        "metadataReferences": 0,
+        "metadataReferences": 1,
         "objectResolves": true,
         "compileErrors": {
           "count": 0,
@@ -495,7 +495,7 @@
         "availableTfms": [
           "net10.0"
         ],
-        "metadataReferences": 0,
+        "metadataReferences": 1,
         "objectResolves": true,
         "compileErrors": {
           "count": 0,

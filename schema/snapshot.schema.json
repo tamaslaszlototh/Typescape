@@ -567,7 +567,10 @@
           "type": "string"
         },
         "assembly": {
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "style": {
           "anyOf": [

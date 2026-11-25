@@ -10,72 +10,93 @@ namespace Typescape.Analyzer.Assembling;
 /// Merges the <see cref="ProjectFacts"/> of every project into the Snapshot: the only place where determinism is decided.
 /// </summary>
 /// <remarks>
-/// <para>
-/// Every table is sorted by its stable key, ordinally, and every reference becomes an array index, so the order in which
-/// the facts arrive never shows in the result.
-/// </para>
-/// <para>
-/// Where several projects state the same key, the project first in key order wins: a document linked into two projects
-/// is one row, owned by the first. An own type wins over an External Type of the same key (a project referenced as a
-/// DLL), and the External members of that type become its members.
-/// </para>
-/// <para>
-/// A Dependency or Occurrence whose own type or member is missing, because its declaration's walk failed with an
-/// analyzer error, is left out.
-/// </para>
+/// Facts are resolved by key and indexed last, after sorting every table ordinally by stable key. Where projects state one
+/// key, the first project by key wins (spec D17); what that leaves out of a later project is one of its analyzer errors.
 /// </remarks>
 internal static class SnapshotAssembler
 {
     /// <summary>The <see cref="SnapshotRecord.RulesVersion"/> this Analyzer writes. Bump it whenever the same code would give a different Snapshot.</summary>
     public const int RulesVersion = 1;
 
+    /// <summary>The <see cref="AnalyzerErrorRecord.ExceptionType"/> of an own type left out because an earlier project declares its key.</summary>
+    public const string DuplicateTypeKey = "duplicate-type-key";
+
+    /// <summary>The <see cref="AnalyzerErrorRecord.ExceptionType"/> of an Executable Member left out because no declaration of its type holds it.</summary>
+    public const string UnplacedMember = "unplaced-member";
+
     public static SnapshotRecord Assemble(AssembleInput input, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(input);
 
         var projects = Projects(input);
-        var projectIndex = Index(projects, project => project.Key);
-        var facts = projects.Select(project => project.Facts).ToArray();
-        cancellationToken.ThrowIfCancellationRequested();
+        var projectIndex = RowIndexes.Of(projects, project => project.Key);
+        var leftOut = projects.Select(_ => new List<AnalyzerErrorRecord>()).ToArray();
 
-        var documents = FirstByKey(facts.SelectMany((part, p) => part.Documents.Select(document => (p, document))), entry => entry.document.Path)
-            .Select(entry => new DocumentRecord(entry.document.Path, entry.p, entry.document.GeneratedReason is not null, entry.document.GeneratedReason))
+        var documents = FirstByKey(Rows(projects, facts => facts.Documents), row => row.Fact.Path)
+            .Select(row => new DocumentRecord(row.Fact.Path, row.Project, row.Fact.GeneratedReason is not null, row.Fact.GeneratedReason))
             .ToArray();
-        var documentIndex = Index(documents, document => document.Path);
+        var documentIndex = RowIndexes.Of(documents, document => document.Path);
 
-        var ownTypes = FirstByKey(facts.SelectMany((part, p) => part.Types.Select(type => (p, type))), entry => entry.type.Key);
+        var ownTypes = FirstByKey(
+            Rows(projects, facts => facts.Types),
+            row => row.Fact.Key,
+            duplicate => leftOut[duplicate.Project].Add(
+                new AnalyzerErrorRecord(documentIndex[duplicate.Fact.Declarations[0].Document], DuplicateTypeKey, duplicate.Fact.Key)));
+        var owners = ownTypes.ToDictionary(row => row.Fact.Key, row => row.Project, StringComparer.Ordinal);
+        bool Declares(int project, string type) => owners.TryGetValue(type, out var owner) && owner == project;
+
         var namespaces = ownTypes
-            .Select(entry => new NamespaceRecord(entry.p, entry.type.Namespace))
+            .Select(row => new NamespaceRecord(row.Project, row.Fact.Namespace))
             .Distinct()
             .OrderBy(row => row.Project)
             .ThenBy(row => row.Name, StringComparer.Ordinal)
             .ToArray();
-        var namespaceIndex = Index(namespaces, row => (row.Project, row.Name));
-        var typeIndex = Index(ownTypes, entry => entry.type.Key);
-        var types = ownTypes.Select(entry => Type(entry.type, entry.p, typeIndex, namespaceIndex, documentIndex)).ToArray();
+        var namespaceIndex = RowIndexes.Of(namespaces, row => (row.Project, row.Name));
+        var typeIndex = RowIndexes.Of(ownTypes, row => row.Fact.Key);
+        var types = ownTypes.Select(row => Type(row, typeIndex, namespaceIndex, documentIndex)).ToArray();
         cancellationToken.ThrowIfCancellationRequested();
 
-        var externalTypes = FirstByKey(facts.SelectMany(part => part.ExternalTypes), type => type.Key)
-            .Where(type => !typeIndex.ContainsKey(type.Key))
+        var executableMembers = new List<ExecutableMemberRecord>();
+        foreach (var row in FirstByKey(Rows(projects, facts => facts.ExecutableMembers).Where(row => Declares(row.Project, row.Fact.Type)), row => row.Fact.Key))
+        {
+            if (ExecutableMember(row.Fact, typeIndex[row.Fact.Type], types, documentIndex) is { } member)
+            {
+                executableMembers.Add(member);
+            }
+            else
+            {
+                leftOut[row.Project].Add(new AnalyzerErrorRecord(documentIndex[row.Fact.Document], UnplacedMember, row.Fact.Key));
+            }
+        }
+
+        var externalCandidates = FirstByKey(projects.SelectMany(project => project.Facts.ExternalTypes), type => type.Key)
+            .Where(type => !owners.ContainsKey(type.Key))
+            .ToDictionary(type => type.Key, StringComparer.Ordinal);
+        var dependencyFacts = Rows(projects, facts => facts.Dependencies)
+            .Where(row => Declares(row.Project, row.Fact.Source) && (owners.ContainsKey(row.Fact.Target) || externalCandidates.ContainsKey(row.Fact.Target)))
+            .GroupBy(row => (row.Fact.Source, row.Fact.Target, row.Fact.Kind))
+            .Select(group => new DependencyFact(group.Key.Source, group.Key.Target, group.Key.Kind, group.Sum(row => row.Fact.Count), group.Sum(row => row.Fact.GeneratedCount)))
+            .OrderBy(dependency => dependency.Source, StringComparer.Ordinal)
+            .ThenBy(dependency => dependency.Target, StringComparer.Ordinal)
+            .ThenBy(dependency => dependency.Kind)
+            .ToArray();
+        var dependencyIndex = RowIndexes.Of(dependencyFacts, dependency => (dependency.Source, dependency.Target, dependency.Kind));
+
+        var targeted = dependencyFacts.Select(dependency => dependency.Target).ToHashSet(StringComparer.Ordinal);
+        var externalTypes = externalCandidates.Values
+            .Where(type => targeted.Contains(type.Key))
+            .OrderBy(type => type.Key, StringComparer.Ordinal)
             .Select(type => new ExternalTypeRecord(type.Key, type.Name, type.Assembly, type.Namespace, type.Kind))
             .ToArray();
-        var externalTypeIndex = Index(externalTypes, type => type.Key);
-
-        var executableMembers = FirstByKey(facts.SelectMany(part => part.ExecutableMembers), member => member.Key)
-            .Select(member => typeIndex.TryGetValue(member.Type, out var type) ? ExecutableMember(member, type, types, documentIndex) : null)
-            .OfType<ExecutableMemberRecord>()
-            .ToArray();
-        var executableIndex = Index(executableMembers, member => member.Key);
+        var indexes = new RowIndexes(documentIndex, typeIndex, RowIndexes.Of(externalTypes, type => type.Key), RowIndexes.Of(executableMembers, member => member.Key));
         cancellationToken.ThrowIfCancellationRequested();
 
-        var targets = new TargetMembers(input.Request.Occurrences, facts, typeIndex, externalTypeIndex, executableIndex);
-        var dependencies = Dependencies(facts, typeIndex, externalTypeIndex);
-        var dependencyIndex = Index(dependencies, dependency => (dependency.Source, dependency.Target, dependency.External, dependency.Kind));
-        cancellationToken.ThrowIfCancellationRequested();
-
-        IReadOnlyList<OccurrenceRecord>? occurrences = input.Request.Occurrences
-            ? Occurrences(facts, typeIndex, externalTypeIndex, executableIndex, documentIndex, dependencyIndex, targets)
-            : null;
+        OccurrenceFact[] occurrenceFacts = input.Request.Occurrences
+            ? [.. Rows(projects, facts => facts.Occurrences)
+                .Where(row => Declares(row.Project, row.Fact.Source) && dependencyIndex.ContainsKey((row.Fact.Source, row.Fact.Target, row.Fact.Kind)))
+                .Select(row => row.Fact)]
+            : [];
+        var targets = new TargetMembers(occurrenceFacts, projects.Select(project => project.Facts), indexes);
         cancellationToken.ThrowIfCancellationRequested();
 
         return new SnapshotRecord(
@@ -89,43 +110,38 @@ internal static class SnapshotAssembler
             executableMembers,
             targets.External,
             targets.NonExecutable,
-            [.. dependencies.Select(dependency => dependency.Record)],
+            [.. dependencyFacts.Select(dependency => Dependency(dependency, indexes))],
             new LoadHealthRecord(
-                [.. projects.Select((project, p) => project.Health(p, documentIndex))],
+                [.. projects.Select((project, p) => project.Health(p, documentIndex, leftOut[p]))],
                 input.Solution.SolutionDiagnostics),
             input.Provenance,
-            occurrences);
+            input.Request.Occurrences ? Occurrences(occurrenceFacts, dependencyIndex, indexes, targets) : null);
     }
 
     private static AssembledProject[] Projects(AssembleInput input) =>
     [
         .. input.Projects
-            .Select(result => new AssembledProject(
-                result.Project.Project.Key,
-                result.Project.Project.Project.AssemblyName,
-                result.Project.Project,
-                Style: result.Project.Project.Style,
-                result.Diagnostics,
-                ProjectFacts.Combine(result.Facts),
-                WorkspaceDiagnostics: result.Project.Project.WorkspaceDiagnostics))
-            .Concat(input.Solution.UnopenedProjects.Select(project => new AssembledProject(
-                project.Key,
-                Path.GetFileNameWithoutExtension(project.Key),
-                Loaded: null,
-                project.Style,
-                Diagnostics: null,
-                ProjectFacts.Empty,
-                project.WorkspaceDiagnostics)))
+            .Select(result =>
+            {
+                var loaded = result.Project.Project;
+                return new AssembledProject(loaded.Key, loaded, loaded.Style, result.Diagnostics, ProjectFacts.Combine(result.Facts), loaded.WorkspaceDiagnostics);
+            })
+            .Concat(input.Solution.UnopenedProjects.Select(project =>
+                new AssembledProject(project.Key, Loaded: null, project.Style, Diagnostics: null, ProjectFacts.Empty, project.WorkspaceDiagnostics)))
             .OrderBy(project => project.Key, StringComparer.Ordinal),
     ];
 
+    private static IEnumerable<Row<T>> Rows<T>(IReadOnlyList<AssembledProject> projects, Func<ProjectFacts, IReadOnlyList<T>> facts) =>
+        projects.SelectMany((project, p) => facts(project.Facts).Select(fact => new Row<T>(p, fact)));
+
     private static TypeRecord Type(
-        TypeFact type,
-        int project,
+        Row<TypeFact> row,
         IReadOnlyDictionary<string, int> typeIndex,
         IReadOnlyDictionary<(int, string), int> namespaceIndex,
-        IReadOnlyDictionary<string, int> documentIndex) =>
-        new(
+        IReadOnlyDictionary<string, int> documentIndex)
+    {
+        var type = row.Fact;
+        return new TypeRecord(
             type.Key,
             type.Name,
             type.Kind,
@@ -134,7 +150,7 @@ internal static class SnapshotAssembler
             type.Sealed,
             type.Static,
             type.Arity,
-            namespaceIndex[(project, type.Namespace)],
+            namespaceIndex[(row.Project, type.Namespace)],
             type.ContainingType is { } containing && typeIndex.TryGetValue(containing, out var index) ? index : null,
             [
                 .. type.Declarations
@@ -143,7 +159,9 @@ internal static class SnapshotAssembler
                     .ThenBy(declaration => declaration.Lines.Start),
             ],
             type.Loc);
+    }
 
+    /// <returns><c>null</c> when no declaration of the type holds the member.</returns>
     private static ExecutableMemberRecord? ExecutableMember(
         ExecutableMemberFact member,
         int type,
@@ -179,62 +197,25 @@ internal static class SnapshotAssembler
             member.Generated);
     }
 
-    private static AssembledDependency[] Dependencies(
-        IEnumerable<ProjectFacts> facts,
-        IReadOnlyDictionary<string, int> typeIndex,
-        IReadOnlyDictionary<string, int> externalTypeIndex) =>
-    [
-        .. facts
-            .SelectMany(part => part.Dependencies)
-            .GroupBy(dependency => (dependency.Source, dependency.Target, dependency.Kind))
-            .Select(group => Dependency(group.Key, group.Sum(d => d.Count), group.Sum(d => d.GeneratedCount), typeIndex, externalTypeIndex))
-            .OfType<AssembledDependency>()
-            .OrderBy(dependency => dependency.SourceKey, StringComparer.Ordinal)
-            .ThenBy(dependency => dependency.TargetKey, StringComparer.Ordinal)
-            .ThenBy(dependency => dependency.Kind),
-    ];
-
-    private static AssembledDependency? Dependency(
-        (string Source, string Target, DependencyKind Kind) key,
-        int count,
-        int generatedCount,
-        IReadOnlyDictionary<string, int> typeIndex,
-        IReadOnlyDictionary<string, int> externalTypeIndex) =>
-        typeIndex.TryGetValue(key.Source, out var source) && Target(key.Target, typeIndex, externalTypeIndex) is { } target
-            ? new AssembledDependency(key.Source, key.Target, new DependencyRecord(source, target.Index, target.External, key.Kind, count, generatedCount))
-            : null;
-
-    private static (int Index, bool External)? Target(
-        string key,
-        IReadOnlyDictionary<string, int> typeIndex,
-        IReadOnlyDictionary<string, int> externalTypeIndex) =>
-        typeIndex.TryGetValue(key, out var own) ? (own, false)
-        : externalTypeIndex.TryGetValue(key, out var external) ? (external, true)
-        : null;
+    private static DependencyRecord Dependency(DependencyFact dependency, RowIndexes indexes)
+    {
+        var target = indexes.Type(dependency.Target)!.Value;
+        return new DependencyRecord(indexes.Types[dependency.Source], target.Index, target.External, dependency.Kind, dependency.Count, dependency.GeneratedCount);
+    }
 
     private static OccurrenceRecord[] Occurrences(
-        IEnumerable<ProjectFacts> facts,
-        IReadOnlyDictionary<string, int> typeIndex,
-        IReadOnlyDictionary<string, int> externalTypeIndex,
-        IReadOnlyDictionary<string, int> executableIndex,
-        IReadOnlyDictionary<string, int> documentIndex,
-        IReadOnlyDictionary<(int, int, bool, DependencyKind), int> dependencyIndex,
+        IEnumerable<OccurrenceFact> occurrences,
+        IReadOnlyDictionary<(string, string, DependencyKind), int> dependencyIndex,
+        RowIndexes indexes,
         TargetMembers targets) =>
     [
-        .. facts
-            .SelectMany(part => part.Occurrences)
-            .Select(occurrence =>
-                typeIndex.TryGetValue(occurrence.Source, out var source)
-                && Target(occurrence.Target, typeIndex, externalTypeIndex) is { } target
-                && dependencyIndex.TryGetValue((source, target.Index, target.External, occurrence.Kind), out var dependency)
-                    ? new OccurrenceRecord(
-                        dependency,
-                        occurrence.SourceMember is { } member && executableIndex.TryGetValue(member, out var sourceMember) ? sourceMember : null,
-                        targets.Of(occurrence),
-                        documentIndex[occurrence.Document],
-                        occurrence.Line)
-                    : null)
-            .OfType<OccurrenceRecord>()
+        .. occurrences
+            .Select(occurrence => new OccurrenceRecord(
+                dependencyIndex[(occurrence.Source, occurrence.Target, occurrence.Kind)],
+                occurrence.SourceMember is { } member && indexes.ExecutableMembers.TryGetValue(member, out var sourceMember) ? sourceMember : null,
+                targets.Of(occurrence),
+                indexes.Documents[occurrence.Document],
+                occurrence.Line))
             .OrderBy(occurrence => occurrence.Dependency)
             .ThenBy(occurrence => occurrence.Document)
             .ThenBy(occurrence => occurrence.Line)
@@ -243,43 +224,29 @@ internal static class SnapshotAssembler
     ];
 
     /// <summary>The first entry per key, sorted by key.</summary>
-    private static T[] FirstByKey<T>(IEnumerable<T> entries, Func<T, string> key) =>
-    [
-        .. entries
-            .GroupBy(key, StringComparer.Ordinal)
-            .Select(group => group.First())
-            .OrderBy(key, StringComparer.Ordinal),
-    ];
-
-    private static Dictionary<TKey, int> Index<T, TKey>(IReadOnlyList<T> rows, Func<T, TKey> key)
-        where TKey : notnull
+    /// <param name="duplicate">Receives every later entry of a key.</param>
+    private static T[] FirstByKey<T>(IEnumerable<T> entries, Func<T, string> key, Action<T>? duplicate = null)
     {
-        var index = new Dictionary<TKey, int>(rows.Count);
-        for (var i = 0; i < rows.Count; i++)
+        var first = new Dictionary<string, T>(StringComparer.Ordinal);
+        foreach (var entry in entries)
         {
-            index.Add(key(rows[i]), i);
+            if (!first.TryAdd(key(entry), entry))
+            {
+                duplicate?.Invoke(entry);
+            }
         }
 
-        return index;
+        return [.. first.Values.OrderBy(key, StringComparer.Ordinal)];
     }
 
-    private sealed record AssembledDependency(string SourceKey, string TargetKey, DependencyRecord Record)
-    {
-        public int Source => Record.Source;
-
-        public int Target => Record.Target;
-
-        public bool External => Record.External;
-
-        public DependencyKind Kind => Record.Kind;
-    }
+    /// <summary>A fact of the project at index <paramref name="Project"/> of the sorted projects.</summary>
+    private readonly record struct Row<T>(int Project, T Fact);
 
     /// <summary>A project of the solution file, loaded or not.</summary>
     /// <param name="Loaded"><c>null</c> for a project MSBuildWorkspace did not open.</param>
     /// <param name="Diagnostics"><c>null</c> for a project MSBuildWorkspace did not open.</param>
     private sealed record AssembledProject(
         string Key,
-        string Assembly,
         LoadedProject? Loaded,
         ProjectStyle? Style,
         ProjectDiagnostics? Diagnostics,
@@ -293,32 +260,48 @@ internal static class SnapshotAssembler
             new(
                 Key,
                 Name,
-                Assembly,
+                Loaded?.Project.AssemblyName,
                 Style,
                 Loaded?.Tfm,
                 Loaded?.Test ?? false,
                 Loaded?.TestReason,
                 [.. (Loaded?.References ?? []).Select(reference => projectIndex[reference]).Order()]);
 
-        public ProjectHealthRecord Health(int project, IReadOnlyDictionary<string, int> documentIndex) =>
-            new(
+        /// <param name="leftOut">The analyzer errors of what Assemble left out of the project.</param>
+        public ProjectHealthRecord Health(int project, IReadOnlyDictionary<string, int> documentIndex, IEnumerable<AnalyzerErrorRecord> leftOut)
+        {
+            var compileErrors = Diagnostics?.CompileErrors ?? new CompileErrorsRecord(0, []);
+            var objectResolves = Diagnostics?.ObjectResolves ?? false;
+            var metadataReferences = Loaded?.MetadataReferences ?? 0;
+            AnalyzerErrorRecord[] analyzerErrors =
+            [
+                .. Facts.AnalyzerErrors
+                    .Select(error => new AnalyzerErrorRecord(documentIndex[error.Document], error.ExceptionType, error.Frame))
+                    .Concat(leftOut)
+                    .OrderBy(error => error.Document)
+                    .ThenBy(error => error.ExceptionType, StringComparer.Ordinal)
+                    .ThenBy(error => error.Frame, StringComparer.Ordinal),
+            ];
+
+            return new ProjectHealthRecord(
                 project,
-                Loaded is null ? LoadStatus.Failed : LoadStatus.Ok,
+                Verdict(compileErrors, objectResolves, metadataReferences, analyzerErrors),
                 Loaded?.AvailableTfms ?? [],
-                Loaded?.MetadataReferences ?? 0,
-                Diagnostics?.ObjectResolves ?? false,
-                Diagnostics?.CompileErrors ?? new CompileErrorsRecord(0, []),
+                metadataReferences,
+                objectResolves,
+                compileErrors,
                 UnresolvedTypes(),
                 WorkspaceDiagnostics,
                 Loaded?.SdkFallback ?? false,
                 Loaded?.ProjectReferenceMismatch ?? false,
-                [
-                    .. Facts.AnalyzerErrors
-                        .Select(error => new AnalyzerErrorRecord(documentIndex[error.Document], error.ExceptionType, error.Frame))
-                        .OrderBy(error => error.Document)
-                        .ThenBy(error => error.ExceptionType, StringComparer.Ordinal)
-                        .ThenBy(error => error.Frame, StringComparer.Ordinal),
-                ]);
+                analyzerErrors);
+        }
+
+        // A suspiciously low reference count (spec D7) is an unresolved System.Object or no metadata reference at all.
+        private LoadStatus Verdict(CompileErrorsRecord compileErrors, bool objectResolves, int metadataReferences, IReadOnlyList<AnalyzerErrorRecord> analyzerErrors) =>
+            Loaded is null ? LoadStatus.Failed
+            : compileErrors.Count > 0 || !objectResolves || metadataReferences == 0 || analyzerErrors.Count > 0 ? LoadStatus.Degraded
+            : LoadStatus.Ok;
 
         private UnresolvedTypesRecord UnresolvedTypes()
         {

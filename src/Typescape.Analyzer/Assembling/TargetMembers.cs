@@ -5,70 +5,102 @@ using Typescape.Snapshot.Records;
 namespace Typescape.Analyzer.Assembling;
 
 /// <summary>
-/// The External members and own non-executable members that Occurrences target, deduplicated and sorted, and the
-/// <see cref="OccurrenceRecord.TargetMember"/> of each Occurrence.
+/// The target members of the Occurrences: the External members and own non-executable members they target, sorted,
+/// and each Occurrence's <see cref="OccurrenceRecord.TargetMember"/>.
 /// </summary>
 /// <remarks>
-/// An External member of a type that turned out to be own (see <see cref="SnapshotAssembler"/>) is an own member: its
-/// Executable Member when one has its key, otherwise a non-executable member.
+/// An External member of a type that turned out to be own is an own member: the Executable Member of its doc ID, else a
+/// non-executable member.
 /// </remarks>
 internal sealed class TargetMembers
 {
-    private readonly IReadOnlyDictionary<string, int> typeIndex;
-    private readonly IReadOnlyDictionary<string, int> executableIndex;
+    private readonly Dictionary<OccurrenceFact, Target> targets = [];
     private readonly Dictionary<(string Type, string Key), int> externalIndex;
     private readonly Dictionary<string, int> nonExecutableIndex;
 
-    /// <param name="occurrences">Whether the Snapshot has Occurrences; without them both tables are empty.</param>
-    public TargetMembers(
-        bool occurrences,
-        IEnumerable<ProjectFacts> facts,
-        IReadOnlyDictionary<string, int> typeIndex,
-        IReadOnlyDictionary<string, int> externalTypeIndex,
-        IReadOnlyDictionary<string, int> executableIndex)
+    /// <param name="occurrences">The Occurrences the Snapshot keeps; their source and target types are in <paramref name="indexes"/>.</param>
+    public TargetMembers(IReadOnlyList<OccurrenceFact> occurrences, IEnumerable<ProjectFacts> facts, RowIndexes indexes)
     {
-        this.typeIndex = typeIndex;
-        this.executableIndex = executableIndex;
-        var parts = occurrences ? facts.ToArray() : [];
+        var parts = facts.ToArray();
+        var externalFacts = parts
+            .SelectMany(part => part.ExternalMembers)
+            .DistinctBy(member => (member.Type, member.Key))
+            .ToDictionary(member => (member.Type, member.Key));
+        var nonExecutableFacts = parts
+            .SelectMany(part => part.NonExecutableMembers)
+            .DistinctBy(member => member.Key, StringComparer.Ordinal)
+            .ToDictionary(member => member.Key, StringComparer.Ordinal);
 
-        External =
-        [
-            .. parts
-                .SelectMany(part => part.ExternalMembers)
-                .Where(member => externalTypeIndex.ContainsKey(member.Type))
-                .DistinctBy(member => (member.Type, member.Key))
-                .Select(member => new ExternalMemberRecord(member.Key, externalTypeIndex[member.Type], member.Name))
-                .OrderBy(member => member.Type)
-                .ThenBy(member => member.Key, StringComparer.Ordinal),
-        ];
-        externalIndex = new Dictionary<(string Type, string Key), int>(External.Count);
-        var externalTypeKeys = externalTypeIndex.ToDictionary(entry => entry.Value, entry => entry.Key);
-        for (var i = 0; i < External.Count; i++)
+        var external = new Dictionary<(string Type, string Key), ExternalMemberFact>();
+        var nonExecutable = new Dictionary<string, NonExecutableMemberFact>(StringComparer.Ordinal);
+
+        Target? ResolveExternal(OccurrenceFact occurrence, string member)
         {
-            externalIndex.Add((externalTypeKeys[External[i].Type], External[i].Key), i);
+            if (!externalFacts.TryGetValue((occurrence.Target, member), out var fact))
+            {
+                return null;
+            }
+
+            external.TryAdd((fact.Type, fact.Key), fact);
+            return new Target.External((fact.Type, fact.Key));
         }
 
-        var ownedExternals = parts
-            .SelectMany(part => part.ExternalMembers)
-            .Where(member => typeIndex.ContainsKey(member.Type))
-            .Select(member => new NonExecutableMemberFact(StableKeys.Member(member.Type, member.Key), member.Type, member.Name))
-            .Where(member => !executableIndex.ContainsKey(member.Key));
+        Target? ResolveOwn(OccurrenceFact occurrence, string member)
+        {
+            if (indexes.ExecutableMembers.TryGetValue(member, out var executable))
+            {
+                return new Target.Executable(executable);
+            }
+
+            if (nonExecutableFacts.TryGetValue(member, out var fact) && indexes.Types.ContainsKey(fact.Type))
+            {
+                nonExecutable.TryAdd(member, fact);
+                return new Target.NonExecutable(member);
+            }
+
+            if (externalFacts.TryGetValue((occurrence.Target, member), out var formerlyExternal))
+            {
+                var key = StableKeys.Member(occurrence.Target, member);
+                if (indexes.ExecutableMembers.TryGetValue(key, out var implemented))
+                {
+                    return new Target.Executable(implemented);
+                }
+
+                nonExecutable.TryAdd(key, new NonExecutableMemberFact(key, occurrence.Target, formerlyExternal.Name));
+                return new Target.NonExecutable(key);
+            }
+
+            return null;
+        }
+
+        foreach (var occurrence in occurrences)
+        {
+            if (occurrence.TargetMember is not { } member || targets.ContainsKey(occurrence))
+            {
+                continue;
+            }
+
+            var target = indexes.ExternalTypes.ContainsKey(occurrence.Target) ? ResolveExternal(occurrence, member) : ResolveOwn(occurrence, member);
+            if (target is not null)
+            {
+                targets.Add(occurrence, target);
+            }
+        }
+
+        var externalRows = external.Values
+            .OrderBy(member => indexes.ExternalTypes[member.Type])
+            .ThenBy(member => member.Key, StringComparer.Ordinal)
+            .ToArray();
+        External = [.. externalRows.Select(member => new ExternalMemberRecord(member.Key, indexes.ExternalTypes[member.Type], member.Name))];
+        externalIndex = RowIndexes.Of(externalRows, member => (member.Type, member.Key));
 
         NonExecutable =
         [
-            .. parts
-                .SelectMany(part => part.NonExecutableMembers)
-                .Concat(ownedExternals)
-                .Where(member => typeIndex.ContainsKey(member.Type))
-                .DistinctBy(member => member.Key, StringComparer.Ordinal)
-                .Select(member => new NonExecutableMemberRecord(member.Key, typeIndex[member.Type], member.Name))
-                .OrderBy(member => member.Key, StringComparer.Ordinal),
+            .. nonExecutable.Values
+                .OrderBy(member => member.Key, StringComparer.Ordinal)
+                .Select(member => new NonExecutableMemberRecord(member.Key, indexes.Types[member.Type], member.Name)),
         ];
-        nonExecutableIndex = new Dictionary<string, int>(NonExecutable.Count, StringComparer.Ordinal);
-        for (var i = 0; i < NonExecutable.Count; i++)
-        {
-            nonExecutableIndex.Add(NonExecutable[i].Key, i);
-        }
+        nonExecutableIndex = RowIndexes.Of(NonExecutable, member => member.Key);
     }
 
     /// <summary>Sorted by External Type, then key.</summary>
@@ -77,24 +109,22 @@ internal sealed class TargetMembers
     /// <summary>Sorted by key.</summary>
     public IReadOnlyList<NonExecutableMemberRecord> NonExecutable { get; }
 
-    /// <summary>The <see cref="OccurrenceRecord.TargetMember"/> of <paramref name="occurrence"/>; <c>null</c> when it has none or it is missing.</summary>
-    public int? Of(OccurrenceFact occurrence)
+    /// <summary>The <see cref="OccurrenceRecord.TargetMember"/> of <paramref name="occurrence"/>; <c>null</c> when it has none.</summary>
+    public int? Of(OccurrenceFact occurrence) =>
+        targets.GetValueOrDefault(occurrence) switch
+        {
+            Target.Executable executable => executable.Index,
+            Target.External external => externalIndex[external.Key],
+            Target.NonExecutable nonExecutable => OccurrenceRecord.NonExecutableTarget(nonExecutableIndex[nonExecutable.Key]),
+            _ => null,
+        };
+
+    private abstract record Target
     {
-        if (occurrence.TargetMember is not { } member)
-        {
-            return null;
-        }
+        public sealed record Executable(int Index) : Target;
 
-        if (!typeIndex.ContainsKey(occurrence.Target))
-        {
-            return externalIndex.TryGetValue((occurrence.Target, member), out var external) ? external : null;
-        }
+        public sealed record External((string Type, string Key) Key) : Target;
 
-        return Own(member) ?? Own(StableKeys.Member(occurrence.Target, member));
+        public sealed record NonExecutable(string Key) : Target;
     }
-
-    private int? Own(string key) =>
-        executableIndex.TryGetValue(key, out var executable) ? executable
-        : nonExecutableIndex.TryGetValue(key, out var nonExecutable) ? OccurrenceRecord.NonExecutableTarget(nonExecutable)
-        : null;
 }

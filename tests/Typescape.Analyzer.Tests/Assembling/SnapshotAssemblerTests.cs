@@ -1,6 +1,8 @@
 using Microsoft.CodeAnalysis;
+using Typescape.Analyzer.Assembling;
 using Typescape.Analyzer.Extraction;
 using Typescape.Analyzer.Loading;
+using Typescape.Analyzer.Pipeline;
 using Typescape.Analyzer.Tests.Extraction;
 using Typescape.Snapshot;
 using Typescape.Snapshot.Records;
@@ -144,7 +146,7 @@ public class SnapshotAssemblerTests
         Assert.Equal(
             [
                 (AppKey, "App", "App", ProjectStyle.Sdk, "net10.0", "2"),
-                ("B/Missing.csproj", "Missing", "Missing", null, null, ""),
+                ("B/Missing.csproj", "Missing", null, null, null, ""),
                 (CoreKey, "Core", "Core", ProjectStyle.Sdk, "net10.0", ""),
             ],
             snapshot.Projects.Select(project =>
@@ -199,6 +201,100 @@ public class SnapshotAssemblerTests
         Assert.Empty(snapshot.Dependencies);
         Assert.Empty(snapshot.Occurrences!);
         Assert.Equal([new AnalyzerErrorRecord(0, "System.InvalidCastException", "OwnTypes.Walk()")], snapshot.LoadHealth.Projects[0].AnalyzerErrors);
+    }
+
+    [Fact]
+    public void A_type_whose_key_an_earlier_project_declares_is_left_out_with_its_facts_as_an_analyzer_error()
+    {
+        var first = new TestProject(
+            CoreKey,
+            ProjectFacts.Empty with { Types = [Type("Lib|T:Lib.A", "Core/A.cs")] },
+            Document("Core/A.cs", new DependencyFact("Lib|T:Lib.A", "Lib|T:Lib.B", DependencyKind.TypeUsage, 1, 0)) with
+            {
+                Types = [Type("Lib|T:Lib.B", "Core/A.cs", 2, 2)],
+            });
+        var second = new TestProject(
+            "Other/Other.csproj",
+            ProjectFacts.Empty with
+            {
+                Types = [Type("Lib|T:Lib.A", "Other/A.cs")],
+                ExecutableMembers =
+                [
+                    new ExecutableMemberFact("Lib|T:Lib.A|M:Lib.A.Run", "Lib|T:Lib.A", "Run()", ExecutableMemberKind.Method,
+                        DeclaredAccessibility.Public, "Other/A.cs", new LineSpan(1, 1), 1, 1, 0, false),
+                ],
+            },
+            Document("Other/A.cs", new DependencyFact("Lib|T:Lib.A", "Lib|T:Lib.B", DependencyKind.TypeUsage, 5, 0)));
+
+        var snapshot = Assemble(first, second);
+
+        Assert.Equal(["Core/A.cs", "Core/A.cs"], snapshot.Types.Select(type => snapshot.Documents[type.Declarations[0].Document].Path));
+        Assert.Empty(snapshot.ExecutableMembers);
+        Assert.Equal([1], snapshot.Dependencies.Select(dependency => dependency.Count));
+        var other = snapshot.LoadHealth.Projects[1];
+        Assert.Equal(LoadStatus.Degraded, other.Status);
+        Assert.Equal([new AnalyzerErrorRecord(1, SnapshotAssembler.DuplicateTypeKey, "Lib|T:Lib.A")], other.AnalyzerErrors);
+        Assert.Equal(LoadStatus.Ok, snapshot.LoadHealth.Projects[0].Status);
+    }
+
+    [Fact]
+    public void An_Executable_Member_no_declaration_of_its_type_holds_is_left_out_as_an_analyzer_error()
+    {
+        var snapshot = Assemble(new TestProject(
+            AppKey,
+            ProjectFacts.Empty with
+            {
+                Types = [Type("App|T:A", "App/A.cs", 1, 3)],
+                ExecutableMembers =
+                [
+                    new ExecutableMemberFact("App|T:A|M:A.Run", "App|T:A", "Run()", ExecutableMemberKind.Method,
+                        DeclaredAccessibility.Public, "App/A.cs", new LineSpan(5, 6), 2, 1, 0, false),
+                ],
+            },
+            Document("App/A.cs")));
+
+        Assert.Empty(snapshot.ExecutableMembers);
+        Assert.Equal([new AnalyzerErrorRecord(0, SnapshotAssembler.UnplacedMember, "App|T:A|M:A.Run")], snapshot.LoadHealth.Projects[0].AnalyzerErrors);
+    }
+
+    [Fact]
+    public void An_External_Type_or_member_only_a_left_out_Dependency_targets_is_not_listed()
+    {
+        const string text = "System.Runtime|T:System.String";
+        var snapshot = Assemble(new TestProject(
+            AppKey,
+            ProjectFacts.Empty with { Types = [Type("App|T:A", "App/A.cs")] },
+            Document("App/A.cs", new DependencyFact("App|T:Failed", text, DependencyKind.Call, 1, 0)) with
+            {
+                Occurrences = [new("App|T:Failed", text, DependencyKind.Call, null, "M:System.String.Trim", "App/A.cs", 1)],
+                ExternalTypes = [External(text)],
+                ExternalMembers = [new("M:System.String.Trim", text, "String.Trim()")],
+                NonExecutableMembers = [new("App|T:A|F:A.Unused", "App|T:A", "A.Unused")],
+            }));
+
+        Assert.Empty(snapshot.ExternalTypes);
+        Assert.Empty(snapshot.ExternalMembers);
+        Assert.Empty(snapshot.NonExecutableMembers);
+    }
+
+    [Fact]
+    public void A_project_is_degraded_by_compile_errors_an_unresolved_object_no_metadata_reference_or_an_analyzer_error()
+    {
+        var clean = new ProjectDiagnostics(new CompileErrorsRecord(0, []), ObjectResolves: true);
+        var snapshot = Assemble(
+            new TestProject("A/A.csproj"),
+            new TestProject("B/B.csproj") { Diagnostics = clean with { CompileErrors = new CompileErrorsRecord(1, [new CompileErrorCodeRecord("CS0246", 1, "Missing")]) } },
+            new TestProject("C/C.csproj") { Diagnostics = clean with { ObjectResolves = false } },
+            new TestProject("D/D.csproj") { HasMetadataReferences = false },
+            new TestProject("E/E.csproj", ProjectFacts.Empty with
+            {
+                Documents = [new DocumentFact("E/E.cs", null)],
+                AnalyzerErrors = [new AnalyzerErrorFact("E/E.cs", "System.InvalidCastException", "Dependencies.Of()")],
+            }));
+
+        Assert.Equal(
+            [LoadStatus.Ok, LoadStatus.Degraded, LoadStatus.Degraded, LoadStatus.Degraded, LoadStatus.Degraded],
+            snapshot.LoadHealth.Projects.Select(project => project.Status));
     }
 
     private static TestProject[] Solution(bool occurrences = true)
