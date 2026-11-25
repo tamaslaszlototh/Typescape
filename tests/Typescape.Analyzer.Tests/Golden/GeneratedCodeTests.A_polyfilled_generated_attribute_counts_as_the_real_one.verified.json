@@ -11,6 +11,7 @@
         "start": 9,
         "end": 10
       },
+      "cyclomatic": 1,
       "cognitive": 0,
       "generated": true
     }

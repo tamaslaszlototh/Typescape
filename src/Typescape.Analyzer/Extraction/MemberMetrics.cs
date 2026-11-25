@@ -5,11 +5,12 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 namespace Typescape.Analyzer.Extraction;
 
 /// <summary>The metrics of one Executable Member's body, lambdas and local functions included.</summary>
+/// <param name="Cyclomatic">Cyclomatic complexity: 1 plus one per decision point of spec §5.2.</param>
 /// <param name="Cognitive">
 /// Cognitive complexity: a clean-room reading of the SonarSource whitepaper v1.7 (Appendix B) with the C# mapping of
 /// spec §5.1.
 /// </param>
-internal readonly record struct Metrics(int Cognitive);
+internal readonly record struct Metrics(int Cyclomatic, int Cognitive);
 
 /// <summary>
 /// The single pass over an Executable Member's body that measures its <see cref="Metrics"/>. It reads syntax only,
@@ -20,6 +21,7 @@ internal sealed class MemberMetrics : CSharpSyntaxWalker
     private readonly IMethodSymbol member;
     private readonly SemanticModel model;
     private readonly CancellationToken cancellationToken;
+    private int cyclomatic = 1;
     private int cognitive;
     private int nesting;
     private bool recursive;
@@ -45,7 +47,7 @@ internal sealed class MemberMetrics : CSharpSyntaxWalker
             walker.Visit(node);
         }
 
-        return new Metrics(walker.cognitive + (walker.recursive ? 1 : 0));
+        return new Metrics(walker.cyclomatic, walker.cognitive + (walker.recursive ? 1 : 0));
     }
 
     public override void Visit(SyntaxNode? node)
@@ -66,23 +68,40 @@ internal sealed class MemberMetrics : CSharpSyntaxWalker
     }
 
     public override void VisitConditionalExpression(ConditionalExpressionSyntax node) =>
-        ScoreStructure(node, node.WhenTrue, node.WhenFalse);
+        ScoreDecision(node, node.WhenTrue, node.WhenFalse);
 
     public override void VisitSwitchStatement(SwitchStatementSyntax node) => ScoreStructure(node, node.Sections);
 
-    public override void VisitSwitchExpression(SwitchExpressionSyntax node) => ScoreStructure(node, node.Arms);
+    public override void VisitCaseSwitchLabel(CaseSwitchLabelSyntax node)
+    {
+        cyclomatic++;
+        base.VisitCaseSwitchLabel(node);
+    }
 
-    public override void VisitForStatement(ForStatementSyntax node) => ScoreStructure(node, node.Statement);
+    public override void VisitCasePatternSwitchLabel(CasePatternSwitchLabelSyntax node)
+    {
+        cyclomatic++;
+        base.VisitCasePatternSwitchLabel(node);
+    }
 
-    public override void VisitForEachStatement(ForEachStatementSyntax node) => ScoreStructure(node, node.Statement);
+    // The trailing discard arm is the fallback, not a decision.
+    public override void VisitSwitchExpression(SwitchExpressionSyntax node)
+    {
+        cyclomatic += node.Arms.Count - (node.Arms.LastOrDefault()?.Pattern is DiscardPatternSyntax ? 1 : 0);
+        ScoreStructure(node, node.Arms);
+    }
 
-    public override void VisitForEachVariableStatement(ForEachVariableStatementSyntax node) => ScoreStructure(node, node.Statement);
+    public override void VisitForStatement(ForStatementSyntax node) => ScoreDecision(node, node.Statement);
 
-    public override void VisitWhileStatement(WhileStatementSyntax node) => ScoreStructure(node, node.Statement);
+    public override void VisitForEachStatement(ForEachStatementSyntax node) => ScoreDecision(node, node.Statement);
 
-    public override void VisitDoStatement(DoStatementSyntax node) => ScoreStructure(node, node.Statement);
+    public override void VisitForEachVariableStatement(ForEachVariableStatementSyntax node) => ScoreDecision(node, node.Statement);
 
-    public override void VisitCatchClause(CatchClauseSyntax node) => ScoreStructure(node, node.Block);
+    public override void VisitWhileStatement(WhileStatementSyntax node) => ScoreDecision(node, node.Statement);
+
+    public override void VisitDoStatement(DoStatementSyntax node) => ScoreDecision(node, node.Statement);
+
+    public override void VisitCatchClause(CatchClauseSyntax node) => ScoreDecision(node, node.Block);
 
     public override void VisitGotoStatement(GotoStatementSyntax node)
     {
@@ -94,11 +113,25 @@ internal sealed class MemberMetrics : CSharpSyntaxWalker
     {
         if (Operands(node) is null)
         {
+            cyclomatic += node.IsKind(SyntaxKind.CoalesceExpression) ? 1 : 0;
             base.VisitBinaryExpression(node);
             return;
         }
 
         ScoreSequences(node);
+    }
+
+    public override void VisitAssignmentExpression(AssignmentExpressionSyntax node)
+    {
+        cyclomatic += node.IsKind(SyntaxKind.CoalesceAssignmentExpression) ? 1 : 0;
+        base.VisitAssignmentExpression(node);
+    }
+
+    // Each `?.` or `?[]` is a node of its own, so `a?.b?.c` counts two.
+    public override void VisitConditionalAccessExpression(ConditionalAccessExpressionSyntax node)
+    {
+        cyclomatic++;
+        base.VisitConditionalAccessExpression(node);
     }
 
     public override void VisitBinaryPattern(BinaryPatternSyntax node) => ScoreSequences(node);
@@ -118,6 +151,7 @@ internal sealed class MemberMetrics : CSharpSyntaxWalker
     // The inner `if` of an `else if` is part of the chain, so it gets no nesting increment of its own.
     private void ScoreIfChain(IfStatementSyntax node)
     {
+        cyclomatic++;
         Visit(node.Condition);
         Deeper(() => Visit(node.Statement));
         switch (node.Else?.Statement)
@@ -131,6 +165,13 @@ internal sealed class MemberMetrics : CSharpSyntaxWalker
                 Deeper(() => Visit(@else));
                 break;
         }
+    }
+
+    /// <summary>A decision point that is also a cognitive structure.</summary>
+    private void ScoreDecision(SyntaxNode node, params IEnumerable<SyntaxNode> nested)
+    {
+        cyclomatic++;
+        ScoreStructure(node, nested);
     }
 
     /// <summary>+1 plus the nesting level; <paramref name="nested"/> one level deeper, the rest of the node in place.</summary>
@@ -158,7 +199,8 @@ internal sealed class MemberMetrics : CSharpSyntaxWalker
         nesting--;
     }
 
-    // +1 per run of like operators in textual order; a parenthesis or `!` ends the chain, so what it holds is a new one.
+    // Cognitive: +1 per run of like operators in textual order; a parenthesis or `!` ends the chain, so what it holds is a
+    // new one. Cyclomatic: +1 per operator.
     private void ScoreSequences(SyntaxNode chain)
     {
         var operands = new List<SyntaxNode>();
@@ -173,6 +215,7 @@ internal sealed class MemberMetrics : CSharpSyntaxWalker
             }
 
             Flatten(left);
+            cyclomatic++;
             if (node.RawKind != previousOperator)
             {
                 cognitive++;

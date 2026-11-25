@@ -87,6 +87,7 @@ internal sealed record TypeDeclarationFact(string Document, LineSpan Lines, bool
 /// <param name="Signature">The display signature: name and parameter types, no containing type or return type.</param>
 /// <param name="Document">The key of the document holding the body.</param>
 /// <param name="Lines">The physical lines the member spans, from its attributes to its end; for an entry point, the top-level statements.</param>
+/// <param name="Cyclomatic">Cyclomatic complexity (<see cref="Metrics.Cyclomatic"/>), lambdas and local functions included.</param>
 /// <param name="Cognitive">Cognitive complexity (<see cref="Metrics.Cognitive"/>), lambdas and local functions included.</param>
 /// <param name="Generated">
 /// In a generated declaration, or carrying <c>[GeneratedCode]</c> or <c>[CompilerGenerated]</c>; an accessor also when
@@ -100,6 +101,7 @@ internal sealed record ExecutableMemberFact(
     DeclaredAccessibility Accessibility,
     string Document,
     LineSpan Lines,
+    int Cyclomatic,
     int Cognitive,
     bool Generated);
 

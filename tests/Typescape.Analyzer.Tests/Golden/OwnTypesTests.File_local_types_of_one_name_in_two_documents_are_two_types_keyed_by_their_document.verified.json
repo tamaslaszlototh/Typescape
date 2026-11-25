@@ -123,6 +123,7 @@
         "start": 5,
         "end": 5
       },
+      "cyclomatic": 1,
       "cognitive": 0,
       "generated": false
     },
@@ -137,6 +138,7 @@
         "start": 5,
         "end": 5
       },
+      "cyclomatic": 1,
       "cognitive": 0,
       "generated": false
     }

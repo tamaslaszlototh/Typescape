@@ -59,6 +59,7 @@ internal static class ExecutableMembers
         var (withBody, kind, body) = found;
 
         var entryPoint = body as CompilationUnitSyntax;
+        var metrics = MemberMetrics.Of(withBody, body, models(body.SyntaxTree), scope.CancellationToken);
         return new ExecutableMemberFact(
             BodyKey(withBody, typeKey),
             typeKey,
@@ -67,7 +68,8 @@ internal static class ExecutableMembers
             Symbols.Accessibility(withBody),
             Source.Document(body.SyntaxTree, scope.Context),
             Source.Lines(body.SyntaxTree, entryPoint is null ? Span(body) : Source.TopLevelStatements(entryPoint), scope.CancellationToken),
-            MemberMetrics.Of(withBody, body, models(body.SyntaxTree), scope.CancellationToken).Cognitive,
+            metrics.Cyclomatic,
+            metrics.Cognitive,
             scope.Generated.MemberIsGenerated(type, withBody, body));
     }
 
