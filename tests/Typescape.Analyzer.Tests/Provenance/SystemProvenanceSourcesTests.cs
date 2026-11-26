@@ -16,7 +16,16 @@ public sealed partial class SystemProvenanceSourcesTests : IDisposable
     private readonly SystemProvenanceSources _sources = new();
     private readonly string _directory = Directory.CreateTempSubdirectory("typescape-provenance-").FullName;
 
-    public void Dispose() => Directory.Delete(_directory, recursive: true);
+    // git writes its object files read-only, and Directory.Delete refuses those on Windows.
+    public void Dispose()
+    {
+        foreach (var file in Directory.EnumerateFiles(_directory, "*", SearchOption.AllDirectories))
+        {
+            File.SetAttributes(file, FileAttributes.Normal);
+        }
+
+        Directory.Delete(_directory, recursive: true);
+    }
 
     [Theory]
     [InlineData("0.1.0+" + Sha1, "0.1.0", Sha1)]
