@@ -1,0 +1,70 @@
+name: Bug report
+description: Something in Typescape does not work as it should.
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. Security problems go through [private vulnerability reporting](https://github.com/tamaslaszlototh/Typescape/security/advisories/new), not here.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what happened instead.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Typescape version
+      description: The output of `typescape --version`.
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: OS
+      options:
+        - macOS
+        - Windows with Visual Studio
+        - Windows without Visual Studio
+    validations:
+      required: true
+  - type: input
+    id: sdk
+    attributes:
+      label: .NET SDK version
+      description: The output of `dotnet --version`.
+    validations:
+      required: true
+  - type: dropdown
+    id: project-style
+    attributes:
+      label: Project style
+      options:
+        - SDK-style
+        - Classic (non-SDK-style)
+        - Both
+        - Not related to loading
+    validations:
+      required: true
+  - type: dropdown
+    id: solution-format
+    attributes:
+      label: Solution file
+      options:
+        - .sln
+        - .slnx
+    validations:
+      required: true
+  - type: textarea
+    id: load-health
+    attributes:
+      label: Load Health
+      description: The Load Health lines from the terminal (the summary and every project that is not ok).
+      render: text
+  - type: textarea
+    id: log
+    attributes:
+      label: Log
+      description: The full output of the run with `--verbosity detailed`. Remove anything you do not want to share.
+      render: text

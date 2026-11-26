@@ -1,0 +1,25 @@
+version: 2
+updates:
+  - package-ecosystem: nuget
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      # Listed first: a dependency joins the first group it matches. A bump here can change the Snapshot output.
+      roslyn-msbuild:
+        patterns:
+          - Microsoft.CodeAnalysis.*
+          - Microsoft.Build*
+          - Microsoft.VisualStudio.SolutionPersistence
+      nuget:
+        patterns:
+          - "*"
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      github-actions:
+        patterns:
+          - "*"
