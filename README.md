@@ -68,7 +68,7 @@ Typescape sends no telemetry and checks for no updates. Its only network traffic
 
 ## Legacy projects and Load Health
 
-Typescape analyzes SDK-style and classic (non-SDK-style) projects alike, with or without Visual Studio installed, on macOS too. It restores `packages.config` packages and fetches the .NET Framework reference assemblies it needs from your NuGet sources, so a classic project loads the same way on every machine.
+Typescape analyzes SDK-style and classic (non-SDK-style) projects alike, on macOS and Windows, with or without Visual Studio installed. It restores `packages.config` packages and fetches the .NET Framework reference assemblies it needs from your NuGet sources, so a classic project loads the same way on every machine.
 
 A project can load incompletely without an error: missing packages, unresolved references, compile errors. Typescape checks every project and gives it a Load Health verdict: **ok**, **degraded** (it loaded, but the analysis may be incomplete) or **failed** (it could not be loaded). The terminal lists every project that is not ok with its main reason, and the Viewer shows the full evidence per project. Use `--fail-on` to fail a CI run on it.
 
