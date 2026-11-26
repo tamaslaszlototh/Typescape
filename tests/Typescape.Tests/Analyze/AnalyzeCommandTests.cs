@@ -1,6 +1,8 @@
 using System.CommandLine;
 using Typescape.Analyze;
 using Typescape.Analyzer;
+using Typescape.Snapshot;
+using Typescape.Snapshot.Records;
 
 namespace Typescape.Tests.Analyze;
 
@@ -8,6 +10,10 @@ public sealed class AnalyzeCommandTests : IDisposable
 {
     private readonly string _directory = Directory.CreateTempSubdirectory("typescape-analyze-").FullName;
     private readonly List<AnalysisRequest> _requests = [];
+    private AnalysisProgress[] _progress = [];
+    private bool _interactive;
+    private SnapshotRecord _snapshot = Snapshots.Empty();
+    private Exception? _failure;
 
     public void Dispose() => Directory.Delete(_directory, recursive: true);
 
@@ -19,7 +25,7 @@ public sealed class AnalyzeCommandTests : IDisposable
         var run = await RunAsync("analyze", "src");
 
         var path = Path.Combine(_directory, "App.typescape.json.gz");
-        Assert.Equal((0, path + Environment.NewLine, ""), (run.ExitCode, run.Stdout, run.Stderr));
+        Assert.Equal((0, path + Environment.NewLine), (run.ExitCode, run.Stdout));
         Assert.True(File.Exists(path));
         Assert.Equal(solution, Assert.Single(_requests).SolutionPath);
     }
@@ -269,6 +275,198 @@ public sealed class AnalyzeCommandTests : IDisposable
         Assert.Empty(_requests);
     }
 
+    [Fact]
+    public async Task Redirected_stderr_gets_one_plain_line_per_phase_with_its_count_and_duration()
+    {
+        Touch("App.sln");
+        _progress =
+        [
+            new AnalysisProgress.PhaseStarted(AnalysisPhase.Restore),
+            new AnalysisProgress.PhaseFinished(AnalysisPhase.Restore, TimeSpan.FromSeconds(2.14)),
+            new AnalysisProgress.PhaseStarted(AnalysisPhase.Load),
+            new AnalysisProgress.PhaseProgressed(AnalysisPhase.Load, 0, 41),
+            new AnalysisProgress.PhaseProgressed(AnalysisPhase.Load, 12, 41),
+            new AnalysisProgress.PhaseProgressed(AnalysisPhase.Load, 41, 41),
+            new AnalysisProgress.PhaseFinished(AnalysisPhase.Load, TimeSpan.FromSeconds(13.4)),
+            new AnalysisProgress.PhaseStarted(AnalysisPhase.Walk),
+            new AnalysisProgress.PhaseProgressed(AnalysisPhase.Walk, 1234, 1234),
+            new AnalysisProgress.PhaseFinished(AnalysisPhase.Walk, TimeSpan.FromMilliseconds(80)),
+        ];
+
+        var run = await RunAsync("analyze");
+
+        var lines = run.Stderr.Split(Environment.NewLine);
+        Assert.Equal(
+            [
+                "restore        2.1s",
+                "load          13.4s  41 projects",
+                "walk           80ms  1234 documents",
+            ],
+            lines[..3]);
+        Assert.Matches(@"^write +\d+ms$", lines[3]);
+        Assert.DoesNotContain('\r', run.Stderr.Replace(Environment.NewLine, "\n"));
+        Assert.DoesNotContain('\e', run.Stderr);
+    }
+
+    [Fact]
+    public async Task A_terminal_gets_a_live_counter_that_the_phase_line_overwrites()
+    {
+        Touch("App.sln");
+        _interactive = true;
+        _progress =
+        [
+            new AnalysisProgress.PhaseStarted(AnalysisPhase.Compile),
+            new AnalysisProgress.PhaseProgressed(AnalysisPhase.Compile, 0, 41),
+            new AnalysisProgress.PhaseProgressed(AnalysisPhase.Compile, 41, 41),
+            new AnalysisProgress.PhaseFinished(AnalysisPhase.Compile, TimeSpan.FromSeconds(1)),
+        ];
+
+        var run = await RunAsync("analyze");
+
+        Assert.StartsWith("\rcompile", run.Stderr);
+        Assert.Contains("\rcompile     41/41 projects", run.Stderr);
+        Assert.Contains("\rcompile        1.0s  41 projects" + Environment.NewLine, run.Stderr);
+        Assert.Matches(@"\rwrite +\d+ms *" + Environment.NewLine, run.Stderr);
+    }
+
+    [Fact]
+    public async Task Load_Health_is_a_summary_line_then_one_line_per_non_ok_project_with_its_main_reason()
+    {
+        Touch("App.sln");
+        _snapshot = Snapshots.WithProjects(
+            ("App", Snapshots.Health()),
+            ("Billing", Snapshots.Health(LoadStatus.Degraded, objectResolves: false, compileErrors: new CompileErrorsRecord(212, [new("CS0518", 212, "Predefined type 'System.Object' is not defined or imported")]))),
+            ("Legacy", Snapshots.Health(LoadStatus.Degraded, metadataReferences: 0, objectResolves: false, compileErrors: new CompileErrorsRecord(40, [new("CS0518", 30, "…"), new("CS0246", 10, "…")]))),
+            ("Ledger", Snapshots.Health(LoadStatus.Failed, metadataReferences: 0, workspaceDiagnostics: [new(WorkspaceDiagnosticKind.Warning, "Found project reference without a matching metadata reference."), new(WorkspaceDiagnosticKind.Failure, "Msbuild failed when processing the file 'Ledger/Ledger.csproj' with message: The SDK 'Acme.Sdk' could not be found.\nMore detail")])),
+            ("Tools", Snapshots.Health(LoadStatus.Degraded, compileErrors: new CompileErrorsRecord(250, [new("CS0246", 200, "…"), new("CS0103", 50, "…")]))),
+            ("Walker", Snapshots.Health(LoadStatus.Degraded, analyzerErrors: 2)));
+
+        var run = await RunAsync("analyze", "--no-restore");
+
+        Assert.EndsWith(
+            string.Join(
+                Environment.NewLine,
+                "6 projects: 1 ok · 4 degraded · 1 failed",
+                "  Billing  degraded  CS0518 ×212",
+                "  Legacy   degraded  0 metadata references",
+                "  Ledger   failed    Msbuild failed when processing the file 'Ledger/Ledger.csproj' with message: The SDK 'Acme.Sdk' could not be found.",
+                "  Tools    degraded  CS0246 ×200 (250 compile errors)",
+                "  Walker   degraded  2 analyzer errors",
+                ""),
+            run.Stderr);
+    }
+
+    [Fact]
+    public async Task Quiet_prints_only_the_warnings_and_the_non_ok_projects()
+    {
+        Touch("App.sln");
+        _progress =
+        [
+            new AnalysisProgress.PhaseStarted(AnalysisPhase.Restore),
+            new AnalysisProgress.Warning(AnalysisPhase.Restore, "Restore failed:\n  error NU1301: Unable to load the service index."),
+            new AnalysisProgress.PhaseFinished(AnalysisPhase.Restore, TimeSpan.FromSeconds(1)),
+        ];
+        _snapshot = Snapshots.WithProjects(
+            ("App", Snapshots.Health()),
+            ("Ledger", Snapshots.Health(LoadStatus.Degraded, metadataReferences: 0)));
+
+        var run = await RunAsync("analyze", "-v", "quiet");
+
+        Assert.Equal(
+            string.Join(
+                Environment.NewLine,
+                "Restore failed:\n  error NU1301: Unable to load the service index.",
+                "2 projects: 1 ok · 1 degraded · 0 failed",
+                "  Ledger  degraded  0 metadata references",
+                ""),
+            run.Stderr);
+    }
+
+    [Fact]
+    public async Task Quiet_prints_nothing_when_every_project_is_ok()
+    {
+        Touch("App.sln");
+        _interactive = true;
+        _progress =
+        [
+            new AnalysisProgress.PhaseStarted(AnalysisPhase.Load),
+            new AnalysisProgress.PhaseProgressed(AnalysisPhase.Load, 0, 1),
+            new AnalysisProgress.PhaseFinished(AnalysisPhase.Load, TimeSpan.FromSeconds(1)),
+        ];
+        _snapshot = Snapshots.WithProjects(("App", Snapshots.Health()));
+
+        var run = await RunAsync("analyze", "-v", "quiet");
+
+        Assert.Equal((0, ""), (run.ExitCode, run.Stderr));
+    }
+
+    [Fact]
+    public async Task Detailed_lists_every_project_with_its_workspace_diagnostics_and_the_solution_diagnostics()
+    {
+        Touch("App.sln");
+        _snapshot = Snapshots.WithProjects(
+            [new(WorkspaceDiagnosticKind.Warning, "The solution configuration 'Debug|AnyCPU' maps no project.")],
+            ("App", Snapshots.Health(workspaceDiagnostics: [new(WorkspaceDiagnosticKind.Info, "Found project reference without a matching metadata reference.")])),
+            ("Ledger", Snapshots.Health(LoadStatus.Failed, metadataReferences: 0, workspaceDiagnostics: [new(WorkspaceDiagnosticKind.Failure, "The SDK 'Acme.Sdk' could not be found.\nSee the build log.")])),
+            ("Tools", Snapshots.Health()));
+
+        var run = await RunAsync("analyze", "--verbosity", "detailed");
+
+        Assert.EndsWith(
+            string.Join(
+                Environment.NewLine,
+                "3 projects: 2 ok · 0 degraded · 1 failed",
+                "  App     ok",
+                "    info     Found project reference without a matching metadata reference.",
+                "  Ledger  failed  The SDK 'Acme.Sdk' could not be found.",
+                "    failure  The SDK 'Acme.Sdk' could not be found.",
+                "             See the build log.",
+                "  Tools   ok",
+                "  solution",
+                "    warning  The solution configuration 'Debug|AnyCPU' maps no project.",
+                ""),
+            run.Stderr);
+    }
+
+    [Fact]
+    public async Task On_a_terminal_a_warning_clears_the_live_counter_which_then_comes_back()
+    {
+        Touch("App.sln");
+        _interactive = true;
+        _progress =
+        [
+            new AnalysisProgress.PhaseStarted(AnalysisPhase.Load),
+            new AnalysisProgress.PhaseProgressed(AnalysisPhase.Load, 0, 41),
+            new AnalysisProgress.Warning(AnalysisPhase.Load, "No reference assemblies:\n  offline"),
+            new AnalysisProgress.PhaseFinished(AnalysisPhase.Load, TimeSpan.FromSeconds(1)),
+        ];
+
+        var run = await RunAsync("analyze");
+
+        var counter = "load        0/41 projects";
+        Assert.StartsWith(
+            $"\rload\r{counter}\r{new string(' ', counter.Length)}\rNo reference assemblies:\n  offline{Environment.NewLine}\r{counter}\rload           1.0s  41 projects{Environment.NewLine}",
+            run.Stderr);
+    }
+
+    [Fact]
+    public async Task On_a_terminal_a_failed_run_ends_the_live_counter_before_the_error()
+    {
+        Touch("App.sln");
+        _interactive = true;
+        _progress =
+        [
+            new AnalysisProgress.PhaseStarted(AnalysisPhase.Load),
+            new AnalysisProgress.PhaseProgressed(AnalysisPhase.Load, 0, 41),
+        ];
+        _failure = new InvalidOperationException("The BuildHost did not start.");
+
+        var run = await RunAsync("analyze");
+
+        Assert.StartsWith($"\rload\rload        0/41 projects{Environment.NewLine}", run.Stderr);
+        Assert.Contains("The BuildHost did not start.", run.Stderr);
+    }
+
     private async Task<(int ExitCode, string Stdout, string Stderr)> RunAsync(params string[] args)
     {
         using var stdout = new StringWriter();
@@ -286,11 +484,30 @@ public sealed class AnalyzeCommandTests : IDisposable
     private ParseResult Parse(string[] args) => CreateRootCommand().Parse(args);
 
     private RootCommand CreateRootCommand() =>
-        Program.CreateRootCommand(_directory, (request, _) =>
+        Program.CreateRootCommand(_directory, _interactive, (request, progress, _) =>
         {
             _requests.Add(request);
-            return Task.FromResult(new AnalysisResult(Snapshots.Empty(), new LoadHealthSummary(0, 0, 0)));
+            foreach (var report in _progress)
+            {
+                progress.Report(report);
+            }
+
+            if (_failure is not null)
+            {
+                throw _failure;
+            }
+
+            return Task.FromResult(new AnalysisResult(_snapshot, Summary(_snapshot)));
         });
+
+    private static LoadHealthSummary Summary(SnapshotRecord snapshot)
+    {
+        var statuses = snapshot.LoadHealth.Projects.Select(project => project.Status).ToList();
+        return new LoadHealthSummary(
+            statuses.Count(status => status == LoadStatus.Ok),
+            statuses.Count(status => status == LoadStatus.Degraded),
+            statuses.Count(status => status == LoadStatus.Failed));
+    }
 
     private string Touch(string relative)
     {
