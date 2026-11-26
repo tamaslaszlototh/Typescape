@@ -8,5 +8,14 @@
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
   </PropertyGroup>
 
+  <!-- A .NET Framework version missing from Typescape's TargetFrameworkRootPath binds to nothing, as off Windows: there,
+       MSBuild would take mscorlib from the installed .NET Framework (FrameworkPathOverride falls back to
+       MSBuildFrameworkToolsPath) and the other framework assemblies from the GAC. -->
+  <PropertyGroup Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework'
+                            and !Exists('$(TargetFrameworkRootPath)$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)')">
+    <FrameworkPathOverride />
+    <AssemblySearchPaths>$(AssemblySearchPaths.Replace('{GAC}', ''))</AssemblySearchPaths>
+  </PropertyGroup>
+
   <Import Project="$(MSBuildThisFileDirectory)Typescape.Legacy.targets" />
 </Project>
