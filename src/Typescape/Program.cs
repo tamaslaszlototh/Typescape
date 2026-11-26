@@ -9,7 +9,8 @@ internal static class Program
         InvokeAsync(
             CreateRootCommand(Environment.CurrentDirectory, !Console.IsErrorRedirected, Analyzer.Analyzer.AnalyzeAsync),
             args,
-            new InvocationConfiguration(),
+            // Past this, Ctrl+C exits before the cancelled run has stopped the BuildHost and deleted the temp file.
+            new InvocationConfiguration { ProcessTerminationTimeout = TimeSpan.FromSeconds(10) },
             CancellationToken.None);
 
     internal static RootCommand CreateRootCommand(string currentDirectory, bool interactive, AnalyzeCommand.AnalyzeAsync analyze) =>

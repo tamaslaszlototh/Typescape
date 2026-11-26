@@ -20,6 +20,10 @@ internal static class Snapshots
                 solutionDiagnostics),
         };
 
+    /// <summary>A Snapshot with one project per status, named P0, P1, …</summary>
+    public static SnapshotRecord WithStatuses(params LoadStatus[] statuses) =>
+        WithProjects([.. statuses.Select((status, i) => ($"P{i}", Health(status)))]);
+
     /// <summary>The Load Health of a project that loaded fully, unless the arguments say otherwise.</summary>
     public static ProjectHealthRecord Health(
         LoadStatus status = LoadStatus.Ok,

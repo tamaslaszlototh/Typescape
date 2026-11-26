@@ -137,6 +137,35 @@ internal sealed class AnalyzeOutput(TextWriter error, Verbosity verbosity, bool 
         }
     }
 
+    /// <summary>Why no Snapshot was written: the message, with the stack trace under <c>detailed</c>.</summary>
+    public void WriteFailure(Exception exception)
+    {
+        Interrupt();
+        lock (_lock)
+        {
+            WriteLine(verbosity == Verbosity.Detailed ? exception.ToString() : exception.Message);
+        }
+    }
+
+    public void WriteNoProjectLoaded()
+    {
+        lock (_lock)
+        {
+            WriteLine("No project loaded: the Snapshot holds nothing to analyze.");
+        }
+    }
+
+    /// <param name="threshold">The <c>--fail-on</c> value.</param>
+    /// <param name="projects">How many projects are that or worse.</param>
+    public void WriteFailOnCrossed(FailOn threshold, int projects)
+    {
+        var worse = threshold == FailOn.Degraded ? "degraded or failed" : "failed";
+        lock (_lock)
+        {
+            WriteLine($"--fail-on {threshold.ToString().ToLowerInvariant()}: {Counted(projects, "project")} {(projects == 1 ? "is" : "are")} {worse}.");
+        }
+    }
+
     private void WriteDiagnostics(IReadOnlyList<WorkspaceDiagnosticRecord> diagnostics)
     {
         const string indent = "    ";

@@ -169,15 +169,42 @@ internal sealed class AnalyzeCommand : Command
             await SnapshotFile.WriteAsync(result.Snapshot, path, cancellationToken);
             stderr.Finish(stopwatch.Elapsed);
         }
-        catch
+        catch (Exception) when (cancellationToken.IsCancellationRequested)
         {
+            // Not only OperationCanceledException: a BuildHost stopped mid-call fails with whatever its pipe throws.
             stderr.Interrupt();
-            throw;
+            return ExitCodes.Cancelled;
+        }
+        catch (Exception exception)
+        {
+            stderr.WriteFailure(exception);
+            return ExitCodes.RuntimeFailure;
         }
 
         stderr.WriteLoadHealth(result);
-
         await console.Output.WriteLineAsync(path);
+
+        var summary = result.LoadHealth;
+        if (summary.Ok + summary.Degraded == 0)
+        {
+            stderr.WriteNoProjectLoaded();
+            return ExitCodes.LoadHealthFailure;
+        }
+
+        var threshold = parseResult.GetValue(failOn);
+        var crossing = threshold switch
+        {
+            FailOn.Degraded => summary.Degraded + summary.Failed,
+            FailOn.Failed => summary.Failed,
+            _ => 0,
+        };
+
+        if (crossing > 0)
+        {
+            stderr.WriteFailOnCrossed(threshold, crossing);
+            return ExitCodes.LoadHealthFailure;
+        }
+
         return ExitCodes.Success;
     }
 
