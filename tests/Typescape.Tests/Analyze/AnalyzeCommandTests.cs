@@ -13,6 +13,7 @@ public sealed class AnalyzeCommandTests : IDisposable
     private AnalysisProgress[] _progress = [];
     private bool _interactive;
     private SnapshotRecord _snapshot = Snapshots.Empty();
+    private Exception? _failure;
 
     public void Dispose() => Directory.Delete(_directory, recursive: true);
 
@@ -334,7 +335,7 @@ public sealed class AnalyzeCommandTests : IDisposable
         Touch("App.sln");
         _snapshot = Snapshots.WithProjects(
             ("App", Snapshots.Health()),
-            ("Billing", Snapshots.Health(LoadStatus.Degraded, compileErrors: new CompileErrorsRecord(212, [new("CS0518", 212, "Predefined type 'System.Object' is not defined or imported")]))),
+            ("Billing", Snapshots.Health(LoadStatus.Degraded, objectResolves: false, compileErrors: new CompileErrorsRecord(212, [new("CS0518", 212, "Predefined type 'System.Object' is not defined or imported")]))),
             ("Legacy", Snapshots.Health(LoadStatus.Degraded, metadataReferences: 0, objectResolves: false, compileErrors: new CompileErrorsRecord(40, [new("CS0518", 30, "…"), new("CS0246", 10, "…")]))),
             ("Ledger", Snapshots.Health(LoadStatus.Failed, metadataReferences: 0, workspaceDiagnostics: [new(WorkspaceDiagnosticKind.Warning, "Found project reference without a matching metadata reference."), new(WorkspaceDiagnosticKind.Failure, "Msbuild failed when processing the file 'Ledger/Ledger.csproj' with message: The SDK 'Acme.Sdk' could not be found.\nMore detail")])),
             ("Tools", Snapshots.Health(LoadStatus.Degraded, compileErrors: new CompileErrorsRecord(250, [new("CS0246", 200, "…"), new("CS0103", 50, "…")]))),
@@ -427,6 +428,45 @@ public sealed class AnalyzeCommandTests : IDisposable
             run.Stderr);
     }
 
+    [Fact]
+    public async Task On_a_terminal_a_warning_clears_the_live_counter_which_then_comes_back()
+    {
+        Touch("App.sln");
+        _interactive = true;
+        _progress =
+        [
+            new AnalysisProgress.PhaseStarted(AnalysisPhase.Load),
+            new AnalysisProgress.PhaseProgressed(AnalysisPhase.Load, 0, 41),
+            new AnalysisProgress.Warning(AnalysisPhase.Load, "No reference assemblies:\n  offline"),
+            new AnalysisProgress.PhaseFinished(AnalysisPhase.Load, TimeSpan.FromSeconds(1)),
+        ];
+
+        var run = await RunAsync("analyze");
+
+        var counter = "load        0/41 projects";
+        Assert.StartsWith(
+            $"\rload\r{counter}\r{new string(' ', counter.Length)}\rNo reference assemblies:\n  offline{Environment.NewLine}\r{counter}\rload           1.0s  41 projects{Environment.NewLine}",
+            run.Stderr);
+    }
+
+    [Fact]
+    public async Task On_a_terminal_a_failed_run_ends_the_live_counter_before_the_error()
+    {
+        Touch("App.sln");
+        _interactive = true;
+        _progress =
+        [
+            new AnalysisProgress.PhaseStarted(AnalysisPhase.Load),
+            new AnalysisProgress.PhaseProgressed(AnalysisPhase.Load, 0, 41),
+        ];
+        _failure = new InvalidOperationException("The BuildHost did not start.");
+
+        var run = await RunAsync("analyze");
+
+        Assert.StartsWith($"\rload\rload        0/41 projects{Environment.NewLine}", run.Stderr);
+        Assert.Contains("The BuildHost did not start.", run.Stderr);
+    }
+
     private async Task<(int ExitCode, string Stdout, string Stderr)> RunAsync(params string[] args)
     {
         using var stdout = new StringWriter();
@@ -450,6 +490,11 @@ public sealed class AnalyzeCommandTests : IDisposable
             foreach (var report in _progress)
             {
                 progress.Report(report);
+            }
+
+            if (_failure is not null)
+            {
+                throw _failure;
             }
 
             return Task.FromResult(new AnalysisResult(_snapshot, Summary(_snapshot)));

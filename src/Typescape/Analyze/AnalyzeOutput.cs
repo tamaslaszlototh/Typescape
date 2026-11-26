@@ -25,7 +25,10 @@ internal sealed class AnalyzeOutput(TextWriter error, Verbosity verbosity, bool 
     private readonly Lock _lock = new();
     private string? _phase;
     private (int Total, string Unit)? _count;
-    private int _liveLength;
+
+    // What the running phase shows on a terminal, and how much of a live line is on screen now.
+    private string _liveText = "";
+    private int _drawnLength;
     private long _lastDraw;
 
     public void Report(AnalysisProgress value)
@@ -36,7 +39,7 @@ internal sealed class AnalyzeOutput(TextWriter error, Verbosity verbosity, bool 
                 Start(Name(started.Phase));
                 break;
             case AnalysisProgress.PhaseProgressed progressed:
-                Count(progressed.Done, progressed.Total, Unit(progressed.Phase));
+                DrawCount(progressed.Done, progressed.Total, Unit(progressed.Phase));
                 break;
             case AnalysisProgress.PhaseFinished finished:
                 Finish(finished.Duration);
@@ -45,8 +48,15 @@ internal sealed class AnalyzeOutput(TextWriter error, Verbosity verbosity, bool 
                 lock (_lock)
                 {
                     WriteLine(warning.Message);
+                    if (_phase is not null)
+                    {
+                        Draw(_liveText, force: true);
+                    }
                 }
 
+                break;
+            case AnalysisProgress.LoadHealthReported:
+                // Printed by WriteLoadHealth from the result instead, which holds each project's evidence.
                 break;
         }
     }
@@ -58,7 +68,8 @@ internal sealed class AnalyzeOutput(TextWriter error, Verbosity verbosity, bool 
         {
             _phase = phase;
             _count = null;
-            Draw(phase, force: true);
+            _liveText = phase;
+            Draw(_liveText, force: true);
         }
     }
 
@@ -75,7 +86,7 @@ internal sealed class AnalyzeOutput(TextWriter error, Verbosity verbosity, bool 
             var line = $"{_phase,-NameWidth}{Duration(duration),DurationWidth}";
             if (_count is var (total, unit))
             {
-                line += $"  {Plural(total, unit)}";
+                line += $"  {Counted(total, unit)}";
             }
 
             _phase = null;
@@ -87,8 +98,9 @@ internal sealed class AnalyzeOutput(TextWriter error, Verbosity verbosity, bool 
     /// The summary line, then one line per non-ok project with its main reason; <c>detailed</c> lists every project with
     /// its workspace diagnostics, then the solution's. <c>quiet</c> prints nothing when every project is ok.
     /// </summary>
-    public void LoadHealth(LoadHealthSummary summary, SnapshotRecord snapshot)
+    public void WriteLoadHealth(AnalysisResult result)
     {
+        var (snapshot, summary) = (result.Snapshot, result.LoadHealth);
         var detailed = verbosity == Verbosity.Detailed;
         var rows = snapshot.LoadHealth.Projects
             .Where(health => detailed || health.Status != LoadStatus.Ok)
@@ -104,7 +116,7 @@ internal sealed class AnalyzeOutput(TextWriter error, Verbosity verbosity, bool 
         {
             WriteLine(string.Create(
                 CultureInfo.InvariantCulture,
-                $"{Plural(summary.Projects, "projects")}: {summary.Ok} ok · {summary.Degraded} degraded · {summary.Failed} failed"));
+                $"{Counted(summary.Projects, "project")}: {summary.Ok} ok · {summary.Degraded} degraded · {summary.Failed} failed"));
 
             var nameWidth = rows.Count == 0 ? 0 : rows.Max(row => row.Name.Length);
             var statusWidth = rows.Count == 0 ? 0 : rows.Max(row => Status(row.Health.Status).Length);
@@ -162,23 +174,37 @@ internal sealed class AnalyzeOutput(TextWriter error, Verbosity verbosity, bool 
             return "0 metadata references";
         }
 
+        // Before the unresolved System.Object, because its compile error CS0518 also says how much of the code it hit.
+        if (health.CompileErrors is { Top: [var top, ..] } errors)
+        {
+            var reason = string.Create(CultureInfo.InvariantCulture, $"{top.Code} ×{top.Count}");
+            return top.Count == errors.Count ? reason : $"{reason} ({Counted(errors.Count, "compile error")})";
+        }
+
         if (!health.ObjectResolves)
         {
             return "System.Object does not resolve";
         }
 
-        if (health.CompileErrors is { Top: [var top, ..] } errors)
-        {
-            var reason = string.Create(CultureInfo.InvariantCulture, $"{top.Code} ×{top.Count}");
-            return top.Count == errors.Count ? reason : $"{reason} ({Plural(errors.Count, "compile errors")})";
-        }
-
-        return health.AnalyzerErrors.Count > 0 ? Plural(health.AnalyzerErrors.Count, "analyzer errors") : "";
+        return health.AnalyzerErrors.Count > 0 ? Counted(health.AnalyzerErrors.Count, "analyzer error") : "";
     }
 
     private static string FirstLine(string text) => text.ReplaceLineEndings("\n").Split('\n', 2)[0];
 
-    private void Count(int done, int total, string unit)
+    /// <summary>Ends the live counter's line, so that an error printed next starts on a line of its own.</summary>
+    public void Interrupt()
+    {
+        lock (_lock)
+        {
+            if (_drawnLength > 0)
+            {
+                error.WriteLine();
+                _drawnLength = 0;
+            }
+        }
+    }
+
+    private void DrawCount(int done, int total, string unit)
     {
         lock (_lock)
         {
@@ -188,7 +214,8 @@ internal sealed class AnalyzeOutput(TextWriter error, Verbosity verbosity, bool 
             }
 
             _count = (total, unit);
-            Draw($"{_phase,-NameWidth}{done}/{total} {unit}", force: done == 0 || done == total);
+            _liveText = $"{_phase,-NameWidth}{done}/{total} {Plural(total, unit)}";
+            Draw(_liveText, force: done == 0 || done == total);
         }
     }
 
@@ -205,31 +232,34 @@ internal sealed class AnalyzeOutput(TextWriter error, Verbosity verbosity, bool 
         }
 
         _lastDraw = Stopwatch.GetTimestamp();
-        error.Write($"\r{text.PadRight(_liveLength)}");
-        _liveLength = text.Length;
+        error.Write($"\r{text.PadRight(_drawnLength)}");
+        _drawnLength = text.Length;
     }
 
-    /// <summary>Writes a line of its own, over the live counter if one is drawn.</summary>
+    /// <summary>Writes a line of its own over the live counter, if one is drawn; text of several lines clears it first.</summary>
     private void WriteLine(string line)
     {
-        if (_liveLength > 0)
+        if (_drawnLength > 0)
         {
-            error.Write($"\r{line.PadRight(_liveLength)}");
-            _liveLength = 0;
-            error.WriteLine();
+            error.Write(line.Contains('\n') ? $"\r{new string(' ', _drawnLength)}\r{line}" : $"\r{line.PadRight(_drawnLength)}");
+            _drawnLength = 0;
         }
         else
         {
-            error.WriteLine(line);
+            error.Write(line);
         }
+
+        error.WriteLine();
     }
 
     private static string Name(AnalysisPhase phase) => phase.ToString().ToLowerInvariant();
 
-    private static string Unit(AnalysisPhase phase) => phase == AnalysisPhase.Walk ? "documents" : "projects";
+    private static string Unit(AnalysisPhase phase) => phase == AnalysisPhase.Walk ? "document" : "project";
 
-    private static string Plural(int count, string plural) =>
-        count == 1 ? $"1 {plural[..^1]}" : string.Create(CultureInfo.InvariantCulture, $"{count} {plural}");
+    private static string Counted(int count, string unit) =>
+        string.Create(CultureInfo.InvariantCulture, $"{count} {Plural(count, unit)}");
+
+    private static string Plural(int count, string unit) => count == 1 ? unit : unit + "s";
 
     private static string Duration(TimeSpan duration) =>
         duration < TimeSpan.FromSeconds(1) ? string.Create(CultureInfo.InvariantCulture, $"{(int)duration.TotalMilliseconds}ms")

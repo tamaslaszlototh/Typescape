@@ -146,8 +146,7 @@ internal sealed class AnalyzeCommand : Command
             ? Path.GetFullPath(given, currentDirectory)
             : SnapshotFile.DefaultPath(solution, currentDirectory);
 
-        var progress = new AnalyzeOutput(console.Error, parseResult.GetValue(verbosity), interactive);
-        var result = await analyze(new AnalysisRequest
+        var request = new AnalysisRequest
         {
             SolutionPath = solution,
             Framework = parseResult.GetValue(framework),
@@ -157,13 +156,26 @@ internal sealed class AnalyzeCommand : Command
             Properties = parseResult.GetRequiredValue(properties),
             TestPatterns = parseResult.GetRequiredValue(testPatterns),
             NotTestPatterns = parseResult.GetRequiredValue(notTestPatterns),
-        }, progress, cancellationToken);
+        };
 
-        progress.Start("write");
-        var stopwatch = Stopwatch.StartNew();
-        await SnapshotFile.WriteAsync(result.Snapshot, path, cancellationToken);
-        progress.Finish(stopwatch.Elapsed);
-        progress.LoadHealth(result.LoadHealth, result.Snapshot);
+        var stderr = new AnalyzeOutput(console.Error, parseResult.GetValue(verbosity), interactive);
+        AnalysisResult result;
+        try
+        {
+            result = await analyze(request, stderr, cancellationToken);
+
+            stderr.Start("write");
+            var stopwatch = Stopwatch.StartNew();
+            await SnapshotFile.WriteAsync(result.Snapshot, path, cancellationToken);
+            stderr.Finish(stopwatch.Elapsed);
+        }
+        catch
+        {
+            stderr.Interrupt();
+            throw;
+        }
+
+        stderr.WriteLoadHealth(result);
 
         await console.Output.WriteLineAsync(path);
         return ExitCodes.Success;
