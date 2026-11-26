@@ -211,8 +211,6 @@ public sealed class SolutionLoaderTests : IDisposable
     [Fact]
     public async Task Offline_the_projects_of_a_missing_version_load_without_framework_references_and_say_why()
     {
-        Assert.SkipWhen(OperatingSystem.IsWindows(),
-            "Undecided: VS MSBuild falls back to the installed .NET Framework when the reference assemblies are missing.");
         var cache = new ReferenceAssemblies(Path.Combine(_directory, "cache"));
         FakeReferenceAssemblies.NuGetConfig(_directory, "http://127.0.0.1:9/v3/index.json");
         LegacyProject("Legacy", "v4.7.2", targets: """
