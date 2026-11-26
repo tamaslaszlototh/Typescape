@@ -1,5 +1,6 @@
 using System.CommandLine;
 using System.CommandLine.Parsing;
+using System.Diagnostics;
 using System.Globalization;
 using Typescape.Analyzer;
 
@@ -8,7 +9,10 @@ namespace Typescape.Analyze;
 /// <summary><c>typescape analyze [&lt;input&gt;]</c>: analyzes a solution and writes its Snapshot.</summary>
 internal sealed class AnalyzeCommand : Command
 {
-    public delegate Task<AnalysisResult> AnalyzeAsync(AnalysisRequest request, CancellationToken cancellationToken);
+    public delegate Task<AnalysisResult> AnalyzeAsync(
+        AnalysisRequest request,
+        IProgress<AnalysisProgress> progress,
+        CancellationToken cancellationToken);
 
     private readonly Argument<string?> input = new("input")
     {
@@ -103,14 +107,17 @@ internal sealed class AnalyzeCommand : Command
     }.AcceptOnlyFromAmong("quiet", "normal", "detailed");
 
     private readonly string currentDirectory;
+    private readonly bool interactive;
     private readonly AnalyzeAsync analyze;
 
     /// <param name="currentDirectory">What the input and output paths are relative to.</param>
+    /// <param name="interactive">Whether stderr is a terminal, which gets live counters.</param>
     /// <param name="analyze">Runs the analysis; the Analyzer outside tests.</param>
-    public AnalyzeCommand(string currentDirectory, AnalyzeAsync analyze)
+    public AnalyzeCommand(string currentDirectory, bool interactive, AnalyzeAsync analyze)
         : base("analyze", "Analyzes a solution and writes its Snapshot.")
     {
         this.currentDirectory = currentDirectory;
+        this.interactive = interactive;
         this.analyze = analyze;
         Add(input);
         Add(output);
@@ -139,6 +146,7 @@ internal sealed class AnalyzeCommand : Command
             ? Path.GetFullPath(given, currentDirectory)
             : SnapshotFile.DefaultPath(solution, currentDirectory);
 
+        var progress = new AnalyzeOutput(console.Error, parseResult.GetValue(verbosity), interactive);
         var result = await analyze(new AnalysisRequest
         {
             SolutionPath = solution,
@@ -149,8 +157,13 @@ internal sealed class AnalyzeCommand : Command
             Properties = parseResult.GetRequiredValue(properties),
             TestPatterns = parseResult.GetRequiredValue(testPatterns),
             NotTestPatterns = parseResult.GetRequiredValue(notTestPatterns),
-        }, cancellationToken);
+        }, progress, cancellationToken);
+
+        progress.Start("write");
+        var stopwatch = Stopwatch.StartNew();
         await SnapshotFile.WriteAsync(result.Snapshot, path, cancellationToken);
+        progress.Finish(stopwatch.Elapsed);
+        progress.LoadHealth(result.LoadHealth, result.Snapshot);
 
         await console.Output.WriteLineAsync(path);
         return ExitCodes.Success;

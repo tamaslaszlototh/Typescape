@@ -7,15 +7,15 @@ internal static class Program
 {
     private static Task<int> Main(string[] args) =>
         InvokeAsync(
-            CreateRootCommand(Environment.CurrentDirectory, (request, cancellationToken) => Analyzer.Analyzer.AnalyzeAsync(request, null, cancellationToken)),
+            CreateRootCommand(Environment.CurrentDirectory, !Console.IsErrorRedirected, Analyzer.Analyzer.AnalyzeAsync),
             args,
             new InvocationConfiguration(),
             CancellationToken.None);
 
-    internal static RootCommand CreateRootCommand(string currentDirectory, AnalyzeCommand.AnalyzeAsync analyze) =>
+    internal static RootCommand CreateRootCommand(string currentDirectory, bool interactive, AnalyzeCommand.AnalyzeAsync analyze) =>
         new("Analyzes a C# solution and shows its structure.")
         {
-            new AnalyzeCommand(currentDirectory, analyze),
+            new AnalyzeCommand(currentDirectory, interactive, analyze),
         };
 
     /// <summary>Parses <paramref name="args"/> and runs the command; a parse error exits 2 with the errors on stderr only.</summary>
