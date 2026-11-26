@@ -12,8 +12,10 @@ public sealed class AnalyzeCommandTests : IDisposable
     private readonly List<AnalysisRequest> _requests = [];
     private AnalysisProgress[] _progress = [];
     private bool _interactive;
-    private SnapshotRecord _snapshot = Snapshots.Empty();
+    private SnapshotRecord _snapshot = Snapshots.WithProjects(("App", Snapshots.Health()));
     private Exception? _failure;
+    private bool _cancelDuringAnalysis;
+    private CancellationTokenSource? _cancellation;
 
     public void Dispose() => Directory.Delete(_directory, recursive: true);
 
@@ -234,6 +236,45 @@ public sealed class AnalyzeCommandTests : IDisposable
     }
 
     [Theory]
+    [InlineData("none", 0, LoadStatus.Ok, LoadStatus.Degraded, LoadStatus.Failed)]
+    [InlineData("degraded", 0, LoadStatus.Ok, LoadStatus.Ok)]
+    [InlineData("degraded", 3, LoadStatus.Ok, LoadStatus.Degraded)]
+    [InlineData("degraded", 3, LoadStatus.Ok, LoadStatus.Failed)]
+    [InlineData("failed", 0, LoadStatus.Ok, LoadStatus.Degraded)]
+    [InlineData("failed", 3, LoadStatus.Degraded, LoadStatus.Failed)]
+    public async Task Fail_on_exits_3_after_writing_the_Snapshot_when_a_project_is_that_or_worse(
+        string failOn,
+        int exitCode,
+        params LoadStatus[] statuses)
+    {
+        Touch("App.sln");
+        _snapshot = Snapshots.WithProjects([.. statuses.Select((status, i) => ($"P{i}", Snapshots.Health(status)))]);
+
+        var run = await RunAsync("analyze", "--fail-on", failOn);
+
+        var path = Path.Combine(_directory, "App.typescape.json.gz");
+        Assert.Equal((exitCode, path + Environment.NewLine), (run.ExitCode, run.Stdout));
+        Assert.True(File.Exists(path));
+        Assert.Equal(exitCode == 3, run.Stderr.Contains($"--fail-on {failOn}:", StringComparison.Ordinal));
+    }
+
+    [Theory]
+    [InlineData(LoadStatus.Failed)]
+    [InlineData]
+    public async Task No_project_loaded_writes_the_Snapshot_and_exits_3_without_fail_on(params LoadStatus[] statuses)
+    {
+        Touch("App.sln");
+        _snapshot = Snapshots.WithProjects([.. statuses.Select((status, i) => ($"P{i}", Snapshots.Health(status)))]);
+
+        var run = await RunAsync("analyze");
+
+        var path = Path.Combine(_directory, "App.typescape.json.gz");
+        Assert.Equal((3, path + Environment.NewLine), (run.ExitCode, run.Stdout));
+        Assert.True(File.Exists(path));
+        Assert.Contains("No project loaded", run.Stderr);
+    }
+
+    [Theory]
     [InlineData("--help")]
     [InlineData("analyze", "--help")]
     [InlineData("analyze", "-h")]
@@ -450,6 +491,66 @@ public sealed class AnalyzeCommandTests : IDisposable
     }
 
     [Fact]
+    public async Task A_failed_analysis_exits_1_with_its_message_on_stderr_and_no_Snapshot()
+    {
+        Touch("App.sln");
+        _failure = new InvalidOperationException("No .NET SDK found: the dotnet executable could not be started.");
+
+        var run = await RunAsync("analyze");
+
+        Assert.Equal(
+            (1, "", "No .NET SDK found: the dotnet executable could not be started." + Environment.NewLine),
+            (run.ExitCode, run.Stdout, run.Stderr));
+        Assert.False(File.Exists(Path.Combine(_directory, "App.typescape.json.gz")));
+    }
+
+    [Fact]
+    public async Task Detailed_adds_the_stack_trace_of_a_failed_analysis()
+    {
+        Touch("App.sln");
+        _failure = Thrown(new InvalidOperationException("The BuildHost did not start."));
+
+        var run = await RunAsync("analyze", "-v", "detailed");
+
+        Assert.Equal(1, run.ExitCode);
+        Assert.Contains(_failure.StackTrace!, run.Stderr);
+    }
+
+    [Fact]
+    public async Task A_Snapshot_that_cannot_be_written_exits_1_without_a_path_on_stdout()
+    {
+        Touch("App.sln");
+
+        var run = await RunAsync("analyze", "-o", "missing/App.typescape.json.gz");
+
+        Assert.Equal((1, ""), (run.ExitCode, run.Stdout));
+        Assert.Contains("missing", run.Stderr);
+    }
+
+    [Fact]
+    public async Task Cancelling_during_analysis_exits_130_without_a_Snapshot()
+    {
+        Touch("App.sln");
+        _cancelDuringAnalysis = true;
+
+        var run = await RunAsync("analyze");
+
+        Assert.Equal((130, ""), (run.ExitCode, run.Stdout));
+        Assert.Empty(Directory.EnumerateFiles(_directory, "*.gz*"));
+    }
+
+    [Fact]
+    public async Task A_cancellation_the_run_did_not_ask_for_is_a_failure()
+    {
+        Touch("App.sln");
+        _failure = new TaskCanceledException("The request timed out.");
+
+        var run = await RunAsync("analyze");
+
+        Assert.Equal((1, "", "The request timed out." + Environment.NewLine), (run.ExitCode, run.Stdout, run.Stderr));
+    }
+
+    [Fact]
     public async Task On_a_terminal_a_failed_run_ends_the_live_counter_before_the_error()
     {
         Touch("App.sln");
@@ -472,11 +573,14 @@ public sealed class AnalyzeCommandTests : IDisposable
         using var stdout = new StringWriter();
         using var stderr = new StringWriter();
 
+        using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
+        _cancellation = cancellation;
+
         var exitCode = await Program.InvokeAsync(
             CreateRootCommand(),
             args,
             new InvocationConfiguration { Output = stdout, Error = stderr },
-            TestContext.Current.CancellationToken);
+            cancellation.Token);
 
         return (exitCode, stdout.ToString(), stderr.ToString());
     }
@@ -484,12 +588,18 @@ public sealed class AnalyzeCommandTests : IDisposable
     private ParseResult Parse(string[] args) => CreateRootCommand().Parse(args);
 
     private RootCommand CreateRootCommand() =>
-        Program.CreateRootCommand(_directory, _interactive, (request, progress, _) =>
+        Program.CreateRootCommand(_directory, _interactive, (request, progress, cancellationToken) =>
         {
             _requests.Add(request);
             foreach (var report in _progress)
             {
                 progress.Report(report);
+            }
+
+            if (_cancelDuringAnalysis)
+            {
+                _cancellation!.Cancel();
+                cancellationToken.ThrowIfCancellationRequested();
             }
 
             if (_failure is not null)
@@ -507,6 +617,18 @@ public sealed class AnalyzeCommandTests : IDisposable
             statuses.Count(status => status == LoadStatus.Ok),
             statuses.Count(status => status == LoadStatus.Degraded),
             statuses.Count(status => status == LoadStatus.Failed));
+    }
+
+    private static Exception Thrown(Exception exception)
+    {
+        try
+        {
+            throw exception;
+        }
+        catch (Exception thrown)
+        {
+            return thrown;
+        }
     }
 
     private string Touch(string relative)

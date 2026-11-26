@@ -158,7 +158,8 @@ internal sealed class AnalyzeCommand : Command
             NotTestPatterns = parseResult.GetRequiredValue(notTestPatterns),
         };
 
-        var stderr = new AnalyzeOutput(console.Error, parseResult.GetValue(verbosity), interactive);
+        var level = parseResult.GetValue(verbosity);
+        var stderr = new AnalyzeOutput(console.Error, level, interactive);
         AnalysisResult result;
         try
         {
@@ -169,16 +170,49 @@ internal sealed class AnalyzeCommand : Command
             await SnapshotFile.WriteAsync(result.Snapshot, path, cancellationToken);
             stderr.Finish(stopwatch.Elapsed);
         }
-        catch
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {
             stderr.Interrupt();
-            throw;
+            return ExitCodes.Cancelled;
+        }
+        catch (Exception exception)
+        {
+            stderr.Interrupt();
+            await console.Error.WriteLineAsync(level == Verbosity.Detailed ? exception.ToString() : exception.Message);
+            return ExitCodes.RuntimeFailure;
         }
 
         stderr.WriteLoadHealth(result);
-
         await console.Output.WriteLineAsync(path);
+
+        if (result.LoadHealth.Ok + result.LoadHealth.Degraded == 0)
+        {
+            await console.Error.WriteLineAsync("No project loaded: the Snapshot holds nothing to analyze.");
+            return ExitCodes.LoadHealthFailure;
+        }
+
+        if (FailOnCrossed(parseResult.GetValue(failOn), result.LoadHealth) is { } crossed)
+        {
+            await console.Error.WriteLineAsync(crossed);
+            return ExitCodes.LoadHealthFailure;
+        }
+
         return ExitCodes.Success;
+    }
+
+    /// <summary>Why the Load Health crosses <paramref name="threshold"/>; <c>null</c> when it does not.</summary>
+    private static string? FailOnCrossed(FailOn threshold, LoadHealthSummary summary)
+    {
+        var (count, worse) = threshold switch
+        {
+            FailOn.Degraded => (summary.Degraded + summary.Failed, "degraded or failed"),
+            FailOn.Failed => (summary.Failed, "failed"),
+            _ => (0, ""),
+        };
+
+        return count == 0
+            ? null
+            : string.Create(CultureInfo.InvariantCulture, $"--fail-on {threshold.ToString().ToLowerInvariant()}: {count} {(count == 1 ? "project is" : "projects are")} {worse}.");
     }
 
     private static Dictionary<string, string> ParseProperties(ArgumentResult result)
