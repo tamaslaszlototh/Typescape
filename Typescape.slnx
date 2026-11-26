@@ -7,5 +7,6 @@
   <Folder Name="/tests/">
     <Project Path="tests/Typescape.Analyzer.Tests/Typescape.Analyzer.Tests.csproj" />
     <Project Path="tests/Typescape.Snapshot.Tests/Typescape.Snapshot.Tests.csproj" />
+    <Project Path="tests/Typescape.Tests/Typescape.Tests.csproj" />
   </Folder>
 </Solution>

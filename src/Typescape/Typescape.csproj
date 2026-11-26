@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <InternalsVisibleTo Include="Typescape.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Typescape.Analyzer\Typescape.Analyzer.csproj" />
     <ProjectReference Include="..\Typescape.Snapshot\Typescape.Snapshot.csproj" />
   </ItemGroup>
