@@ -158,8 +158,7 @@ internal sealed class AnalyzeCommand : Command
             NotTestPatterns = parseResult.GetRequiredValue(notTestPatterns),
         };
 
-        var level = parseResult.GetValue(verbosity);
-        var stderr = new AnalyzeOutput(console.Error, level, interactive);
+        var stderr = new AnalyzeOutput(console.Error, parseResult.GetValue(verbosity), interactive);
         AnalysisResult result;
         try
         {
@@ -170,49 +169,43 @@ internal sealed class AnalyzeCommand : Command
             await SnapshotFile.WriteAsync(result.Snapshot, path, cancellationToken);
             stderr.Finish(stopwatch.Elapsed);
         }
-        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        catch (Exception) when (cancellationToken.IsCancellationRequested)
         {
+            // Not only OperationCanceledException: a BuildHost stopped mid-call fails with whatever its pipe throws.
             stderr.Interrupt();
             return ExitCodes.Cancelled;
         }
         catch (Exception exception)
         {
-            stderr.Interrupt();
-            await console.Error.WriteLineAsync(level == Verbosity.Detailed ? exception.ToString() : exception.Message);
+            stderr.WriteFailure(exception);
             return ExitCodes.RuntimeFailure;
         }
 
         stderr.WriteLoadHealth(result);
         await console.Output.WriteLineAsync(path);
 
-        if (result.LoadHealth.Ok + result.LoadHealth.Degraded == 0)
+        var summary = result.LoadHealth;
+        if (summary.Ok + summary.Degraded == 0)
         {
-            await console.Error.WriteLineAsync("No project loaded: the Snapshot holds nothing to analyze.");
+            stderr.WriteNoProjectLoaded();
             return ExitCodes.LoadHealthFailure;
         }
 
-        if (FailOnCrossed(parseResult.GetValue(failOn), result.LoadHealth) is { } crossed)
+        var threshold = parseResult.GetValue(failOn);
+        var crossing = threshold switch
         {
-            await console.Error.WriteLineAsync(crossed);
+            FailOn.Degraded => summary.Degraded + summary.Failed,
+            FailOn.Failed => summary.Failed,
+            _ => 0,
+        };
+
+        if (crossing > 0)
+        {
+            stderr.WriteFailOnCrossed(threshold, crossing);
             return ExitCodes.LoadHealthFailure;
         }
 
         return ExitCodes.Success;
-    }
-
-    /// <summary>Why the Load Health crosses <paramref name="threshold"/>; <c>null</c> when it does not.</summary>
-    private static string? FailOnCrossed(FailOn threshold, LoadHealthSummary summary)
-    {
-        var (count, worse) = threshold switch
-        {
-            FailOn.Degraded => (summary.Degraded + summary.Failed, "degraded or failed"),
-            FailOn.Failed => (summary.Failed, "failed"),
-            _ => (0, ""),
-        };
-
-        return count == 0
-            ? null
-            : string.Create(CultureInfo.InvariantCulture, $"--fail-on {threshold.ToString().ToLowerInvariant()}: {count} {(count == 1 ? "project is" : "projects are")} {worse}.");
     }
 
     private static Dictionary<string, string> ParseProperties(ArgumentResult result)

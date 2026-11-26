@@ -236,6 +236,7 @@ public sealed class AnalyzeCommandTests : IDisposable
     }
 
     [Theory]
+    [InlineData(null, 0, LoadStatus.Ok, LoadStatus.Degraded, LoadStatus.Failed)]
     [InlineData("none", 0, LoadStatus.Ok, LoadStatus.Degraded, LoadStatus.Failed)]
     [InlineData("degraded", 0, LoadStatus.Ok, LoadStatus.Ok)]
     [InlineData("degraded", 3, LoadStatus.Ok, LoadStatus.Degraded)]
@@ -243,14 +244,14 @@ public sealed class AnalyzeCommandTests : IDisposable
     [InlineData("failed", 0, LoadStatus.Ok, LoadStatus.Degraded)]
     [InlineData("failed", 3, LoadStatus.Degraded, LoadStatus.Failed)]
     public async Task Fail_on_exits_3_after_writing_the_Snapshot_when_a_project_is_that_or_worse(
-        string failOn,
+        string? failOn,
         int exitCode,
         params LoadStatus[] statuses)
     {
         Touch("App.sln");
-        _snapshot = Snapshots.WithProjects([.. statuses.Select((status, i) => ($"P{i}", Snapshots.Health(status)))]);
+        _snapshot = Snapshots.WithStatuses(statuses);
 
-        var run = await RunAsync("analyze", "--fail-on", failOn);
+        var run = await RunAsync(failOn is null ? ["analyze"] : ["analyze", "--fail-on", failOn]);
 
         var path = Path.Combine(_directory, "App.typescape.json.gz");
         Assert.Equal((exitCode, path + Environment.NewLine), (run.ExitCode, run.Stdout));
@@ -264,7 +265,7 @@ public sealed class AnalyzeCommandTests : IDisposable
     public async Task No_project_loaded_writes_the_Snapshot_and_exits_3_without_fail_on(params LoadStatus[] statuses)
     {
         Touch("App.sln");
-        _snapshot = Snapshots.WithProjects([.. statuses.Select((status, i) => ($"P{i}", Snapshots.Health(status)))]);
+        _snapshot = Snapshots.WithStatuses(statuses);
 
         var run = await RunAsync("analyze");
 
@@ -508,7 +509,7 @@ public sealed class AnalyzeCommandTests : IDisposable
     public async Task Detailed_adds_the_stack_trace_of_a_failed_analysis()
     {
         Touch("App.sln");
-        _failure = Thrown(new InvalidOperationException("The BuildHost did not start."));
+        _failure = WithStackTrace(new InvalidOperationException("The BuildHost did not start."));
 
         var run = await RunAsync("analyze", "-v", "detailed");
 
@@ -537,6 +538,18 @@ public sealed class AnalyzeCommandTests : IDisposable
 
         Assert.Equal((130, ""), (run.ExitCode, run.Stdout));
         Assert.Empty(Directory.EnumerateFiles(_directory, "*.gz*"));
+    }
+
+    [Fact]
+    public async Task Whatever_a_cancelled_analysis_throws_exits_130()
+    {
+        Touch("App.sln");
+        _cancelDuringAnalysis = true;
+        _failure = new IOException("The BuildHost pipe was closed.");
+
+        var run = await RunAsync("analyze");
+
+        Assert.Equal((130, "", ""), (run.ExitCode, run.Stdout, run.Stderr));
     }
 
     [Fact]
@@ -599,7 +612,10 @@ public sealed class AnalyzeCommandTests : IDisposable
             if (_cancelDuringAnalysis)
             {
                 _cancellation!.Cancel();
-                cancellationToken.ThrowIfCancellationRequested();
+                if (_failure is null)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                }
             }
 
             if (_failure is not null)
@@ -619,7 +635,7 @@ public sealed class AnalyzeCommandTests : IDisposable
             statuses.Count(status => status == LoadStatus.Failed));
     }
 
-    private static Exception Thrown(Exception exception)
+    private static Exception WithStackTrace(Exception exception)
     {
         try
         {
