@@ -1,0 +1,19 @@
+{
+  "benchmark": "jellyfin",
+  "commit": "ac1ce5dc5189376c3d4571e83d0cc88f2a4bf2f0",
+  "machine": "apple-m3-16gb",
+  "os": "macOS 27.2.1 Arm64",
+  "sdkVersion": "10.0.404",
+  "toolVersion": "1.0.0",
+  "toolCommit": "c4fc743b30c72589862cd3b3852f504b55b5563b",
+  "timestamp": "2026-11-26T14:37:04+00:00",
+  "seconds": {
+    "load": 9.968,
+    "compile": 3.099,
+    "diagnostics": 4.995,
+    "walk": 9.355,
+    "assemble": 0.834,
+    "total": 28.251
+  },
+  "peakMemoryBytes": 1078247424
+}

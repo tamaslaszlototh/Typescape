@@ -17,6 +17,8 @@ dotnet run build.cs -- test           # the full test suite
 dotnet run build.cs -- install-hooks  # optional: run the fast tests before every push
 ```
 
+A change that may affect performance can be checked with `dotnet run build.cs -- bench`. It analyzes Jellyfin and compares the timings and peak memory with `bench/baseline.<machine>.json`. A regression over 25% only warns. `scale` does the same for dotnet/aspire without a baseline; it needs .NET SDK 10.0.400 or later and about 9 GB of disk.
+
 Golden Snapshot tests compare the Analyzer's output with checked-in `*.verified.*` files. When a change is meant to alter the output, rerun the tests with `TYPESCAPE_ACCEPT_GOLDEN=1` to update them, and review the diff of the golden files as part of your change. The goldens must be identical on macOS and Windows.
 
 ## Pull requests
