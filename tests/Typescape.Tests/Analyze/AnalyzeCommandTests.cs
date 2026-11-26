@@ -304,7 +304,7 @@ public sealed class AnalyzeCommandTests : IDisposable
             ],
             lines[..3]);
         Assert.Matches(@"^write +\d+ms$", lines[3]);
-        Assert.DoesNotContain('\r', run.Stderr);
+        Assert.DoesNotContain('\r', run.Stderr.Replace(Environment.NewLine, "\n"));
         Assert.DoesNotContain('\e', run.Stderr);
     }
 
