@@ -85,7 +85,7 @@ public sealed class AnalyzeCommandTests : IDisposable
 
     private string Touch(string relative)
     {
-        var path = Path.Combine(_directory, relative);
+        var path = Path.GetFullPath(Path.Combine(_directory, relative));
         Directory.CreateDirectory(Path.GetDirectoryName(path)!);
         File.WriteAllText(path, "");
         return path;
