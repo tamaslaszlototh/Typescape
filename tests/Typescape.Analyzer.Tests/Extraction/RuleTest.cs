@@ -22,7 +22,7 @@ internal static class RuleTest
 
     public static string SolutionDirectory { get; } = Path.GetFullPath("/repo");
 
-    public static ProjectContext Context { get; } = new(ProjectKey, SolutionDirectory, Test: false, new HashSet<string>(), Occurrences: true);
+    public static ProjectContext Context { get; } = new(ProjectKey, SolutionDirectory, [], Test: false, new HashSet<string>(), Occurrences: true);
 
     private static MetadataReference[] Framework { get; } = FrameworkReferences();
 

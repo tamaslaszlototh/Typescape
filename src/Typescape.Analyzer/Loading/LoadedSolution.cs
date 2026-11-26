@@ -42,6 +42,9 @@ internal sealed class LoadedSolution(
     /// <summary>Sorted by version. Their projects loaded without framework references.</summary>
     public IReadOnlyList<ReferenceAssemblyFailure> ReferenceAssemblyFailures { get; } = referenceAssemblyFailures;
 
+    /// <summary>The NuGet package folders, as <see cref="Packages.PackageFolders.For"/> finds them.</summary>
+    public IReadOnlyList<string> PackageFolders { get; init; } = [];
+
     public void Dispose() => workspace.Dispose();
 }
 

@@ -25,6 +25,17 @@ public class SolutionPathsTests
         Assert.Equal(expected, SolutionPaths.Key(Path.GetFullPath(path), Path.GetFullPath(directory)));
     }
 
+    [Theory]
+    [InlineData("/home/me/.nuget/packages/xunit.v3.core/4.0.3/_content/Reporters.cs", "{nuget}/xunit.v3.core/4.0.3/_content/Reporters.cs")]
+    [InlineData("/fallback/xunit.v3.core/4.0.3/_content/Reporters.cs", "{nuget}/xunit.v3.core/4.0.3/_content/Reporters.cs")]
+    [InlineData("/repo/packages/Lib.1.0.0/content/A.cs", "packages/Lib.1.0.0/content/A.cs")]
+    [InlineData("/Shared/Link.cs", "../Shared/Link.cs")]
+    public void A_file_outside_the_solution_directory_in_a_package_folder_is_keyed_by_its_path_there(string path, string expected)
+    {
+        string[] folders = [Path.GetFullPath("/home/me/.nuget/packages"), Path.GetFullPath("/fallback"), Path.GetFullPath("/repo/packages")];
+        Assert.Equal(expected, SolutionPaths.Key(Path.GetFullPath(path), Path.GetFullPath("/repo"), folders));
+    }
+
     [Fact]
     public void A_relative_path_is_taken_as_relative_to_the_solution_directory_not_the_working_directory()
     {

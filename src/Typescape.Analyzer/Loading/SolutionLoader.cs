@@ -82,7 +82,10 @@ internal static class SolutionLoader
                 .ToArray();
 
             (projects, var unopened, var solutionDiagnostics) = LoadEvidence.Collect(projects, unopenedPaths, solution, diagnostics, failures, directory);
-            return new LoadedSolution(workspace, solution, directory, projects, unopened, diagnostics, solutionDiagnostics, failures);
+            return new LoadedSolution(workspace, solution, directory, projects, unopened, diagnostics, solutionDiagnostics, failures)
+            {
+                PackageFolders = PackageFolders.For(directory),
+            };
         }
         catch
         {

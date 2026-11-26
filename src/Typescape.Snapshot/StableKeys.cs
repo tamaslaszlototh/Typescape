@@ -4,7 +4,8 @@ namespace Typescape.Snapshot;
 /// Builds the composite stable keys, so their format is defined in one place. A diff joins two Snapshots on these.
 /// </summary>
 /// <remarks>
-/// Projects and documents use their solution-relative path as the key; namespaces use the pair (project key, name);
+/// Projects and documents use their solution-relative path as the key (a document from a NuGet package folder its path
+/// there under <c>{nuget}/</c>); namespaces use the pair (project key, name);
 /// External members use their documentation comment ID. Those need no builder.
 /// </remarks>
 public static class StableKeys

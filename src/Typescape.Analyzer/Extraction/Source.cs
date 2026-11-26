@@ -10,7 +10,7 @@ namespace Typescape.Analyzer.Extraction;
 internal static class Source
 {
     public static string Document(SyntaxTree tree, ProjectContext context) =>
-        SolutionPaths.Key(tree.FilePath, context.SolutionDirectory);
+        SolutionPaths.Key(tree.FilePath, context.SolutionDirectory, context.PackageFolders);
 
     /// <summary>The physical lines <paramref name="span"/> covers, 1-based, <c>#line</c> directives ignored.</summary>
     public static LineSpan Lines(SyntaxTree tree, TextSpan span, CancellationToken cancellationToken)

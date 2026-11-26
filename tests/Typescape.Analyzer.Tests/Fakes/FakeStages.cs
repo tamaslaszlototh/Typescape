@@ -95,7 +95,7 @@ internal sealed class FakeStages(params int[] documentsPerProject) : IAnalysisSt
         Compilations[project.Key] = new WeakReference<Compilation>(compilation);
 
         Log.Enqueue("compile end");
-        return new CompiledProject(project, compilation, new ProjectContext(project.Key, solution.Directory, false, new HashSet<string>(), request.Occurrences));
+        return new CompiledProject(project, compilation, new ProjectContext(project.Key, solution.Directory, [], false, new HashSet<string>(), request.Occurrences));
     }
 
     public ProjectDiagnostics Diagnose(CompiledProject project, CancellationToken cancellationToken) =>

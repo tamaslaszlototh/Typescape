@@ -216,6 +216,18 @@
       "project": 3,
       "generated": true,
       "generatedReason": "convention"
+    },
+    {
+      "path": "{nuget}/xunit.v3.core.mtp-v2/4.0.3/_content/DefaultResultWriters.cs",
+      "project": 0,
+      "generated": true,
+      "generatedReason": "convention"
+    },
+    {
+      "path": "{nuget}/xunit.v3.core.mtp-v2/4.0.3/_content/DefaultRunnerReporters.cs",
+      "project": 0,
+      "generated": true,
+      "generatedReason": "convention"
     }
   ],
   "types": [
