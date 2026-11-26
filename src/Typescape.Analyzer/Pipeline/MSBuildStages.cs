@@ -38,7 +38,7 @@ internal sealed class MSBuildStages : IAnalysisStages
             .OfType<string>()
             .ToHashSet(StringComparer.Ordinal);
 
-        var context = new ProjectContext(project.Key, solution.Directory, project.Test, generatedPaths, request.Occurrences);
+        var context = new ProjectContext(project.Key, solution.Directory, solution.PackageFolders, project.Test, generatedPaths, request.Occurrences);
         return new CompiledProject(project, compilation, context);
     }
 

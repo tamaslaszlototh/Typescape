@@ -73,7 +73,7 @@ internal static class AssembleTest
     }
 
     public static ProjectContext Context(string projectKey, bool occurrences = true) =>
-        new(projectKey, RuleTest.SolutionDirectory, Test: false, new HashSet<string>(), occurrences);
+        new(projectKey, RuleTest.SolutionDirectory, [], Test: false, new HashSet<string>(), occurrences);
 
     /// <summary>The Walk parts of <paramref name="compilation"/>, as the pipeline produces them: declarations, then each document.</summary>
     public static ProjectFacts[] Walk(Compilation compilation, ProjectContext context)
