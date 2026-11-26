@@ -18,7 +18,7 @@ internal static class Program
             new AnalyzeCommand(currentDirectory, analyze),
         };
 
-    /// <summary>Runs the command <paramref name="args"/> name; a parse error is a usage error, reported on stderr only.</summary>
+    /// <summary>Parses <paramref name="args"/> and runs the command; a parse error exits 2 with the errors on stderr only.</summary>
     internal static async Task<int> InvokeAsync(
         RootCommand root,
         string[] args,

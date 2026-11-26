@@ -137,15 +137,27 @@ public sealed class AnalyzeCommandTests : IDisposable
     }
 
     [Fact]
-    public async Task Properties_repeat_their_value_runs_to_the_end_and_a_later_one_wins_in_any_case()
+    public async Task Properties_repeat_and_a_later_one_wins_with_its_spelling_in_any_case()
     {
         Touch("App.sln");
 
-        await RunAsync("analyze", "-p", "DefineConstants=A=1", "-p:Empty=", "-p", "platform=x86", "-p", "Platform=x64");
+        await RunAsync("analyze", "-p", "Empty=", "-p", "platform=x86", "-p", "Platform=x64");
 
         var properties = Assert.Single(_requests).Properties;
-        Assert.Equal(3, properties.Count);
-        Assert.Equal(("A=1", "", "x64"), (properties["DefineConstants"], properties["Empty"], properties["PLATFORM"]));
+        Assert.Equal(["Empty", "Platform"], properties.Keys.Order(StringComparer.Ordinal));
+        Assert.Equal(("", "x64"), (properties["Empty"], properties["PLATFORM"]));
+    }
+
+    [Fact]
+    public async Task A_property_value_is_taken_whole_with_its_equals_signs_and_semicolons()
+    {
+        Touch("App.sln");
+
+        await RunAsync("analyze", "-p:DefineConstants=A=1;B", "-p", "NoWarn=CS1591;CS0618");
+
+        Assert.Equal(
+            new Dictionary<string, string> { ["DefineConstants"] = "A=1;B", ["NoWarn"] = "CS1591;CS0618" },
+            Assert.Single(_requests).Properties);
     }
 
     [Fact]
@@ -161,7 +173,7 @@ public sealed class AnalyzeCommandTests : IDisposable
     [Theory]
     [InlineData("Configuration")]
     [InlineData("=Release")]
-    public async Task A_property_without_a_name_and_an_equals_sign_exits_2(string value)
+    public async Task A_property_without_a_name_or_an_equals_sign_exits_2(string value)
     {
         Touch("App.sln");
 
@@ -190,7 +202,7 @@ public sealed class AnalyzeCommandTests : IDisposable
     [InlineData("None", "--fail-on", "none")]
     [InlineData("Degraded", "--fail-on", "degraded")]
     [InlineData("Failed", "--fail-on", "failed")]
-    public void Fail_on_defaults_to_none(string expected, params string[] flag) =>
+    public void Fail_on_takes_none_degraded_or_failed_and_defaults_to_none(string expected, params string[] flag) =>
         Assert.Equal(Enum.Parse<FailOn>(expected), Parse(["analyze", .. flag]).GetValue<FailOn>("--fail-on"));
 
     [Theory]
@@ -198,7 +210,7 @@ public sealed class AnalyzeCommandTests : IDisposable
     [InlineData("Quiet", "-v", "quiet")]
     [InlineData("Normal", "--verbosity", "normal")]
     [InlineData("Detailed", "-v", "detailed")]
-    public void Verbosity_defaults_to_normal(string expected, params string[] flag) =>
+    public void Verbosity_takes_quiet_normal_or_detailed_and_defaults_to_normal(string expected, params string[] flag) =>
         Assert.Equal(Enum.Parse<Verbosity>(expected), Parse(["analyze", .. flag]).GetValue<Verbosity>("--verbosity"));
 
     [Theory]

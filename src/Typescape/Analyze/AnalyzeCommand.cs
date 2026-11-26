@@ -69,7 +69,7 @@ internal sealed class AnalyzeCommand : Command
 
     private readonly Option<IReadOnlyDictionary<string, string>> properties = new("--property", "-p")
     {
-        Description = "An MSBuild global property, such as -p:Configuration=Release; repeatable. Default configuration: Debug.",
+        Description = "An MSBuild global property, such as -p:Configuration=Release; one per -p, the value whole, ; included. Repeatable. Default configuration: Debug.",
         HelpName = "Name=Value",
         Arity = ArgumentArity.OneOrMore,
         DefaultValueFactory = _ => new Dictionary<string, string>(),
@@ -158,12 +158,13 @@ internal sealed class AnalyzeCommand : Command
 
     private static Dictionary<string, string> ParseProperties(ArgumentResult result)
     {
-        // MSBuild property names ignore case, and a later property wins as on the msbuild command line.
+        // MSBuild property names ignore case; a later property wins, with its spelling, as on the msbuild command line.
         var parsed = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         foreach (var token in result.Tokens)
         {
             if (token.Value.Split('=', 2) is [{ Length: > 0 } name, var value])
             {
+                parsed.Remove(name);
                 parsed[name] = value;
             }
             else
